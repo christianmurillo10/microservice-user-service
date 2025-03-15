@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./routes";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
-// import errorHandler from "./middlewares/error.middleware";
+import errorHandler from "./middlewares/error.middleware";
 
 export default class App {
   private app: Express;
@@ -36,7 +36,7 @@ export default class App {
 
     // Error Handler
     this.app.use(routeNotFoundHandler);
-    // this.app.use(errorHandler);
+    this.app.use(errorHandler);
   };
 
   private onError(error: any) {

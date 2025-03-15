@@ -8,7 +8,7 @@ const errorHandler = (
   _next: NextFunction
 ) => {
   const response = apiErrorResponse(err);
-  return res.status(response.status_code)
+  res.status(response.status_code)
     .send(response).
     end;
 };
