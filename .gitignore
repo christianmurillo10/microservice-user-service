@@ -48,3 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Public folders
+public/images
+
+# Dotenv environments variable files
+.env
