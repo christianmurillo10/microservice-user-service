@@ -1,10 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_DELETED, MESSAGE_DATA_NOT_EXIST } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_DELETED, MESSAGE_DATA_NOT_EXIST, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../shared/constants/error.constant";
 import CompaniesRepository from "../../shared/repositories/companies.repository";
 import RolesRepository from "../../shared/repositories/roles.repository";
 import UsersRepository from "../../shared/repositories/users.repository";
+import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
@@ -19,15 +20,21 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { params } = req;
-    const record = await repository.findById({ id: Number(params.id) });
+    const id = params.id;
+
+    if (id === ":id" || typeof id !== "number") {
+      throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
+    }
+
+    const record = await repository.findById({ id: Number(id) });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
     };
 
-    const result = await repository.softDelete({ id: Number(params.id) });
-    await rolesRepository.softDeleteManyByCompanyIds({ ids: [Number(params.id)] });
-    await usersRepository.softDeleteManyByCompanyIds({ ids: [Number(params.id)] });
+    const result = await repository.softDelete({ id: Number(id) });
+    await rolesRepository.softDeleteManyByCompanyIds({ ids: [Number(id)] });
+    await usersRepository.softDeleteManyByCompanyIds({ ids: [Number(id)] });
 
     return result;
   })

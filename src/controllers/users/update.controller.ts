@@ -3,10 +3,11 @@ import multer from "multer";
 import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
 import { changePassword as validator } from "../../middlewares/validators/users.validator";
-import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
 import UsersRepository from "../../shared/repositories/users.repository";
 import Users from "../../shared/entities/users.entity";
+import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 import { setUploadPath, uploadFile } from "../../shared/helpers/upload.helper";
 
@@ -21,9 +22,15 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { params, body, file, companies } = req;
+    const id = params.id;
+
+    if (id === ":id") {
+      throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
+    }
+
     const condition = companies ? { clinic_id: companies.id } : undefined;
     const record = await repository.findById({
-      id: params.id,
+      id,
       condition
     });
 
@@ -33,7 +40,7 @@ const controller = async (
 
     const oldData = new Users(record);
     const result = await repository.update({
-      id: params.id,
+      id,
       params: {
         ...oldData,
         ...body,

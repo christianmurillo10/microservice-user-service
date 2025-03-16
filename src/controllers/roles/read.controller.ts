@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_FIND, MESSAGE_DATA_NOT_EXIST } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_FIND, MESSAGE_DATA_NOT_EXIST, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../shared/constants/error.constant";
 import RolesRepository from "../../shared/repositories/roles.repository";
+import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
@@ -15,9 +16,15 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { params, companies } = req;
+    const id = params.id;
+
+    if (id === ":id" || typeof id !== "number") {
+      throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
+    }
+
     const condition = companies ? { clinic_id: companies.id } : undefined;
     const record = await repository.findById({
-      id: Number(params.id),
+      id: Number(id),
       condition,
       include: ["companies"],
       exclude: ["deleted_at"]
