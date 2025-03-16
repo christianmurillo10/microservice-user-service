@@ -1,4 +1,4 @@
-import { MESSAGE_ERROR_SERVER } from "../helpers/constant";
+import { MESSAGE_ERROR_SERVER } from "../constants/message.constant";
 
 class ErrorException extends Error {
   status_code = 500;

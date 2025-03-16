@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import NotFoundException from "../shared/exceptions/NotFoundException";
+import NotFoundException from "../shared/exceptions/not-found.exception";
 
 const routeNotFoundHandler = (
   _req: Request,

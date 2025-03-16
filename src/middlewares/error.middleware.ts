@@ -7,10 +7,7 @@ const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  const response = apiErrorResponse(err);
-  res.status(response.status_code)
-    .send(response).
-    end;
+  apiErrorResponse(res, err)
 };
 
 export default errorHandler;

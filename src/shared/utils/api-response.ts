@@ -1,8 +1,10 @@
+import { Response } from "express";
 import { ValidationError } from "joi";
 import config from "../../config/server.config";
-import { ERROR_ON_SERVER, MESSAGE_ERROR_SERVER } from "../helpers/constant";
-import BadRequestException from "../exceptions/BadRequestException";
-import ErrorException from "../exceptions/ErrorException";
+import BadRequestException from "../exceptions/bad-request.exception";
+import ErrorException from "../exceptions/error.exception";
+import { MESSAGE_ERROR_SERVER } from "../constants/message.constant";
+import { ERROR_ON_SERVER } from "../constants/error.constant";
 
 type ApiResponseInput = {
   service?: string,
@@ -14,7 +16,10 @@ type ApiResponseInput = {
   result?: unknown,
 };
 
-export const apiResponse = (input: ApiResponseInput) => ({
+export const apiResponse = (
+  res: Response,
+  input: ApiResponseInput
+) => res.status(input.status_code ?? 200).send({
   service: config.app_name,
   version: config.version,
   status_code: input.status_code ?? 200,
@@ -24,7 +29,10 @@ export const apiResponse = (input: ApiResponseInput) => ({
   result: input.result ?? undefined,
 });
 
-export const apiErrorResponse = (err: Error) => {
+export const apiErrorResponse = (
+  res: Response,
+  err: Error
+) => {
   let status_code = 500;
   let message = MESSAGE_ERROR_SERVER;
   let errors = [ERROR_ON_SERVER];
@@ -43,10 +51,10 @@ export const apiErrorResponse = (err: Error) => {
     console.log(err);
   };
 
-  return apiResponse({
+  return apiResponse(res, {
     status_code: status_code,
     status: "error",
     message: message,
     errors: errors,
-  });
+  }).end;
 };

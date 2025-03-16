@@ -1,5 +1,5 @@
-import ErrorException from "./ErrorException";
-import { MESSAGE_ERROR_CONFLICT } from "../helpers/constant";
+import ErrorException from "./error.exception";
+import { MESSAGE_ERROR_CONFLICT } from "../constants/message.constant";
 
 class ConflictException extends ErrorException {
   status_code = 409;

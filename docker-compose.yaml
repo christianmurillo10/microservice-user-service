@@ -8,7 +8,7 @@ services:
     environment:
       NODE_ENV: development
       APP_ENV: local
-      DATABASE_URL: mysql://root:password@host.docker.internal:3307/boilerplate_user_live
+      DATABASE_URL: mysql://root:password@host.docker.internal:3402/boilerplate_user_live
     ports:
       - "5002:3000"
     depends_on:
