@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../shared/constants/message.constant";
 import { ERROR_ON_LIST } from "../../shared/constants/error.constant";
-import { list as validator } from "../../middlewares/validators/comanies.validator";
+import { list as validator } from "../../middlewares/validators/companies.validator";
 import CompaniesRepository from "../../shared/repositories/companies.repository";
 
 const router = Router();
