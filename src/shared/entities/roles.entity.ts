@@ -11,7 +11,7 @@ export interface RolesInterface {
 class Roles implements RolesInterface {
   id?: number;
   created_at: Date = new Date();
-  updated_at?: Date = new Date();
+  updated_at?: Date | null = new Date();
   deleted_at?: Date | null;
   name: string = "";
   description: string | null = "";

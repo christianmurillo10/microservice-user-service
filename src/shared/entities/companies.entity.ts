@@ -16,7 +16,7 @@ export interface CompaniesInterface {
 class Companies implements CompaniesInterface {
   id?: number;
   created_at: Date = new Date();
-  updated_at?: Date | null;
+  updated_at?: Date | null = new Date();
   deleted_at?: Date | null;
   name: string = "";
   api_key: string = `key-${uuidv4()}`;

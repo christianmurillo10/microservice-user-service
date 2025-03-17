@@ -23,6 +23,9 @@
     "url": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service/issues"
   },
   "homepage": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service#readme",
+  "prisma": {
+    "seed": "ts-node prisma/seeders"
+  },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",

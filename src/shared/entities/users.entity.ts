@@ -21,7 +21,7 @@ export interface UsersInterface {
 class Users implements UsersInterface {
   id?: string = uuidv4();
   created_at: Date = new Date();
-  updated_at?: Date | null;
+  updated_at?: Date | null = new Date();
   deleted_at?: Date | null;
   last_login_at?: Date | null;
   name: string = "";
