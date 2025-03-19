@@ -4,7 +4,7 @@ import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
-import { create as validator } from "../../middlewares/validators/companies.validator";
+import { update as validator } from "../../middlewares/validators/companies.validator";
 import CompaniesRepository from "../../shared/repositories/companies.repository";
 import Companies from "../../shared/entities/companies.entity";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
