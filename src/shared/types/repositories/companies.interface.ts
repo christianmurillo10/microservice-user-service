@@ -11,7 +11,7 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
-} from "../../types/common.type";
+} from "../common.type";
 
 export default interface CompaniesRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Companies[]>;

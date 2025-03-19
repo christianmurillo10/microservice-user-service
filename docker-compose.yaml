@@ -11,31 +11,12 @@ services:
       DATABASE_URL: mysql://root:password@host.docker.internal:3402/boilerplate_user_live
     ports:
       - "5002:3000"
-    depends_on:
-      - database
     working_dir: /var/app/current
     volumes:
       - "./:/var/app/current"
     networks:
       - boilerplate_microservices_network
 
-  database:
-    container_name: boilerplate_user_database
-    image: mysql:8.0.32
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: boilerplate_user_live
-    ports:
-      - "3402:3306"
-    volumes:
-      - "local_mysql_data:/var/lib/mysql"
-    networks:
-      - boilerplate_microservices_network
-
 networks:
   boilerplate_microservices_network:
     driver: bridge
-
-volumes:
-  local_mysql_data:

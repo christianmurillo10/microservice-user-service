@@ -7,11 +7,7 @@
     "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "db-migrate": "prisma migrate dev --skip-seed --name migration",
-    "db-migrate-reset": "prisma migrate reset --skip-seed",
-    "db-seed": "prisma db seed",
-    "prisma": "prisma"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -23,9 +19,6 @@
     "url": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service/issues"
   },
   "homepage": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service#readme",
-  "prisma": {
-    "seed": "ts-node prisma/seeders"
-  },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
@@ -53,7 +46,6 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
-    "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }

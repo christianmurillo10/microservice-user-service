@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
-import UsersRepositoryInterface from "../interfaces/repositories/users.interface";
+import UsersRepositoryInterface from "../types/repositories/users.interface";
 import {
   GenericObject,
   FindAllArgs,

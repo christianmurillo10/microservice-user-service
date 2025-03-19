@@ -9,7 +9,7 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../../types/common.type";
+} from "../common.type";
 
 export default interface RolesRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Roles[]>;

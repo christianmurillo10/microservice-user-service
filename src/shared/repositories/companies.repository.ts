@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import Companies from "../entities/companies.entity";
-import CompaniesRepositoryInterface from "../interfaces/repositories/companies.interface";
+import CompaniesRepositoryInterface from "../types/repositories/companies.interface";
 import {
   GenericObject,
   FindAllArgs,

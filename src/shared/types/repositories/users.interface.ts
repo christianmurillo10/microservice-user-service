@@ -11,7 +11,7 @@ import {
   SoftDeleteManyArgs,
   ChangePasswordArgs,
   CountArgs
-} from "../../types/common.type";
+} from "../common.type";
 
 export default interface UsersRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Users[]>;
