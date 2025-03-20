@@ -25,7 +25,7 @@ const controller = async (
     }
 
     const record = await service.getById(id);
-    return await service.save({ ...record, ...body }, file);;
+    return await service.save({ ...record, ...body }, file);
   })
   .then(result => {
     apiResponse(res, {

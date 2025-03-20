@@ -33,4 +33,4 @@ export default interface CompaniesRepositoryInterface {
   softDeleteMany: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
   count: (args?: CountArgs) => Promise<number>;
-};;
+};
