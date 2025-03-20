@@ -1,6 +1,5 @@
 import Roles from "../../entities/roles.entity";
 import {
-  GenericObject,
   FindAllArgs,
   FindByIdArgs,
   FindByNameArgs,
@@ -9,7 +8,8 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../common.type";
+} from "../repository.type";
+import { GenericObject } from "../common.type";
 
 export default interface RolesRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Roles[]>;

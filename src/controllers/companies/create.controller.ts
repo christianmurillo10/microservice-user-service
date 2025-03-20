@@ -1,18 +1,16 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
-import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
 import { create as validator } from "../../middlewares/validators/companies.validator";
-import CompaniesRepository from "../../shared/repositories/companies.repository";
-import Companies from "../../shared/entities/companies.entity";
+import CompaniesService from "../../services/companies.service";
 import ConflictException from "../../shared/exceptions/conflict.exception";
-import { setUploadPath, uploadFile } from "../../shared/helpers/upload.helper";
+import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
 const upload = multer();
-const repository = new CompaniesRepository();
+const service = new CompaniesService();
 
 const controller = async (
   req: Request,
@@ -21,26 +19,20 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { body, file } = req;
-    const record = await repository.findByName({ name: body.name });
+    const record = await service.getByName(body.name)
+      .catch(err => {
+        if (err instanceof NotFoundException) {
+          return null;
+        }
+
+        throw err;
+      });
 
     if (record) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const data = new Companies({
-      ...body,
-      logo_path: setUploadPath(file, repository.logoPath)
-    });
-    const result = await repository.create({
-      params: data,
-      exclude: ["deleted_at"]
-    });
-
-    if (!_.isUndefined(file) && result.logo_path) {
-      uploadFile(result.logo_path, file);
-    };
-
-    return result;
+    return await service.save(body, file);
   })
   .then(result => {
     apiResponse(res, {

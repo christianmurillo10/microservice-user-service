@@ -7,11 +7,11 @@ import {
   FindByApiKeyArgs,
   FindByIdArgs,
   FindByNameArgs,
-  GenericObject,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
-} from "../common.type";
+} from "../repository.type";
+import { GenericObject } from "../common.type";
 
 export default interface CompaniesRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Companies[]>;

@@ -1,19 +1,15 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
-import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
 import { update as validator } from "../../middlewares/validators/companies.validator";
-import CompaniesRepository from "../../shared/repositories/companies.repository";
-import Companies from "../../shared/entities/companies.entity";
+import CompaniesService from "../../services/companies.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
-import { setUploadPath, uploadFile } from "../../shared/helpers/upload.helper";
 
 const router = Router();
 const upload = multer();
-const repository = new CompaniesRepository();
+const service = new CompaniesService();
 
 const controller = async (
   req: Request,
@@ -22,34 +18,14 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { params, body, file } = req;
-    const id = params.id;
+    const id = Number(params.id);
 
-    if (id === ":id" || typeof id !== "number") {
+    if (isNaN(id)) {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const record = await repository.findById({ id: Number(id) });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    const oldData = new Companies(record);
-    const result = await repository.update({
-      id: Number(id),
-      params: {
-        ...oldData,
-        ...body,
-        logo_path: setUploadPath(file, repository.logoPath) || oldData.logo_path || ""
-      },
-      exclude: ["deleted_at"]
-    });
-
-    if (!_.isUndefined(file) && result.logo_path) {
-      uploadFile(result.logo_path, file);
-    };
-
-    return result;
+    const record = await service.getById(id);
+    return await service.save({ ...record, ...body }, file);;
   })
   .then(result => {
     apiResponse(res, {

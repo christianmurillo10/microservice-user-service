@@ -1,6 +1,5 @@
 import Users from "../../entities/users.entity";
 import {
-  GenericObject,
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
@@ -11,7 +10,8 @@ import {
   SoftDeleteManyArgs,
   ChangePasswordArgs,
   CountArgs
-} from "../common.type";
+} from "../repository.type";
+import { GenericObject } from "../common.type";
 
 export default interface UsersRepositoryInterface {
   findAll: (args: FindAllArgs) => Promise<Users[]>;

@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import Companies from "../entities/companies.entity";
 import CompaniesRepositoryInterface from "../types/repositories/companies.interface";
 import {
-  GenericObject,
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
@@ -13,7 +12,8 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../types/common.type";
+} from "../types/repository.type";
+import { GenericObject } from "../types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../helpers/common.helper";
 import { companiesSubsets } from "../helpers/select-subset.helper";
 

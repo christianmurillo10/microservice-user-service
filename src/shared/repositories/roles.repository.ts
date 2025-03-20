@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import Roles from "../entities/roles.entity";
 import RolesRepositoryInterface from "../types/repositories/roles.interface";
 import {
-  GenericObject,
   FindAllArgs,
   FindByIdArgs,
   FindByNameArgs,
@@ -11,7 +10,8 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../types/common.type";
+} from "../types/repository.type";
+import { GenericObject } from "../types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../helpers/common.helper";
 import { companiesSubsets, rolesSubsets } from "../helpers/select-subset.helper";
 

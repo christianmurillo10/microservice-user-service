@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
 import UsersRepositoryInterface from "../types/repositories/users.interface";
 import {
-  GenericObject,
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
@@ -13,7 +12,8 @@ import {
   SoftDeleteManyArgs,
   ChangePasswordArgs,
   CountArgs
-} from "../types/common.type";
+} from "../types/repository.type";
+import { GenericObject } from "../types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../helpers/common.helper";
 import { hashPassword } from "../utils/bcrypt";
 import { usersSubsets, rolesSubsets, companiesSubsets } from "../helpers/select-subset.helper";
