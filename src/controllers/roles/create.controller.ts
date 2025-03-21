@@ -3,12 +3,12 @@ import { apiResponse } from "../../shared/utils/api-response";
 import { create as validator } from "../../middlewares/validators/roles.validator";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
-import RolesRepository from "../../shared/repositories/roles.repository";
-import Roles from "../../shared/entities/roles.entity";
+import RolesService from "../../services/roles.service";
+import NotFoundException from "../../shared/exceptions/not-found.exception";
 import ConflictException from "../../shared/exceptions/conflict.exception";
 
 const router = Router();
-const repository = new RolesRepository();
+const service = new RolesService();
 
 const controller = async (
   req: Request,
@@ -18,23 +18,23 @@ const controller = async (
   .then(async (req) => {
     const { body, companies } = req;
     const condition = { clinic_id: companies?.id || body.clinic_id || undefined };
-    const record = await repository.findByName({
+    const record = await service.getByName({
       name: body.name,
       condition
-    });
+    })
+      .catch(err => {
+        if (err instanceof NotFoundException) {
+          return null;
+        }
+
+        throw err;
+      });
 
     if (record) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const data = new Roles(body);
-    const result = await repository.create({
-      params: data,
-      include: ["companies"],
-      exclude: ["deleted_at"]
-    });
-
-    return result;
+    return await service.save(body);
   })
   .then(result => {
     apiResponse(res, {

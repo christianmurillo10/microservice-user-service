@@ -18,7 +18,6 @@ const controller = async (
     const record = await service.getAll();
     const record_count = record.length;
     const all_record_count = await service.count({ query });
-
     let message = MESSAGE_DATA_FIND_ALL;
 
     if (record.length < 1) {

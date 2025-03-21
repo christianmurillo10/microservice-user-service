@@ -3,10 +3,10 @@ import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_DELETED } from "../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../shared/constants/error.constant";
 import { deleteByIds as validator } from "../../middlewares/validators/roles.validator";
-import RolesRepository from "../../shared/repositories/roles.repository";
+import RolesService from "../../services/roles.service";
 
 const router = Router();
-const repository = new RolesRepository();
+const service = new RolesService();
 
 const controller = async (
   req: Request,
@@ -15,7 +15,7 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { body } = req;
-    await repository.softDeleteMany({ ids: body.ids });
+    await service.deleteMany(body.ids);
   })
   .then(() => {
     apiResponse(res, {

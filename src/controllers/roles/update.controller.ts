@@ -1,15 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
 import { update as validator } from "../../middlewares/validators/roles.validator";
-import RolesRepository from "../../shared/repositories/roles.repository";
-import Roles from "../../shared/entities/roles.entity";
+import RolesService from "../../services/roles.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
-const repository = new RolesRepository();
+const service = new RolesService();
 
 const controller = async (
   req: Request,
@@ -18,34 +16,15 @@ const controller = async (
 ) => Promise.resolve(req)
   .then(async (req) => {
     const { params, body, companies } = req;
-    const id = params.id;
+    const id = Number(params.id);
 
-    if (id === ":id" || typeof id !== "number") {
+    if (isNaN(id)) {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
     const condition = companies ? { clinic_id: companies.id } : undefined;
-    const record = await repository.findById({
-      id: Number(id),
-      condition
-    });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    const oldData = new Roles(record);
-    const result = await repository.update({
-      id: Number(id),
-      params: {
-        ...oldData,
-        ...body,
-      },
-      include: ["companies"],
-      exclude: ["deleted_at"]
-    });
-
-    return result;
+    const record = await service.getById({ id, condition });
+    return await service.save({ ...record, ...body });
   })
   .then(result => {
     apiResponse(res, {

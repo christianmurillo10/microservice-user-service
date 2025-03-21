@@ -5,8 +5,8 @@ import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
 import { create as validator } from "../../middlewares/validators/companies.validator";
 import CompaniesService from "../../services/companies.service";
-import ConflictException from "../../shared/exceptions/conflict.exception";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
+import ConflictException from "../../shared/exceptions/conflict.exception";
 
 const router = Router();
 const upload = multer();
