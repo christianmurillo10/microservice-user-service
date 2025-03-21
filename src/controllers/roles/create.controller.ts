@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { create as validator } from "../../middlewares/validators/roles.validator";
+import { create as validator } from "../../validators/roles.validator";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
 import RolesService from "../../services/roles.service";

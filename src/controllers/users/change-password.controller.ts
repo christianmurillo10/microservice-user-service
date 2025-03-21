@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { changePassword as validator } from "../../middlewares/validators/users.validator";
+import { changePassword as validator } from "../../validators/users.validator";
 import { MESSAGE_DATA_PASSWORD_CHANGED } from "../../shared/constants/message.constant";
 import { ERROR_ON_CHANGE_PASSWORD } from "../../shared/constants/error.constant";
 import UsersService from "../../services/users.service";

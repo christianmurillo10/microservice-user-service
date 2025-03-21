@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import joi from "joi";
 import _ from "lodash";
-import { validateInput } from "../../shared/helpers/common.helper";
-import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
-import BadRequestException from "../../shared/exceptions/bad-request.exception";
-
-const usernameChecker = /^(?=[a-zA-Z0-9._]{1,30}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+import { validateInput } from "../shared/helpers/common.helper";
+import { MESSAGE_INVALID_BODY } from "../shared/constants/message.constant";
+import BadRequestException from "../shared/exceptions/bad-request.exception";
 
 export const create = async (
   req: Request,
@@ -19,12 +17,9 @@ export const create = async (
 
     const schema = joi.object({
       name: joi.string().label("Name").max(100).required(),
-      email: joi.string().label("Email").max(100).email().required(),
-      username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).required(),
-      password: joi.string().label("Password").max(100).required(),
-      company_id: joi.number().label("Company").allow(null),
-      role_id: joi.number().label("Role").required(),
-      is_active: joi.boolean().label("Active?"),
+      domain: joi.string().label("Domain").max(255).allow("").allow(null),
+      preferred_timezone: joi.string().label("Preferred Timezone").max(100).allow("").allow(null),
+      currency: joi.string().label("Currency").max(100).allow("").allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -45,32 +40,9 @@ export const update = async (
 
     const schema = joi.object({
       name: joi.string().label("Name").max(100).empty(),
-      email: joi.string().label("Email").max(100).email().empty(),
-      username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
-      company_id: joi.number().label("Company").empty().allow(null),
-      role_id: joi.number().label("Role").empty(),
-      is_active: joi.boolean().label("Active?").empty(),
-    });
-    req.body = await validateInput(req.body, schema);
-    next();
-  } catch (error) {
-    next(error);
-  };
-};
-
-export const changePassword = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (_.isEmpty(req.body)) {
-      throw new BadRequestException([MESSAGE_INVALID_BODY]);
-    };
-
-    const schema = joi.object({
-      old_password: joi.string().label("Old Password").max(100).required(),
-      new_password: joi.string().label("New Password").max(100).required(),
+      domain: joi.string().label("Domain").max(255).empty().allow("").allow(null),
+      preferred_timezone: joi.string().label("Preferred Timezone").empty().max(100).allow("").allow(null),
+      currency: joi.string().label("Currency").max(100).allow("").empty().allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -93,18 +65,17 @@ export const list = async (
         created_at: joi.date().label("Date Created").empty(),
         updated_at: joi.date().label("Last Modified").empty(),
         name: joi.string().label("Name").max(100).empty(),
-        email: joi.string().label("Email").max(100).empty(),
-        username: joi.string().label("Username").empty(),
-        company_id: joi.number().label("Company").empty(),
-        role_id: joi.number().label("Role").empty(),
-        is_active: joi.boolean().label("Active?").empty(),
+        domain: joi.string().label("Domain").max(255).empty(),
+        preferred_timezone: joi.string().label("Preferred Timezone").max(100).empty(),
+        currency: joi.string().label("Currency").max(100).empty()
       }).label("Filters").empty(),
       sorting: joi.object({
         created_at: joi.string().label("Date Created").valid("asc", "desc").empty(),
         updated_at: joi.string().label("Last Modified").valid("asc", "desc").empty(),
         name: joi.string().label("Name").valid("asc", "desc").empty(),
-        email: joi.string().label("Email").valid("asc", "desc").empty(),
-        username: joi.string().label("Username").valid("asc", "desc").empty()
+        domain: joi.string().label("Domain").valid("asc", "desc").empty(),
+        preferred_timezone: joi.string().label("Preferred Timezone").valid("asc", "desc").empty(),
+        currency: joi.string().label("Currency").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
       offset: joi.number().label("Offset").empty(),
       limit: joi.number().label("Limit").empty(),
@@ -129,7 +100,7 @@ export const deleteByIds = async (
 
     const schema = joi.object({
       ids: joi.array()
-        .items(joi.string())
+        .items(joi.number())
         .min(1)
         .label("IDs")
         .required(),

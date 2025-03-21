@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
-import { update as validator } from "../../middlewares/validators/roles.validator";
+import { update as validator } from "../../validators/roles.validator";
 import RolesService from "../../services/roles.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 

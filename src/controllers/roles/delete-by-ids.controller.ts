@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_DELETED } from "../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../shared/constants/error.constant";
-import { deleteByIds as validator } from "../../middlewares/validators/roles.validator";
+import { deleteByIds as validator } from "../../validators/roles.validator";
 import RolesService from "../../services/roles.service";
 
 const router = Router();

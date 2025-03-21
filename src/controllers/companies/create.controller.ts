@@ -3,7 +3,7 @@ import multer from "multer";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
-import { create as validator } from "../../middlewares/validators/companies.validator";
+import { create as validator } from "../../validators/companies.validator";
 import CompaniesService from "../../services/companies.service";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 import ConflictException from "../../shared/exceptions/conflict.exception";

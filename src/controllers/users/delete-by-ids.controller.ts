@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { deleteByIds as validator } from "../../middlewares/validators/users.validator";
+import { deleteByIds as validator } from "../../validators/users.validator";
 import { MESSAGE_DATA_DELETED } from "../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../shared/constants/error.constant";
 import UsersService from "../../services/users.service";

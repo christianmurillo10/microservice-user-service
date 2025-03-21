@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import joi from "joi";
 import _ from "lodash";
-import { validateInput } from "../../shared/helpers/common.helper";
-import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
-import BadRequestException from "../../shared/exceptions/bad-request.exception";
+import { validateInput } from "../shared/helpers/common.helper";
+import { MESSAGE_INVALID_BODY } from "../shared/constants/message.constant";
+import BadRequestException from "../shared/exceptions/bad-request.exception";
 
 export const create = async (
   req: Request,
