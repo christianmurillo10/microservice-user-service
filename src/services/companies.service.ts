@@ -63,24 +63,25 @@ export default class CompaniesService {
   };
 
   save = async (data: Companies, file?: Express.Multer.File): Promise<Companies> => {
+    const uploadPath = setUploadPath(file, this.repository.logoPath);
     let record: Companies;
     let newData = new Companies(data);
+    let option = {
+      params: newData,
+      exclude: ["deleted_at"]
+    };
 
     if (data.id) {
       // Update
-      newData.logo_path = setUploadPath(file, this.repository.logoPath) || data.logo_path || ""
+      option.params.logo_path = uploadPath || data.logo_path || ""
       record = await this.repository.update({
         id: data.id,
-        params: newData,
-        exclude: ["deleted_at"]
+        ...option
       });
     } else {
       // Create
-      newData.logo_path = setUploadPath(file, this.repository.logoPath);
-      record = await this.repository.create({
-        params: newData,
-        exclude: ["deleted_at"]
-      });
+      option.params.logo_path = uploadPath;
+      record = await this.repository.create(option);
     }
 
     if (!_.isUndefined(file) && record.logo_path) {
@@ -91,7 +92,7 @@ export default class CompaniesService {
   };
 
   delete = async (id: number): Promise<Companies> => {
-    return this.repository.softDelete({ id: id });
+    return await this.repository.softDelete({ id: id });
   };
 
   deleteMany = async (ids: number[]): Promise<void> => {
@@ -99,6 +100,6 @@ export default class CompaniesService {
   };
 
   count = async (args: CountAllArgs): Promise<number> => {
-    return this.repository.count(args);
+    return await this.repository.count(args);
   };
 };

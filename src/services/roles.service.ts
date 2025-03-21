@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import RolesRepository from "../shared/repositories/roles.repository";
 import Roles from "../shared/entities/roles.entity";
@@ -56,29 +55,28 @@ export default class RolesService {
   save = async (data: Roles): Promise<Roles> => {
     let record: Roles;
     let newData = new Roles(data);
+    let option = {
+      params: newData,
+      // include: ["companies"],
+      exclude: ["deleted_at"]
+    };
 
     if (data.id) {
       // Update
       record = await this.repository.update({
         id: data.id,
-        params: newData,
-        // include: ["companies"],
-        exclude: ["deleted_at"]
+        ...option
       });
     } else {
       // Create
-      record = await this.repository.create({
-        params: newData,
-        // include: ["companies"],
-        exclude: ["deleted_at"]
-      });
+      record = await this.repository.create(option);
     }
 
     return record;
   };
 
   delete = async (id: number): Promise<Roles> => {
-    return this.repository.softDelete({ id: id });
+    return await this.repository.softDelete({ id: id });
   };
 
   deleteMany = async (ids: number[]): Promise<void> => {
@@ -90,6 +88,6 @@ export default class RolesService {
   };
 
   count = async (args: CountAllArgs): Promise<number> => {
-    return this.repository.count(args);
+    return await this.repository.count(args);
   };
 };

@@ -1,18 +1,16 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
-import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
 import { create as validator } from "../../middlewares/validators/users.validator";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
-import Users from "../../shared/entities/users.entity";
+import UsersService from "../../services/users.service";
+import NotFoundException from "../../shared/exceptions/not-found.exception";
 import ConflictException from "../../shared/exceptions/conflict.exception";
-import { setUploadPath, uploadFile } from "../../shared/helpers/upload.helper";
 
 const router = Router();
 const upload = multer();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -22,31 +20,24 @@ const controller = async (
   .then(async (req) => {
     const { body, file, companies } = req;
     const condition = { clinic_id: companies?.id || body.clinic_id || undefined };
-    const record = await repository.findByUsernameOrEmail({
+    const record = await service.getByUsernameOrEmail({
       username: body.username,
       email: body.email,
       condition
-    });
+    })
+      .catch(err => {
+        if (err instanceof NotFoundException) {
+          return null;
+        }
+
+        throw err;
+      });
 
     if (record) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const data = new Users({
-      ...body,
-      image_path: setUploadPath(file, repository.imagePath)
-    });
-    const result = await repository.create({
-      params: data,
-      include: ["roles", "companies"],
-      exclude: ["deleted_at", "password"]
-    });
-
-    if (!_.isUndefined(file) && result.image_path) {
-      uploadFile(result.image_path, file);
-    };
-
-    return result;
+    return await service.save(body, file);
   })
   .then(result => {
     apiResponse(res, {

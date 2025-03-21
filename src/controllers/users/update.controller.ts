@@ -1,19 +1,15 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
-import _ from "lodash";
 import { apiResponse } from "../../shared/utils/api-response";
 import { update as validator } from "../../middlewares/validators/users.validator";
-import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
-import Users from "../../shared/entities/users.entity";
+import UsersService from "../../services/users.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
-import { setUploadPath, uploadFile } from "../../shared/helpers/upload.helper";
 
 const router = Router();
 const upload = multer();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -29,32 +25,8 @@ const controller = async (
     }
 
     const condition = companies ? { clinic_id: companies.id } : undefined;
-    const record = await repository.findById({
-      id,
-      condition
-    });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    const oldData = new Users(record);
-    const result = await repository.update({
-      id,
-      params: {
-        ...oldData,
-        ...body,
-        image_path: setUploadPath(file, repository.imagePath) || oldData.image_path || ""
-      },
-      include: ["roles", "companies"],
-      exclude: ["deleted_at", "password"]
-    });
-
-    if (!_.isUndefined(file) && result.image_path) {
-      uploadFile(result.image_path, file);
-    };
-
-    return result;
+    const record = await service.getById({ id, condition });
+    return await service.save({ ...record, ...body }, file);
   })
   .then(result => {
     apiResponse(res, {

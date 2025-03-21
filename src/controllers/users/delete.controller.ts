@@ -1,13 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_DELETED, MESSAGE_DATA_NOT_EXIST, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
+import UsersService from "../../services/users.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -23,21 +22,8 @@ const controller = async (
     }
 
     const condition = companies ? { clinic_id: companies.id } : undefined;
-    const record = await repository.findById({
-      id,
-      condition
-    });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    const result = await repository.softDelete({
-      id,
-      exclude: ["password"]
-    });
-
-    return result;
+    await service.getById({ id: id, condition });
+    return await service.delete(id);
   })
   .then(result => {
     apiResponse(res, {

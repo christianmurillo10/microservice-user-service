@@ -3,10 +3,10 @@ import { apiResponse } from "../../shared/utils/api-response";
 import { list as validator } from "../../middlewares/validators/users.validator";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../shared/constants/message.constant";
 import { ERROR_ON_LIST } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
+import UsersService from "../../services/users.service";
 
 const router = Router();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -16,15 +16,9 @@ const controller = async (
   .then(async (req) => {
     const { query, companies } = req;
     const condition = companies ? { clinic_id: companies.id } : undefined;
-    const record = await repository.findAll({
-      condition,
-      query,
-      include: ["roles", "companies"],
-      exclude: ["deleted_at", "password"]
-    });
+    const record = await service.getAll({ query, condition });
     const record_count = record.length;
-    const all_record_count = await repository.count({ query });
-
+    const all_record_count = await service.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
     if (record.length < 1) {

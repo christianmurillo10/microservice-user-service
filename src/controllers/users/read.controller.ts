@@ -1,13 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_FIND, MESSAGE_DATA_NOT_EXIST, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_FIND, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
+import UsersService from "../../services/users.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -23,18 +22,7 @@ const controller = async (
     }
 
     const condition = companies ? { clinic_id: companies.id } : undefined;
-    const record = await repository.findById({
-      id,
-      condition,
-      include: ["roles", "companies"],
-      exclude: ["deleted_at", "password"]
-    });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    return record;
+    return await service.getById({ id, condition });
   })
   .then(result => {
     apiResponse(res, {

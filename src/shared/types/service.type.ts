@@ -21,6 +21,12 @@ export type GetByNameArgs = {
   condition?: GenericObject
 };
 
+export type GetByUsernameOrEmailArgs = {
+  username: string,
+  email: string,
+  condition?: GenericObject | undefined,
+};
+
 export type CountAllArgs = {
   condition?: GenericObject,
   query?: Query
