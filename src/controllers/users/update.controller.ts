@@ -6,6 +6,7 @@ import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/co
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
 import UsersService from "../../services/users.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
+import UserKafkaProducer from "../../kafka/producer/user.producer";
 
 const router = Router();
 const upload = multer();
@@ -26,7 +27,13 @@ const controller = async (
 
     const condition = companies ? { clinic_id: companies.id } : undefined;
     const record = await service.getById({ id, condition });
-    return await service.save({ ...record, ...body }, file);
+    const result = await service.save({ ...record, ...body }, file);
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    userProducer.publishUserUpdated(result);
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

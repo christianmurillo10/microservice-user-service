@@ -7,6 +7,7 @@ import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
 import UsersService from "../../services/users.service";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 import ConflictException from "../../shared/exceptions/conflict.exception";
+import UserKafkaProducer from "../../kafka/producer/user.producer";
 
 const router = Router();
 const upload = multer();
@@ -37,7 +38,13 @@ const controller = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    return await service.save(body, file);
+    const result = await service.save(body, file);
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    userProducer.publishUserCreated(result);
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

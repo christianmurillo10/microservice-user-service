@@ -10,6 +10,7 @@ import UserRequestHeader from "./shared/entities/user-request-header.entity";
 import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
 import errorHandler from "./middlewares/error.middleware";
+import KafkaServer from "./kafka";
 
 declare module "express-serve-static-core" {
   export interface Request {
@@ -30,7 +31,7 @@ export default class App {
     this.init();
   };
 
-  private init() {
+  private init = () => {
     // Modules
     this.app.use(logger("dev"));
     this.app.use(express.urlencoded({ extended: true }));
@@ -50,7 +51,7 @@ export default class App {
     this.app.use(errorHandler);
   };
 
-  private onError(error: any) {
+  private onError = (error: any) => {
     if (error.syscall !== "listen") throw error;
 
     const bind = typeof this.port === "string"
@@ -69,10 +70,16 @@ export default class App {
     };
   };
 
-  start() {
+  private onClose = () => {
+    const kafkaServer = new KafkaServer();
+    kafkaServer.disconnect();
+  };
+
+  start = async () => {
     try {
       this.server.listen(this.port, () => console.log(`Server is running on port \t\t: ${this.port}`));
       this.server.on("error", this.onError);
+      this.server.on("close", this.onClose);
     } catch (error) {
       console.error("Error on running server: ", error);
     };
