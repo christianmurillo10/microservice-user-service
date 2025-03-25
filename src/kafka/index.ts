@@ -17,7 +17,7 @@ export default class KafkaServer {
 
   disconnect = async () => {
     const kafkaService = new KafkaService({
-      clientId: "user-service",
+      clientId: kafkaConfig.kafka_client_id,
       brokers: [kafkaConfig.kafka_broker]
     });
     await kafkaService.disconnectAdmin();

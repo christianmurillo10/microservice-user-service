@@ -1,6 +1,6 @@
 import { EachMessagePayload } from "kafkajs";
 import KafkaService from "../../services/kafka.service";
-import config from "../../config/kafka.config";
+import kafkaConfig from "../../config/kafka.config";
 import { EVENT_USER_CREATED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
 
 export default class UserKafkaConsumer {
@@ -8,8 +8,8 @@ export default class UserKafkaConsumer {
 
   constructor() {
     this.kafkaService = new KafkaService({
-      clientId: "user-service",
-      brokers: [config.kafka_broker]
+      clientId: kafkaConfig.kafka_client_id,
+      brokers: [kafkaConfig.kafka_broker]
     });
   };
 

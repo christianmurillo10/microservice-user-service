@@ -1,5 +1,5 @@
 import KafkaService from "../../services/kafka.service";
-import config from "../../config/kafka.config";
+import kafkaConfig from "../../config/kafka.config";
 import { EVENT_USER_CREATED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
 import Users from "../../shared/entities/users.entity";
 
@@ -8,21 +8,19 @@ export default class UserKafkaProducer {
 
   constructor() {
     this.kafkaService = new KafkaService({
-      clientId: "user-service",
-      brokers: [config.kafka_broker]
+      clientId: kafkaConfig.kafka_client_id,
+      brokers: [kafkaConfig.kafka_broker]
     });
   };
 
   publishUserCreated = async (data: Users): Promise<void> => {
     await this.kafkaService.connectProducer()
     await this.kafkaService.initializeProducer(EVENT_USER_CREATED, data);
-    // await this.kafkaService.disconnectConsumer(EVENT_USER_CREATED);
   };
 
   publishUserUpdated = async (data: Users): Promise<void> => {
     await this.kafkaService.connectProducer()
     await this.kafkaService.initializeProducer(EVENT_USER_UPDATED, data);
-    // await this.kafkaService.disconnectConsumer(EVENT_USER_UPDATED);
   };
 
   execute = async (): Promise<void> => {
