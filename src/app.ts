@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./routes";
-import Companies from "./shared/entities/companies.entity";
+import Businesses from "./shared/entities/businesses.entity";
 import UserRequestHeader from "./shared/entities/user-request-header.entity";
 import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
@@ -14,7 +14,7 @@ import KafkaServer from "./kafka";
 
 declare module "express-serve-static-core" {
   export interface Request {
-    companies: Companies,
+    businesses: Businesses,
     userRequestHeader: UserRequestHeader
   }
 };

@@ -15,7 +15,7 @@ export default class RolesService {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
-      // include: ["companies"],
+      // include: ["businesses"],
       exclude: ["deleted_at"]
     });
 
@@ -26,7 +26,7 @@ export default class RolesService {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
-      // include: ["companies"],
+      // include: ["businesses"],
       exclude: ["deleted_at"]
     });
 
@@ -41,7 +41,7 @@ export default class RolesService {
     const record = await this.repository.findByName({
       name: args.name,
       condition: args?.condition,
-      // include: ["companies"],
+      // include: ["businesses"],
       exclude: ["deleted_at"]
     });
 
@@ -57,7 +57,7 @@ export default class RolesService {
     let newData = new Roles(data);
     let option = {
       params: newData,
-      // include: ["companies"],
+      // include: ["businesses"],
       exclude: ["deleted_at"]
     };
 
@@ -83,8 +83,8 @@ export default class RolesService {
     this.repository.softDeleteMany({ ids: ids });
   };
 
-  deleteManyByCompanyIds = async (ids: number[]): Promise<void> => {
-    this.repository.softDeleteManyByCompanyIds({ ids: ids });
+  deleteManyByBusinessIds = async (ids: number[]): Promise<void> => {
+    this.repository.softDeleteManyByBusinessIds({ ids: ids });
   };
 
   count = async (args: CountAllArgs): Promise<number> => {

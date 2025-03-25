@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import Companies from "../entities/companies.entity";
-import CompaniesRepositoryInterface from "../types/repositories/companies.interface";
+import Businesses from "../entities/businesses.entity";
+import BusinessesRepositoryInterface from "../types/repositories/businesses.interface";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
@@ -15,26 +15,26 @@ import {
 } from "../types/repository.type";
 import { GenericObject } from "../types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../helpers/common.helper";
-import { companiesSubsets } from "../helpers/select-subset.helper";
+import { businessesSubsets } from "../helpers/select-subset.helper";
 
 
-export default class CompaniesRepository implements CompaniesRepositoryInterface {
+export default class BusinessesRepository implements BusinessesRepositoryInterface {
   private client;
 
-  readonly logoPath = "public/images/companies/";
+  readonly logoPath = "public/images/businesses/";
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.companies;
+    this.client = prisma.businesses;
   };
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<Companies[]> => {
+  ): Promise<Businesses[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: {
@@ -49,19 +49,19 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
       take: args.query?.limit
     });
 
-    return res.map(item => new Companies(item));
+    return res.map(item => new Businesses(item));
   };
 
   findAllBetweenCreatedAt = async (
     args: FindAllBetweenCreatedAtArgs
-  ): Promise<Companies[]> => {
+  ): Promise<Businesses[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.date_from && args.date_to
       ? { created_at: { gte: new Date(args.date_from), lte: new Date(args.date_to) } }
       : undefined;
     const res = await this.client.findMany({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: {
@@ -70,16 +70,16 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
       }
     });
 
-    return res.map(item => new Companies(item));
+    return res.map(item => new Businesses(item));
   };
 
   findById = async (
     args: FindByIdArgs<number>
-  ): Promise<Companies | null> => {
+  ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: {
@@ -91,16 +91,16 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
 
     if (!res) return null;
 
-    return new Companies(res);
+    return new Businesses(res);
   };
 
   findByName = async (
     args: FindByNameArgs
-  ): Promise<Companies | null> => {
+  ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: {
@@ -112,16 +112,16 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
 
     if (!res) return null;
 
-    return new Companies(res);
+    return new Businesses(res);
   };
 
   findByApiKey = async (
     args: FindByApiKeyArgs
-  ): Promise<Companies | null> => {
+  ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: {
@@ -133,31 +133,31 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
 
     if (!res) return null;
 
-    return new Companies(res);
+    return new Businesses(res);
   };
 
   create = async (
-    args: CreateArgs<Companies>
-  ): Promise<Companies> => {
+    args: CreateArgs<Businesses>
+  ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       data: args.params
     });
 
-    return new Companies(data);
+    return new Businesses(data);
   };
 
   update = async (
-    args: UpdateArgs<number, Companies>
-  ): Promise<Companies> => {
+    args: UpdateArgs<number, Businesses>
+  ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -167,16 +167,16 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
       }
     });
 
-    return new Companies(data);
+    return new Businesses(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<number>
-  ): Promise<Companies> => {
+  ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...companiesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -185,7 +185,7 @@ export default class CompaniesRepository implements CompaniesRepositoryInterface
       }
     });
 
-    return new Companies(data);
+    return new Businesses(data);
   };
 
   softDeleteMany = async (

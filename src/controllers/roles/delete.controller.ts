@@ -14,14 +14,14 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, companies } = req;
+    const { params, businesses } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = companies ? { clinic_id: companies.id } : undefined;
+    const condition = businesses ? { clinic_id: businesses.id } : undefined;
     await service.getById({ id: Number(id), condition });
     return await service.delete(Number(id));
   })

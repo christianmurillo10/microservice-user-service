@@ -15,14 +15,14 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body, companies } = req;
+    const { params, body, businesses } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = companies ? { clinic_id: companies.id } : undefined;
+    const condition = businesses ? { clinic_id: businesses.id } : undefined;
     const record = await service.getById({ id, condition });
     return await service.save({ ...record, ...body });
   })

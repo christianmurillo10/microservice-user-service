@@ -18,7 +18,7 @@ export const create = async (
     const schema = joi.object({
       name: joi.string().label("Name").max(100).required(),
       description: joi.string().label("Description").max(255).allow("").allow(null),
-      company_id: joi.number().label("Company").allow(null),
+      business_id: joi.number().label("Business").allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -40,7 +40,7 @@ export const update = async (
     const schema = joi.object({
       name: joi.string().label("Name").max(100).empty(),
       description: joi.string().label("Description").max(255).empty().allow("").allow(null),
-      company_id: joi.number().label("Company").empty().allow(null),
+      business_id: joi.number().label("Business").empty().allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -64,7 +64,7 @@ export const list = async (
         updated_at: joi.date().label("Last Modified").empty(),
         name: joi.string().label("Name").max(100).empty(),
         description: joi.string().label("Description").max(255).empty(),
-        company_id: joi.number().label("Company").empty(),
+        business_id: joi.number().label("Business").empty(),
       }).label("Filters").empty(),
       sorting: joi.object({
         created_at: joi.string().label("Date Created").valid("asc", "desc").empty(),

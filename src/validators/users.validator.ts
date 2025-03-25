@@ -22,7 +22,7 @@ export const create = async (
       email: joi.string().label("Email").max(100).email().required(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).required(),
       password: joi.string().label("Password").max(100).required(),
-      company_id: joi.number().label("Company").allow(null),
+      business_id: joi.number().label("Business").allow(null),
       role_id: joi.number().label("Role").required(),
       is_active: joi.boolean().label("Active?"),
     });
@@ -47,7 +47,7 @@ export const update = async (
       name: joi.string().label("Name").max(100).empty(),
       email: joi.string().label("Email").max(100).email().empty(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
-      company_id: joi.number().label("Company").empty().allow(null),
+      business_id: joi.number().label("Business").empty().allow(null),
       role_id: joi.number().label("Role").empty(),
       is_active: joi.boolean().label("Active?").empty(),
     });
@@ -95,7 +95,7 @@ export const list = async (
         name: joi.string().label("Name").max(100).empty(),
         email: joi.string().label("Email").max(100).empty(),
         username: joi.string().label("Username").empty(),
-        company_id: joi.number().label("Company").empty(),
+        business_id: joi.number().label("Business").empty(),
         role_id: joi.number().label("Role").empty(),
         is_active: joi.boolean().label("Active?").empty(),
       }).label("Filters").empty(),

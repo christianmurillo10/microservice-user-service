@@ -1,19 +1,19 @@
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import CompaniesRepository from "../shared/repositories/companies.repository";
-import Companies from "../shared/entities/companies.entity";
+import BusinessesRepository from "../shared/repositories/businesses.repository";
+import Businesses from "../shared/entities/businesses.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
 
-export default class CompaniesService {
-  private repository: CompaniesRepository;
+export default class BusinessesService {
+  private repository: BusinessesRepository;
 
   constructor() {
-    this.repository = new CompaniesRepository();
+    this.repository = new BusinessesRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<Companies[]> => {
+  getAll = async (args?: GetAllArgs): Promise<Businesses[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -23,7 +23,7 @@ export default class CompaniesService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<Companies[]> => {
+  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<Businesses[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       exclude: ["deleted_at"]
@@ -32,7 +32,7 @@ export default class CompaniesService {
     return record;
   };
 
-  getById = async (id: number): Promise<Companies> => {
+  getById = async (id: number): Promise<Businesses> => {
     const record = await this.repository.findById({ id: id });
 
     if (!record) {
@@ -42,7 +42,7 @@ export default class CompaniesService {
     return record;
   };
 
-  getByName = async (name: string): Promise<Companies> => {
+  getByName = async (name: string): Promise<Businesses> => {
     const record = await this.repository.findByName({ name: name });
 
     if (!record) {
@@ -52,7 +52,7 @@ export default class CompaniesService {
     return record;
   };
 
-  getByApiKey = async (api_key: string): Promise<Companies> => {
+  getByApiKey = async (api_key: string): Promise<Businesses> => {
     const record = await this.repository.findByApiKey({ api_key: api_key });
 
     if (!record) {
@@ -62,10 +62,10 @@ export default class CompaniesService {
     return record;
   };
 
-  save = async (data: Companies, file?: Express.Multer.File): Promise<Companies> => {
+  save = async (data: Businesses, file?: Express.Multer.File): Promise<Businesses> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
-    let record: Companies;
-    let newData = new Companies(data);
+    let record: Businesses;
+    let newData = new Businesses(data);
     let option = {
       params: newData,
       exclude: ["deleted_at"]
@@ -91,7 +91,7 @@ export default class CompaniesService {
     return record;
   };
 
-  delete = async (id: number): Promise<Companies> => {
+  delete = async (id: number): Promise<Businesses> => {
     return await this.repository.softDelete({ id: id });
   };
 

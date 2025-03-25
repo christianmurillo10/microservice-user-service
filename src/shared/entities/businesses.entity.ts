@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export interface CompaniesInterface {
+export interface BusinessesInterface {
   id?: number;
   created_at: Date;
   updated_at?: Date | null;
@@ -13,7 +13,7 @@ export interface CompaniesInterface {
   currency?: string | null;
 };
 
-class Companies implements CompaniesInterface {
+class Businesses implements BusinessesInterface {
   id?: number;
   created_at: Date = new Date();
   updated_at?: Date | null = new Date();
@@ -25,9 +25,9 @@ class Companies implements CompaniesInterface {
   preferred_timezone?: string | null;
   currency?: string | null;
 
-  constructor(props: CompaniesInterface) {
+  constructor(props: BusinessesInterface) {
     Object.assign(this, props);
   };
 };
 
-export default Companies;
+export default Businesses;

@@ -2,11 +2,11 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../shared/constants/message.constant";
 import { ERROR_ON_LIST } from "../../shared/constants/error.constant";
-import { list as validator } from "../../validators/companies.validator";
-import CompaniesService from "../../services/companies.service";
+import { list as validator } from "../../validators/businesses.validator";
+import BusinessesService from "../../services/businesses.service";
 
 const router = Router();
-const service = new CompaniesService();
+const service = new BusinessesService();
 
 const controller = async (
   req: Request,

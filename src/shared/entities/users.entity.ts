@@ -11,7 +11,7 @@ export interface UsersInterface {
   email: string;
   password?: string | null;
   image_path?: string | null;
-  company_id?: number | null;
+  business_id?: number | null;
   role_id: number;
   is_active: boolean;
   is_role_based_access: boolean;
@@ -29,7 +29,7 @@ class Users implements UsersInterface {
   email: string = "";
   password?: string | null;
   image_path?: string | null;
-  company_id?: number | null;
+  business_id?: number | null;
   role_id!: number;
   is_active: boolean = true;
   is_role_based_access: boolean = true;

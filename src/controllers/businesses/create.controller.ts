@@ -3,14 +3,14 @@ import multer from "multer";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../shared/constants/error.constant";
-import { create as validator } from "../../validators/companies.validator";
-import CompaniesService from "../../services/companies.service";
+import { create as validator } from "../../validators/businesses.validator";
+import BusinessesService from "../../services/businesses.service";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 import ConflictException from "../../shared/exceptions/conflict.exception";
 
 const router = Router();
 const upload = multer();
-const service = new CompaniesService();
+const service = new BusinessesService();
 
 const controller = async (
   req: Request,

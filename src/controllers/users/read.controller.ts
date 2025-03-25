@@ -14,14 +14,14 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, companies } = req;
+    const { params, businesses } = req;
     const id = params.id;
 
     if (id === ":id") {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = companies ? { clinic_id: companies.id } : undefined;
+    const condition = businesses ? { clinic_id: businesses.id } : undefined;
     return await service.getById({ id, condition });
   })
   .then(result => {

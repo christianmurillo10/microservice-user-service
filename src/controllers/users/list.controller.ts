@@ -14,8 +14,8 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { query, companies } = req;
-    const condition = companies ? { clinic_id: companies.id } : undefined;
+    const { query, businesses } = req;
+    const condition = businesses ? { clinic_id: businesses.id } : undefined;
     const record = await service.getAll({ query, condition });
     const record_count = record.length;
     const all_record_count = await service.count({ query });

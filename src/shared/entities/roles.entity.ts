@@ -5,7 +5,7 @@ export interface RolesInterface {
   deleted_at?: Date | null;
   name: string;
   description?: string | null;
-  company_id?: number | null;
+  business_id?: number | null;
 };
 
 class Roles implements RolesInterface {
@@ -15,7 +15,7 @@ class Roles implements RolesInterface {
   deleted_at?: Date | null;
   name: string = "";
   description: string | null = "";
-  company_id?: number | null;
+  business_id?: number | null;
 
   constructor(props: RolesInterface) {
     Object.assign(this, props);

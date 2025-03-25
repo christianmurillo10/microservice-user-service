@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { apiResponse } from "../shared/utils/api-response";
 import config from "../config/server.config";
-import companiesRoute from "./companies.route";
+import businessesRoute from "./businesses.route";
 import rolesRoute from "./roles.route";
 import usersRoute from "./users.route";
 
@@ -14,7 +14,7 @@ router.get("/", (_req: Request, res: Response) => {
   }).end();
 });
 
-router.use("/companies", companiesRoute);
+router.use("/businesses", businessesRoute);
 router.use("/roles", rolesRoute);
 router.use("/users", usersRoute);
 

@@ -1,4 +1,4 @@
-export const companiesSubsets = {
+export const businessesSubsets = {
   id: true,
   created_at: true,
   updated_at: true,
@@ -18,7 +18,7 @@ export const rolesSubsets = {
   deleted_at: true,
   name: true,
   description: true,
-  company_id: true
+  business_id: true
 };
 
 export const usersSubsets = {
@@ -32,7 +32,7 @@ export const usersSubsets = {
   email: true,
   password: true,
   image_path: true,
-  company_id: true,
+  business_id: true,
   role_id: true,
   is_active: true,
   is_role_based_access: true,

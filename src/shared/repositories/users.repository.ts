@@ -16,7 +16,7 @@ import {
 import { GenericObject } from "../types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../helpers/common.helper";
 import { hashPassword } from "../utils/bcrypt";
-import { usersSubsets, rolesSubsets, companiesSubsets } from "../helpers/select-subset.helper";
+import { usersSubsets, rolesSubsets, businessesSubsets } from "../helpers/select-subset.helper";
 
 export default class UsersRepository implements UsersRepositoryInterface {
   private client;
@@ -33,17 +33,17 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const res = await this.client.findMany({
       select: {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       where: {
         deleted_at: null,
@@ -65,10 +65,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const betweenCreatedAt = args.date_from && args.date_to
       ? { created_at: { gte: new Date(args.date_from), lte: new Date(args.date_to) } }
@@ -78,7 +78,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       where: {
         ...args.condition,
@@ -94,17 +94,17 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const res = await this.client.findFirst({
       select: {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       where: {
         id: args.id,
@@ -123,17 +123,17 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const res = await this.client.findFirst({
       select: {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       where: {
         OR: [
@@ -163,17 +163,17 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const data = await this.client.create({
       select: {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       data: {
         ...args.params,
@@ -189,17 +189,17 @@ export default class UsersRepository implements UsersRepositoryInterface {
   ): Promise<Users> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
-      ? { roles: { select: { ...rolesSubsets, deleted_at: false, company_id: false } } }
+      ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
       : undefined;
-    const companiesSelect = args.include?.includes("companies")
-      ? { companies: { select: { ...companiesSubsets, deleted_at: false } } }
+    const businessesSelect = args.include?.includes("businesses")
+      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
       : undefined;
     const data = await this.client.update({
       select: {
         ...usersSubsets,
         ...exclude,
         ...rolesSelect,
-        ...companiesSelect
+        ...businessesSelect
       },
       where: { id: args.id },
       data: {
@@ -247,12 +247,12 @@ export default class UsersRepository implements UsersRepositoryInterface {
     return data;
   };
 
-  softDeleteManyByCompanyIds = async (
+  softDeleteManyByBusinessIds = async (
     args: SoftDeleteManyArgs<number>
   ): Promise<GenericObject> => {
     const data = await this.client.updateMany({
       where: {
-        company_id: {
+        business_id: {
           in: args.ids
         }
       },

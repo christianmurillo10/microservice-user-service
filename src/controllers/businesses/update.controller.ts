@@ -3,13 +3,13 @@ import multer from "multer";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../shared/constants/error.constant";
-import { update as validator } from "../../validators/companies.validator";
-import CompaniesService from "../../services/companies.service";
+import { update as validator } from "../../validators/businesses.validator";
+import BusinessesService from "../../services/businesses.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 
 const router = Router();
 const upload = multer();
-const service = new CompaniesService();
+const service = new BusinessesService();
 
 const controller = async (
   req: Request,

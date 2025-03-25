@@ -26,7 +26,7 @@ export default interface RolesRepositoryInterface {
 
   softDeleteMany: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
-  softDeleteManyByCompanyIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteManyByBusinessIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
   count: (args?: CountArgs) => Promise<number>;
 };

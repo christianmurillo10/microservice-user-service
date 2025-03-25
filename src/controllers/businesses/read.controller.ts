@@ -2,11 +2,11 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_FIND, MESSAGE_INVALID_PARAMETER } from "../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../shared/constants/error.constant";
-import CompaniesService from "../../services/companies.service";
+import BusinessesService from "../../services/businesses.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const service = new CompaniesService();
+const service = new BusinessesService();
 
 const controller = async (
   req: Request,

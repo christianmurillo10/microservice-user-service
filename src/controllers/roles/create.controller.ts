@@ -16,8 +16,8 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, companies } = req;
-    const condition = { clinic_id: companies?.id || body.clinic_id || undefined };
+    const { body, businesses } = req;
+    const condition = { clinic_id: businesses?.id || body.clinic_id || undefined };
     const record = await service.getByName({
       name: body.name,
       condition

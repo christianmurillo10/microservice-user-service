@@ -7,6 +7,10 @@
     "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "db-migrate": "prisma migrate dev --skip-seed --name migration",
+    "db-migrate-reset": "prisma migrate reset --skip-seed",
+    "db-seed": "prisma db seed",
+    "prisma": "prisma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,6 +19,9 @@
   },
   "author": "Christian Murillo",
   "license": "ISC",
+  "prisma": {
+    "seed": "ts-node prisma/seeders"
+  },
   "bugs": {
     "url": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service/issues"
   },
@@ -46,6 +53,7 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
