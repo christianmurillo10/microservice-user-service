@@ -18,7 +18,7 @@ const up = async () => {
         deleted_at: null,
         name: "Superadmin",
         description: "Superadmin",
-        company_id: null
+        business_id: null
       }
     ]
   });

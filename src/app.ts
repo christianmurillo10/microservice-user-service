@@ -4,13 +4,13 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
-import routes from "./routes";
-import Businesses from "./shared/entities/businesses.entity";
-import UserRequestHeader from "./shared/entities/user-request-header.entity";
+import routes from "./api/routes";
+import Businesses from "./entities/businesses.entity";
+import UserRequestHeader from "./entities/user-request-header.entity";
 import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
 import errorHandler from "./middlewares/error.middleware";
-import KafkaServer from "./kafka";
+import KafkaServer from "./events";
 
 declare module "express-serve-static-core" {
   export interface Request {

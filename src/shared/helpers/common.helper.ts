@@ -27,7 +27,7 @@ export const parseQueryFilters = <T>(data: T): GenericObject => {
           "created_at",
           "updated_at",
           "deleted_at",
-          "last_login_at",
+          "last_logged_at",
           "verified_at",
           "date"
         ];

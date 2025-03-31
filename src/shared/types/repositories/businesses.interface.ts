@@ -1,4 +1,4 @@
-import Businesses from "../../entities/businesses.entity";
+import Businesses from "../../../entities/businesses.entity";
 import {
   CountArgs,
   CreateArgs,

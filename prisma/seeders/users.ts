@@ -19,6 +19,7 @@ const up = async () => {
         email: "superadmin@email.com",
         password: "$2a$12$FzZC/3mX23SoxT5y1QJxz.lWQCu9FEXQ6yBg9iHqptzMF8DfdpGlK",
         image_path: null,
+        access_type: "SUPERADMIN",
         business_id: null,
         role_id: 1,
         created_at: new Date(),

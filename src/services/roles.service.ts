@@ -1,6 +1,6 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import RolesRepository from "../shared/repositories/roles.repository";
-import Roles from "../shared/entities/roles.entity";
+import RolesRepository from "../repositories/roles.repository";
+import Roles from "../entities/roles.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetByIdArgs, GetByNameArgs } from "../shared/types/service.type";
 

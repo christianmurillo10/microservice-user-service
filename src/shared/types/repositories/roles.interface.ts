@@ -1,4 +1,4 @@
-import Roles from "../../entities/roles.entity";
+import Roles from "../../../entities/roles.entity";
 import {
   FindAllArgs,
   FindByIdArgs,

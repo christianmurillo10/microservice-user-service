@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import UserRequestHeader from "../shared/entities/user-request-header.entity";
+import UserRequestHeader from "../entities/user-request-header.entity";
 
 const userRequestHeader = (
   req: Request,

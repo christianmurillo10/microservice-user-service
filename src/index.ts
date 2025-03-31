@@ -4,7 +4,7 @@ dotenv.config();
 // Load application
 import App from "./app";
 import serverConfig from "./config/server.config";
-import KafkaServer from "./kafka";
+import KafkaServer from "./events";
 
 (async () => {
   // Express server

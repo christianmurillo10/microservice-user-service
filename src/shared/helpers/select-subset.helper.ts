@@ -26,15 +26,15 @@ export const usersSubsets = {
   created_at: true,
   updated_at: true,
   deleted_at: true,
-  last_login_at: true,
+  last_logged_at: true,
   name: true,
   username: true,
   email: true,
   password: true,
   image_path: true,
+  access_type: true,
   business_id: true,
   role_id: true,
   is_active: true,
-  is_role_based_access: true,
   is_logged: true
 };

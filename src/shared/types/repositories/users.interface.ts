@@ -1,4 +1,4 @@
-import Users from "../../entities/users.entity";
+import Users from "../../../entities/users.entity";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
