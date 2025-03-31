@@ -17,7 +17,7 @@ class Users implements UsersModel {
   email: string = "";
   password: string = "";
   image_path: string | null = null;
-  access_type: AccessType = "BUSINESS_ADMIN";
+  access_type: AccessType = "ADMIN";
   business_id: number | null = null;
   role_id!: number;
   is_active: boolean = true;

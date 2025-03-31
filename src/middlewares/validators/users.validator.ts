@@ -4,7 +4,7 @@ import _ from "lodash";
 import { validateInput } from "../../shared/helpers/common.helper";
 import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import { ACCESS_TYPE_BUSINESS_ADMIN, ACCESS_TYPE_BUSINESS_CLIENT, ACCESS_TYPE_BUSINESS_USER, ACCESS_TYPE_SUPERADMIN } from "../../shared/constants/users.constant";
+import { ACCESS_TYPE_ADMIN, ACCESS_TYPE_CLIENT, ACCESS_TYPE_USER, ACCESS_TYPE_SUPERADMIN } from "../../shared/constants/users.constant";
 
 const usernameChecker = /^(?=[a-zA-Z0-9._]{1,30}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
@@ -27,9 +27,9 @@ export const create = async (
         .label("Access Type")
         .valid(
           ACCESS_TYPE_SUPERADMIN,
-          ACCESS_TYPE_BUSINESS_ADMIN,
-          ACCESS_TYPE_BUSINESS_USER,
-          ACCESS_TYPE_BUSINESS_CLIENT
+          ACCESS_TYPE_ADMIN,
+          ACCESS_TYPE_USER,
+          ACCESS_TYPE_CLIENT
         )
         .required(),
       business_id: joi.number().label("Business").allow(null),
@@ -58,7 +58,7 @@ export const update = async (
       email: joi.string().label("Email").max(100).email().empty(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
       business_id: joi.number().label("Business").empty().allow(null),
-      access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_BUSINESS_ADMIN, ACCESS_TYPE_BUSINESS_USER, ACCESS_TYPE_BUSINESS_CLIENT).label("Access Type").max(100).empty(),
+      access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_ADMIN, ACCESS_TYPE_USER, ACCESS_TYPE_CLIENT).label("Access Type").max(100).empty(),
       role_id: joi.number().label("Role").empty(),
       is_active: joi.boolean().label("Active?").empty(),
     });
@@ -106,7 +106,7 @@ export const list = async (
         name: joi.string().label("Name").max(100).empty(),
         email: joi.string().label("Email").max(100).empty(),
         username: joi.string().label("Username").empty(),
-        access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_BUSINESS_ADMIN, ACCESS_TYPE_BUSINESS_USER, ACCESS_TYPE_BUSINESS_CLIENT).label("Access Type").max(100).empty(),
+        access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_ADMIN, ACCESS_TYPE_USER, ACCESS_TYPE_CLIENT).label("Access Type").max(100).empty(),
         business_id: joi.number().label("Business").empty(),
         role_id: joi.number().label("Role").empty(),
         is_active: joi.boolean().label("Active?").empty(),

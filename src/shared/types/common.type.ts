@@ -6,11 +6,7 @@ export type UniqueId = number | string | null;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
-export type AccessType =
-  "SUPERADMIN" |
-  "BUSINESS_ADMIN" |
-  "BUSINESS_USER" |
-  "BUSINESS_CLIENT";
+export type AccessType = "SUPERADMIN" | "ADMIN" | "USER" | "CLIENT";
 
 export type ChangePassword = {
   old_password: string,
