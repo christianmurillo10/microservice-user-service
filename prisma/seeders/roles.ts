@@ -13,12 +13,12 @@ const up = async () => {
     data: [
       {
         id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-        deleted_at: null,
         name: "Superadmin",
         description: "Superadmin",
-        business_id: null
+        business_id: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null
       }
     ]
   });

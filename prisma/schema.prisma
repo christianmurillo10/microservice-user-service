@@ -10,27 +10,27 @@ datasource db {
 
 model businesses {
   id                 Int       @id @default(autoincrement())
-  created_at         DateTime  @db.DateTime(0)
-  updated_at         DateTime? @db.DateTime(0)
-  deleted_at         DateTime? @db.DateTime(0)
   name               String    @db.VarChar(100)
   api_key            String    @db.VarChar(255)
   domain             String?   @db.VarChar(255)
   logo_path          String?   @db.VarChar(255)
   preferred_timezone String?   @db.VarChar(100)
   currency           String?   @db.VarChar(100)
+  created_at         DateTime  @db.DateTime(0)
+  updated_at         DateTime? @db.DateTime(0)
+  deleted_at         DateTime? @db.DateTime(0)
   roles              roles[]
   users              users[]
 }
 
 model roles {
   id          Int         @id @default(autoincrement())
-  created_at  DateTime    @db.DateTime(0)
-  updated_at  DateTime?   @db.DateTime(0)
-  deleted_at  DateTime?   @db.DateTime(0)
   name        String      @db.VarChar(100)
   description String?     @db.Text
   business_id Int?
+  created_at  DateTime    @db.DateTime(0)
+  updated_at  DateTime?   @db.DateTime(0)
+  deleted_at  DateTime?   @db.DateTime(0)
   businesses  businesses? @relation(fields: [business_id], references: [id], map: "roles_ibfk_1")
   users       users[]
 
@@ -39,10 +39,6 @@ model roles {
 
 model users {
   id             String      @id @default(uuid()) @db.Char(36)
-  created_at     DateTime    @db.DateTime(0)
-  updated_at     DateTime?   @db.DateTime(0)
-  deleted_at     DateTime?   @db.DateTime(0)
-  last_logged_at DateTime?   @db.DateTime(0)
   name           String      @db.VarChar(100)
   username       String      @db.VarChar(100)
   email          String      @db.VarChar(100)
@@ -53,6 +49,10 @@ model users {
   role_id        Int
   is_active      Boolean     @default(true)
   is_logged      Boolean     @default(false)
+  last_logged_at DateTime?   @db.DateTime(0)
+  created_at     DateTime    @db.DateTime(0)
+  updated_at     DateTime?   @db.DateTime(0)
+  deleted_at     DateTime?   @db.DateTime(0)
   businesses     businesses? @relation(fields: [business_id], references: [id], map: "users_ibfk_1")
   roles          roles       @relation(fields: [role_id], references: [id], map: "users_ibfk_2")
 

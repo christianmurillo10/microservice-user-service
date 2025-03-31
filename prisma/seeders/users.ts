@@ -24,7 +24,7 @@ const up = async () => {
         role_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
-        deleted_at: null,
+        deleted_at: null
       }
     ]
   });
