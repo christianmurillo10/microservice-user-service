@@ -1,7 +1,8 @@
 import { EachMessagePayload } from "kafkajs";
-import KafkaService from "../../services/kafka.service";
-import kafkaConfig from "../../config/kafka.config";
-import { EVENT_USER_CREATED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
+import KafkaService from "../../../services/kafka.service";
+import kafkaConfig from "../../../config/kafka.config";
+import { EVENT_USER, EVENT_USER_LOGGED } from "../../../shared/constants/events.constant";
+import subscribeUserLogged from "./user-logged";
 
 export default class UserKafkaConsumer {
   private kafkaService: KafkaService;
@@ -14,21 +15,19 @@ export default class UserKafkaConsumer {
   };
 
   private eachMessageHandler = async (payload: EachMessagePayload) => {
-    const { topic, partition, message } = payload;
-    console.log({
-      topic,
-      partition,
-      key: message.key?.toString(),
-      value: message.value?.toString(),
-    });
+    const { message } = payload;
+
+    if (!message.key) {
+      return;
+    };
+
+    if (message.key.toString() === EVENT_USER_LOGGED) {
+      await subscribeUserLogged(message);
+    };
   };
 
   execute = async (): Promise<void> => {
-    const topics = [
-      EVENT_USER_CREATED,
-      EVENT_USER_UPDATED
-    ];
-
+    const topics = [EVENT_USER];
     await this.kafkaService.initializeConsumer(
       topics,
       "user-service-group",

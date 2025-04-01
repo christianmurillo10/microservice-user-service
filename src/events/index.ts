@@ -1,8 +1,8 @@
 import KafkaService from "../services/kafka.service";
-import UserKafkaConsumer from "./consumer/user.consumer";
+import UserKafkaConsumer from "./consumer/user";
 import UserKafkaProducer from "./producer/user.producer";
 import kafkaConfig from "../config/kafka.config";
-import { EVENT_USER_CREATED, EVENT_USER_UPDATED } from "../shared/constants/events.constant";
+import { EVENT_USER } from "../shared/constants/events.constant";
 
 export default class KafkaServer {
   run = async () => {
@@ -22,7 +22,6 @@ export default class KafkaServer {
     });
     await kafkaService.disconnectAdmin();
     await kafkaService.disconnectProducer();
-    await kafkaService.disconnectConsumer(EVENT_USER_CREATED);
-    await kafkaService.disconnectConsumer(EVENT_USER_UPDATED);
+    await kafkaService.disconnectConsumer(EVENT_USER);
   };
 };

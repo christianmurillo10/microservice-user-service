@@ -76,10 +76,12 @@ export default class KafkaService {
 
   initializeProducer = async (
     topic: string,
+    event: string,
     data: unknown
   ) => {
     try {
       const msg: Message = {
+        key: event,
         value: JSON.stringify(data)
       }
       await this.producer.send({

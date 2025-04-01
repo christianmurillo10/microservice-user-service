@@ -42,7 +42,7 @@ const controller = async (
 
     // Execute producer
     const userProducer = new UserKafkaProducer();
-    userProducer.publishUserCreated(result);
+    await userProducer.publishUserCreated(result);
 
     return result;
   })

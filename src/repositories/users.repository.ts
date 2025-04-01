@@ -15,7 +15,6 @@ import {
 } from "../shared/types/repository.type";
 import { AccessType, GenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
-import { hashPassword } from "../shared/utils/bcrypt";
 import { usersSubsets, rolesSubsets, businessesSubsets } from "../shared/helpers/select-subset.helper";
 
 export default class UsersRepository implements UsersRepositoryInterface {
@@ -187,10 +186,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
         ...rolesSelect,
         ...businessesSelect
       },
-      data: {
-        ...args.params,
-        password: hashPassword(args.params.password as string)
-      }
+      data: args.params
     });
 
     return new Users({
@@ -219,7 +215,6 @@ export default class UsersRepository implements UsersRepositoryInterface {
       where: { id: args.id },
       data: {
         ...args.params,
-        password: args.params.password as string,
         updated_at: new Date(),
       }
     });
@@ -291,7 +286,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
     await this.client.update({
       where: { id: args.id },
       data: {
-        password: hashPassword(args.new_password),
+        password: args.new_password,
         updated_at: new Date(),
       }
     });

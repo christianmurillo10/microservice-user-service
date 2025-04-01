@@ -3,7 +3,7 @@ import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DA
 import UsersRepository from "../repositories/users.repository";
 import Users from "../entities/users.entity";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
-import { comparePassword } from "../shared/utils/bcrypt";
+import { comparePassword, hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
@@ -86,6 +86,7 @@ export default class UsersService {
     } else {
       // Create
       option.params.image_path = uploadPath;
+      option.params.password = hashPassword(option.params.password as string);
       record = await this.repository.create(option);
     }
 
@@ -131,7 +132,7 @@ export default class UsersService {
 
     await this.repository.changePassword({
       id: id,
-      new_password: new_password
+      new_password: hashPassword(new_password)
     });
   };
 
