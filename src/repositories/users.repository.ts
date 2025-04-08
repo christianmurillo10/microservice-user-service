@@ -13,7 +13,7 @@ import {
   ChangePasswordArgs,
   CountArgs
 } from "../shared/types/repository.type";
-import { AccessType, GenericObject } from "../shared/types/common.type";
+import { GenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets, rolesSubsets, businessesSubsets } from "../shared/helpers/select-subset.helper";
 
@@ -56,10 +56,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
       take: args.query?.limit
     });
 
-    return res.map(item => new Users({
-      ...item,
-      access_type: item.access_type as AccessType
-    }));
+    return res.map(item => new Users(item));
   };
 
   findAllBetweenCreatedAt = async (
@@ -88,10 +85,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return res.map(item => new Users({
-      ...item,
-      access_type: item.access_type as AccessType
-    }));
+    return res.map(item => new Users(item));
   };
 
   findById = async (
@@ -120,10 +114,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users({
-      ...res,
-      access_type: res.access_type as AccessType
-    });
+    return new Users(res);
   };
 
   findByUsernameOrEmail = async (
@@ -163,10 +154,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users({
-      ...res,
-      access_type: res.access_type as AccessType
-    });
+    return new Users(res);
   };
 
   create = async (
@@ -189,10 +177,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
       data: args.params
     });
 
-    return new Users({
-      ...data,
-      access_type: data.access_type as AccessType
-    });
+    return new Users(data);
   };
 
   update = async (
@@ -219,10 +204,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return new Users({
-      ...data,
-      access_type: data.access_type as AccessType
-    });
+    return new Users(data);
   };
 
   softDelete = async (
@@ -240,10 +222,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return new Users({
-      ...data,
-      access_type: data.access_type as AccessType
-    });
+    return new Users(data);
   };
 
   softDeleteMany = async (

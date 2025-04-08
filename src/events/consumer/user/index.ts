@@ -1,8 +1,9 @@
 import { EachMessagePayload } from "kafkajs";
 import KafkaService from "../../../services/kafka.service";
 import kafkaConfig from "../../../config/kafka.config";
-import { EVENT_USER, EVENT_USER_LOGGED } from "../../../shared/constants/events.constant";
-import subscribeUserLogged from "./user-logged";
+import { EVENT_USER, EVENT_USER_LOGGED_IN, EVENT_USER_LOGGED_OUT } from "../../../shared/constants/events.constant";
+import subscribeUserLoggedIn from "./user-logged-in.consumer";
+import subscribeUserLoggedOut from "./user-logged-out.consumer";
 
 export default class UserKafkaConsumer {
   private kafkaService: KafkaService;
@@ -21,8 +22,12 @@ export default class UserKafkaConsumer {
       return;
     };
 
-    if (message.key.toString() === EVENT_USER_LOGGED) {
-      await subscribeUserLogged(message);
+    if (message.key.toString() === EVENT_USER_LOGGED_IN) {
+      await subscribeUserLoggedIn(message);
+    };
+
+    if (message.key.toString() === EVENT_USER_LOGGED_OUT) {
+      await subscribeUserLoggedOut(message);
     };
   };
 

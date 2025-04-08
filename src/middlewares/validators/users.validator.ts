@@ -4,7 +4,6 @@ import _ from "lodash";
 import { validateInput } from "../../shared/helpers/common.helper";
 import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import { ACCESS_TYPE_ADMIN, ACCESS_TYPE_CLIENT, ACCESS_TYPE_USER, ACCESS_TYPE_SUPERADMIN } from "../../shared/constants/users.constant";
 
 const usernameChecker = /^(?=[a-zA-Z0-9._]{1,30}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
@@ -23,15 +22,6 @@ export const create = async (
       email: joi.string().label("Email").max(100).email().required(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).required(),
       password: joi.string().label("Password").max(100).required(),
-      access_type: joi.string()
-        .label("Access Type")
-        .valid(
-          ACCESS_TYPE_SUPERADMIN,
-          ACCESS_TYPE_ADMIN,
-          ACCESS_TYPE_USER,
-          ACCESS_TYPE_CLIENT
-        )
-        .required(),
       business_id: joi.number().label("Business").allow(null),
       role_id: joi.number().label("Role").required(),
       is_active: joi.boolean().label("Active?"),
@@ -58,7 +48,6 @@ export const update = async (
       email: joi.string().label("Email").max(100).email().empty(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
       business_id: joi.number().label("Business").empty().allow(null),
-      access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_ADMIN, ACCESS_TYPE_USER, ACCESS_TYPE_CLIENT).label("Access Type").max(100).empty(),
       role_id: joi.number().label("Role").empty(),
       is_active: joi.boolean().label("Active?").empty(),
     });
@@ -106,7 +95,6 @@ export const list = async (
         name: joi.string().label("Name").max(100).empty(),
         email: joi.string().label("Email").max(100).empty(),
         username: joi.string().label("Username").empty(),
-        access_type: joi.string().valid(ACCESS_TYPE_SUPERADMIN, ACCESS_TYPE_ADMIN, ACCESS_TYPE_USER, ACCESS_TYPE_CLIENT).label("Access Type").max(100).empty(),
         business_id: joi.number().label("Business").empty(),
         role_id: joi.number().label("Role").empty(),
         is_active: joi.boolean().label("Active?").empty(),
@@ -117,7 +105,6 @@ export const list = async (
         name: joi.string().label("Name").valid("asc", "desc").empty(),
         email: joi.string().label("Email").valid("asc", "desc").empty(),
         username: joi.string().label("Username").valid("asc", "desc").empty(),
-        access_type: joi.string().label("Access Type").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
       offset: joi.number().label("Offset").empty(),
       limit: joi.number().label("Limit").empty(),

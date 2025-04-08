@@ -36,7 +36,6 @@ CREATE TABLE `users` (
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     `image_path` VARCHAR(255) NULL,
-    `access_type` VARCHAR(191) NOT NULL,
     `business_id` INTEGER NULL,
     `role_id` INTEGER NOT NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,

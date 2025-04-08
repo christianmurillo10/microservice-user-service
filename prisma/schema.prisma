@@ -44,7 +44,6 @@ model users {
   email          String      @db.VarChar(100)
   password       String      @db.VarChar(100)
   image_path     String?     @db.VarChar(255)
-  access_type    String
   business_id    Int?
   role_id        Int
   is_active      Boolean     @default(true)

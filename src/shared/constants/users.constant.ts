@@ -1,4 +1,0 @@
-export const ACCESS_TYPE_SUPERADMIN = "SUPERADMIN";
-export const ACCESS_TYPE_ADMIN = "ADMIN";
-export const ACCESS_TYPE_USER = "USER";
-export const ACCESS_TYPE_CLIENT = "CLIENT";

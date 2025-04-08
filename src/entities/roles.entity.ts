@@ -1,13 +1,13 @@
-import { roles as RolesModel } from "@prisma/client";
+import RolesModel from "../models/roles.model";
 
 class Roles implements RolesModel {
-  id!: number;
+  id?: number;
   name: string = "";
-  description: string | null = "";
-  business_id: number | null = null;
+  description?: string | null = null;
+  business_id?: number | null = null;
   created_at: Date = new Date();
-  updated_at: Date | null = new Date();
-  deleted_at: Date | null = null;
+  updated_at?: Date | null = new Date();
+  deleted_at?: Date | null = null;
 
   constructor(props: RolesModel) {
     Object.assign(this, props);

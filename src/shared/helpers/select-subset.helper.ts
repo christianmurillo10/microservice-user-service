@@ -28,7 +28,6 @@ export const usersSubsets = {
   email: true,
   password: true,
   image_path: true,
-  access_type: true,
   business_id: true,
   role_id: true,
   is_active: true,
