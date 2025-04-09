@@ -22,12 +22,13 @@ export default class UserKafkaConsumer {
       return;
     };
 
-    if (message.key.toString() === EVENT_USER_LOGGED_IN) {
-      await subscribeUserLoggedIn(message);
-    };
-
-    if (message.key.toString() === EVENT_USER_LOGGED_OUT) {
-      await subscribeUserLoggedOut(message);
+    switch (message.key.toString()) {
+      case EVENT_USER_LOGGED_IN:
+        await subscribeUserLoggedIn(message);
+        break;
+      case EVENT_USER_LOGGED_OUT:
+        await subscribeUserLoggedOut(message);
+        break;
     };
   };
 
