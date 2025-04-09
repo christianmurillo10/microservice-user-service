@@ -12,6 +12,5 @@ import KafkaServer from "./events";
   await app.start();
 
   // Kafka server
-  const consumer = new KafkaServer();
-  await consumer.run();
+  KafkaServer.run();
 })();

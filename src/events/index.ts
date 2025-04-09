@@ -5,7 +5,7 @@ import kafkaConfig from "../config/kafka.config";
 import { EVENT_USER } from "../shared/constants/events.constant";
 
 export default class KafkaServer {
-  run = async () => {
+  static run = async () => {
     // Producers
     const userProducer = new UserKafkaProducer();
     await userProducer.execute();
@@ -15,7 +15,7 @@ export default class KafkaServer {
     await userConsumer.execute();
   };
 
-  disconnect = async () => {
+  static disconnect = async () => {
     const kafkaService = new KafkaService({
       clientId: kafkaConfig.kafka_client_id,
       brokers: [kafkaConfig.kafka_broker]

@@ -13,6 +13,17 @@ export default class UserKafkaProducer {
     });
   };
 
+  execute = async (): Promise<void> => {
+    await this.kafkaService.connectAdmin();
+    await this.kafkaService.createTopics([
+      {
+        topic: EVENT_USER,
+        numPartitions: 1,
+        replicationFactor: 1
+      }
+    ]);
+  };
+
   publishUserCreated = async (data: Users): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_CREATED, data);
@@ -23,16 +34,5 @@ export default class UserKafkaProducer {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_UPDATED, data);
     await this.kafkaService.disconnectProducer();
-  };
-
-  execute = async (): Promise<void> => {
-    await this.kafkaService.connectAdmin();
-    await this.kafkaService.createTopics([
-      {
-        topic: EVENT_USER,
-        numPartitions: 2,
-        replicationFactor: 1
-      }
-    ]);
   };
 };
