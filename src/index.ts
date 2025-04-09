@@ -12,5 +12,5 @@ import KafkaServer from "./events";
   await app.start();
 
   // Kafka server
-  KafkaServer.run();
+  KafkaServer.listen();
 })();

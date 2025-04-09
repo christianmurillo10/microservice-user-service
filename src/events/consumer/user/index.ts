@@ -32,9 +32,8 @@ export default class UserKafkaConsumer {
   };
 
   execute = async (): Promise<void> => {
-    const topics = [EVENT_USER];
     await this.kafkaService.initializeConsumer(
-      topics,
+      EVENT_USER,
       "user-service-group",
       this.eachMessageHandler
     );

@@ -1,67 +1,13 @@
-import { Admin, AdminConfig, ConsumerConfig, EachMessagePayload, Kafka, KafkaConfig, logLevel, Message, Producer } from "kafkajs";
-import { TopicConfig } from "../shared/types/kafka.type";
+import { ConsumerConfig, EachMessagePayload, Kafka, KafkaConfig, logLevel, Message, Producer } from "kafkajs";
 
 export default class KafkaService {
   private kafka: Kafka;
-  private admin: Admin;
   private producer: Producer;
   private consumers: Map<string, any> = new Map();
 
-  constructor(kafkaConfig: KafkaConfig, adminConfig?: AdminConfig) {
+  constructor(kafkaConfig: KafkaConfig) {
     this.kafka = new Kafka({ ...kafkaConfig, logLevel: logLevel.ERROR });
-    this.admin = this.kafka.admin(adminConfig);
     this.producer = this.kafka.producer();
-  };
-
-  connectAdmin = async () => {
-    try {
-      console.log("Connecting Kafka admin...")
-      await this.admin.connect();
-      console.log("Kafka admin connected.");
-    } catch (error) {
-      console.error("Failed to connect Kafka admin:", error);
-    }
-  };
-
-  disconnectAdmin = async () => {
-    try {
-      console.log("Disconnecting Kafka admin...");
-      await this.admin.disconnect();
-      console.log("Kafka admin disconnected.");
-    } catch (error) {
-      console.error("Failed to disconnect Kafka admin:", error);
-    }
-  };
-
-  createTopics = async (topicConfig: TopicConfig[]) => {
-    try {
-      const result = await this.admin.createTopics({
-        topics: topicConfig,
-        timeout: 30000,
-        waitForLeaders: true,
-      });
-
-      if (result) {
-        console.log("Kafka topics created successfully.");
-      } else {
-        console.log("Kafka topics were already created.");
-      }
-    } catch (error) {
-      console.error("Failed to create Kafka topics:", error);
-    }
-  };
-
-  deleteTopics = async (topics: string[]) => {
-    try {
-      console.log("Deleting Kafka topics:", topics);
-      await this.admin.deleteTopics({
-        topics: topics,
-        timeout: 30000,
-      });
-      console.log("Kafka topics deleted successfully.");
-    } catch (error) {
-      console.error("Failed to delete Kafka topics:", error);
-    }
   };
 
   connectProducer = async () => {
@@ -105,7 +51,7 @@ export default class KafkaService {
   };
 
   initializeConsumer = async (
-    topics: string[],
+    topic: string,
     groupId: string,
     eachMessageHandler: (payload: EachMessagePayload) => Promise<void>
   ) => {
@@ -113,12 +59,12 @@ export default class KafkaService {
       const consumerConfig: ConsumerConfig = { groupId: groupId };
       const consumer = this.kafka.consumer(consumerConfig);
 
-      console.log(`Connecting Kafka consumer for topic: ${topics}`);
+      console.log(`Connecting Kafka consumer for topic: ${topic}`);
       await consumer.connect();
-      console.log(`Kafka consumer connected for topic: ${topics}`);
+      console.log(`Kafka consumer connected for topic: ${topic}`);
 
-      await consumer.subscribe({ topics, fromBeginning: true });
-      console.log(`Subscribed to topic ${topics}`);
+      await consumer.subscribe({ topic, fromBeginning: true });
+      console.log(`Subscribed to topic ${topic}`);
 
       await consumer.run({
         eachMessage: async (payload) => {
@@ -126,9 +72,7 @@ export default class KafkaService {
         },
       });
 
-      topics.map(topic => {
-        this.consumers.set(topic, consumer);
-      });
+      this.consumers.set(topic, consumer);
     } catch (error) {
       console.error("Failed to initialize Kafka consumer:", error);
     }
