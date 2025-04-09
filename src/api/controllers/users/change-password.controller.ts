@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
 import { changePassword as validator } from "../../../middlewares/validators/users.validator";
 import { MESSAGE_DATA_PASSWORD_CHANGED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CHANGE_PASSWORD } from "../../../shared/constants/error.constant";
@@ -37,6 +38,7 @@ const controller = async (
 
 export default router.put(
   "/change-password/:id",
+  authenticate,
   validator,
   controller
 );

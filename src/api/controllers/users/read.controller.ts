@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_FIND, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../../shared/constants/error.constant";
 import UsersService from "../../../services/users.service";
@@ -21,7 +22,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = businesses ? { clinic_id: businesses.id } : undefined;
+    const condition = businesses ? { business_id: businesses.id } : undefined;
     return await service.getById({ id, condition });
   })
   .then(result => {
@@ -38,5 +39,6 @@ const controller = async (
 
 export default router.get(
   "/:id",
+  authenticate,
   controller
 );

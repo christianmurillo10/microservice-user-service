@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
 import { update as validator } from "../../../middlewares/validators/users.validator";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
@@ -25,7 +26,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = businesses ? { clinic_id: businesses.id } : undefined;
+    const condition = businesses ? { business_id: businesses.id } : undefined;
     const record = await service.getById({ id, condition });
     const result = await service.save({ ...record, ...body }, file);
 
@@ -49,6 +50,7 @@ const controller = async (
 
 export default router.put(
   "/:id",
+  authenticate,
   upload.single("image"),
   validator,
   controller

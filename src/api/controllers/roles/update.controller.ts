@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
+import { update as validator } from "../../../middlewares/validators/roles.validator";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
-import { update as validator } from "../../../middlewares/validators/roles.validator";
 import RolesService from "../../../services/roles.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
@@ -22,7 +23,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = businesses ? { clinic_id: businesses.id } : undefined;
+    const condition = businesses ? { business_id: businesses.id } : undefined;
     const record = await service.getById({ id, condition });
     return await service.save({ ...record, ...body });
   })
@@ -40,6 +41,7 @@ const controller = async (
 
 export default router.put(
   "/:id",
+  authenticate,
   validator,
   controller
 );

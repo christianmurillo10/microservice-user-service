@@ -1,9 +1,10 @@
 import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
+import { update as validator } from "../../../middlewares/validators/businesses.validator";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
-import { update as validator } from "../../../middlewares/validators/businesses.validator";
 import BusinessesService from "../../../services/businesses.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
@@ -41,6 +42,7 @@ const controller = async (
 
 export default router.put(
   "/:id",
+  authenticate,
   upload.single("logo"),
   validator,
   controller

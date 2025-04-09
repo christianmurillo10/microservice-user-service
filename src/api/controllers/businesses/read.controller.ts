@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_FIND, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../../shared/constants/error.constant";
 import BusinessesService from "../../../services/businesses.service";
@@ -37,5 +38,6 @@ const controller = async (
 
 export default router.get(
   "/:id",
+  authenticate,
   controller
 );

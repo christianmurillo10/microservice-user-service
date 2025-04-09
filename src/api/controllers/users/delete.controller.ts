@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import UsersService from "../../../services/users.service";
@@ -21,7 +22,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = businesses ? { clinic_id: businesses.id } : undefined;
+    const condition = businesses ? { business_id: businesses.id } : undefined;
     await service.getById({ id: id, condition });
     return await service.delete(id);
   })
@@ -39,5 +40,6 @@ const controller = async (
 
 export default router.delete(
   "/:id",
+  authenticate,
   controller
 );
