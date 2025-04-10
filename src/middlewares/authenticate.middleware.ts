@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
-import BadRequestException from "../shared/exceptions/bad-request.exception";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY, MESSAGE_REQUIRED_API_KEY } from "../shared/constants/message.constant";
 import { verifyToken } from "../shared/helpers/jwt.helper";
 import { JWT_CLIENT_BUSINESS } from "../shared/constants/jwt.constant";
 import BusinessesService from "../services/businesses.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
+import ForbiddenException from "../shared/exceptions/forbidden.exception";
 
 const validateApiKey = async (api_key: string) => {
   const businessesService = new BusinessesService();
@@ -44,7 +44,7 @@ const authenticate = async (
     const { api_key } = req.query;
 
     if (!api_key) {
-      return next(new BadRequestException([MESSAGE_REQUIRED_API_KEY]));
+      return next(new ForbiddenException([MESSAGE_REQUIRED_API_KEY]));
     };
 
     const businessesRecord = await validateApiKey(api_key as string);
