@@ -43,6 +43,7 @@ model users {
   username       String      @db.VarChar(100)
   email          String      @db.VarChar(100)
   password       String      @db.VarChar(100)
+  access_type    String      @db.VarChar(100)
   image_path     String?     @db.VarChar(255)
   business_id    Int?
   role_id        Int

@@ -1,9 +1,9 @@
-export type JWTClient = "PORTAL" | "BUSINESS" | "APP_RECOGNIZED";
+import { AccessType } from "./users.model";
 
 export interface JWTModel {
   id: number;
   email: string;
-  client: JWTClient;
+  client: AccessType;
   scope: string;
   sub: number;
   exp: number;

@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
 import config from "../../config/jwt.config";
-import { JWTClient, JWTModel } from "../../models/jwt.model";
-import { JWT_CLIENT_BUSINESS } from "../constants/jwt.constant";
+import { JWTModel } from "../../models/jwt.model";
+import { AccessType } from "../../models/users.model";
+import { USERS_ACCESS_TYPE_BUSINESS } from "../constants/users.constant";
 
 class JWT implements JWTModel {
   id: number = 0;
   email: string = "";
-  client: JWTClient = JWT_CLIENT_BUSINESS;
+  client: AccessType = USERS_ACCESS_TYPE_BUSINESS;
   scope: string = "";
   sub: number = 0;
   exp: number = 0;

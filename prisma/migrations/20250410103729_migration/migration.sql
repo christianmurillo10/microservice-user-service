@@ -35,6 +35,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
+    `access_type` VARCHAR(100) NOT NULL,
     `image_path` VARCHAR(255) NULL,
     `business_id` INTEGER NULL,
     `role_id` INTEGER NOT NULL,

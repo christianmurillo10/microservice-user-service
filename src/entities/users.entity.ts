@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import UsersModel from "../models/users.model";
+import UsersModel, { AccessType } from "../models/users.model";
 
 class Users implements UsersModel {
   id?: string = uuidv4();
@@ -7,6 +7,7 @@ class Users implements UsersModel {
   username: string = "";
   email: string = "";
   password: string = "";
+  access_type: AccessType = "BUSINESS";
   image_path?: string | null = null;
   business_id: number | null = null;
   role_id!: number;

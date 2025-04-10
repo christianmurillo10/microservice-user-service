@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { v4 as uuidv4 } from "uuid";
 
 const prisma = new PrismaClient();
 
@@ -13,11 +12,12 @@ const up = async () => {
   await prisma.users.createMany({
     data: [
       {
-        id: uuidv4(),
+        id: "76ace7de-9bd4-4479-87f5-1f9903bd3a27",
         name: "Superadmin",
         username: "superadmin",
         email: "superadmin@email.com",
         password: "$2a$12$FzZC/3mX23SoxT5y1QJxz.lWQCu9FEXQ6yBg9iHqptzMF8DfdpGlK",
+        access_type: "PORTAL",
         image_path: null,
         business_id: null,
         role_id: 1,
