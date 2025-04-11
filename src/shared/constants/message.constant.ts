@@ -30,3 +30,4 @@ export const MESSAGE_ERROR_UNAUTHORIZED = "Unauthorized";
 export const MESSAGE_ERROR_FORBIDDEN = "Forbidden";
 export const MESSAGE_ERROR_NOT_FOUND = "Not Found";
 export const MESSAGE_ERROR_CONFLICT = "Conflict";
+export const MESSAGE_NOT_IMPLEMENTED = "Not yet implemented.";

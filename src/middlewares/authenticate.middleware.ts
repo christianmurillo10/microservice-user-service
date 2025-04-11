@@ -3,9 +3,24 @@ import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY, MESSAGE_REQUIRED_API_KEY } from "../shared/constants/message.constant";
 import { verifyToken } from "../shared/helpers/jwt.helper";
 import { USERS_ACCESS_TYPE_BUSINESS } from "../shared/constants/users.constant";
+import UsersService from "../services/users.service";
 import BusinessesService from "../services/businesses.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
+
+const validateUserRecord = async (id: string) => {
+  const usersService = new UsersService();
+  const usersRecord = await usersService.getById({ id })
+    .catch(err => {
+      if (err instanceof NotFoundException) {
+        return null;
+      }
+
+      throw err;
+    });
+
+  return usersRecord;
+};
 
 const validateApiKey = async (api_key: string) => {
   const businessesService = new BusinessesService();
@@ -25,39 +40,55 @@ const authenticate = async (
   req: Request,
   _res: Response,
   next: NextFunction
-) => {
-  const { authorization } = req.headers;
+) => Promise.resolve(req)
+  .then(async (req) => {
+    const { authorization } = req.headers;
 
-  if (!authorization) {
-    return next(new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]));
-  };
-
-  const token = authorization.split(" ")[1];
-  const tokenData = verifyToken(token);
-
-  if (!tokenData) {
-    return next(new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]));
-  };
-
-  // Validate via api_key if token client is BUSINESS
-  if (tokenData.client === USERS_ACCESS_TYPE_BUSINESS) {
-    const { api_key } = req.query;
-
-    if (!api_key) {
-      return next(new ForbiddenException([MESSAGE_REQUIRED_API_KEY]));
+    if (!authorization) {
+      throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     };
 
-    const businessesRecord = await validateApiKey(api_key as string);
+    const token = authorization.split(" ")[1];
+    const tokenData = verifyToken(token);
 
-    if (!businessesRecord) {
-      return next(new NotFoundException([MESSAGE_INVALID_API_KEY]));
+    if (!tokenData) {
+      throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+    };
+
+    return tokenData
+  })
+  .then(async (tokenData) => {
+    // Validate users logged status
+    const usersRecord = await validateUserRecord(tokenData.id as unknown as string);
+
+    if (!usersRecord) {
+      throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
     }
 
-    req.businesses = businessesRecord;
-    req.body.business_id = businessesRecord.id;
-  }
+    if (Boolean(usersRecord.is_logged) === false) {
+      throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
+    }
 
-  next();
-};
+    // Validate via api_key if token client is BUSINESS
+    if (tokenData.client === USERS_ACCESS_TYPE_BUSINESS) {
+      const { api_key } = req.query;
+
+      if (!api_key) {
+        throw new ForbiddenException([MESSAGE_REQUIRED_API_KEY]);
+      };
+
+      const businessesRecord = await validateApiKey(api_key as string);
+
+      if (!businessesRecord) {
+        throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
+      }
+
+      req.businesses = businessesRecord;
+      req.body.business_id = businessesRecord.id;
+    }
+
+    next();
+  })
+  .catch(err => next(err));
 
 export default authenticate;
