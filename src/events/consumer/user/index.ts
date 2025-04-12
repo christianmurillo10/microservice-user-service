@@ -16,7 +16,7 @@ export default class UserKafkaConsumer {
   };
 
   private eachMessageHandler = async (payload: EachMessagePayload) => {
-    const { message } = payload;
+    const { message, heartbeat } = payload;
 
     if (!message.key) {
       return;
@@ -30,6 +30,8 @@ export default class UserKafkaConsumer {
         await subscribeUserLoggedOut(message);
         break;
     };
+
+    await heartbeat();
   };
 
   execute = async (): Promise<void> => {
