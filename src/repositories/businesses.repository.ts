@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import Businesses from "../entities/businesses.entity";
+import Businesses from "../models/businesses.model";
 import BusinessesRepositoryInterface from "../shared/types/repositories/businesses.interface";
 import {
   FindAllArgs,

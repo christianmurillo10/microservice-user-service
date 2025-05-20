@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import BusinessesRepository from "../repositories/businesses.repository";
-import Businesses from "../entities/businesses.entity";
+import Businesses from "../models/businesses.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";

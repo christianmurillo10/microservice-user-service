@@ -1,17 +1,9 @@
-import RolesModel from "../models/roles.model";
-
-class Roles implements RolesModel {
+export default interface RolesEntity {
   id?: number;
-  name: string = "";
-  description?: string | null = null;
-  business_id?: number | null = null;
-  created_at: Date = new Date();
-  updated_at?: Date | null = new Date();
-  deleted_at?: Date | null = null;
-
-  constructor(props: RolesModel) {
-    Object.assign(this, props);
-  };
+  name: string;
+  description?: string | null;
+  business_id?: number | null;
+  created_at: Date;
+  updated_at?: Date | null;
+  deleted_at?: Date | null;
 };
-
-export default Roles;

@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-user-service",
+  "name": "microservice-user-service",
   "version": "1.0.0",
-  "description": "Boilerplate user service",
+  "description": "Microservice user service",
   "main": "index.ts",
   "scripts": {
     "build": "rm -rf dist && tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/christianoroceomurillo/boilerplate-user-service.git"
+    "url": "git+https://github.com/christianmurillo10/microservice-user-service.git"
   },
   "author": "Christian Murillo",
   "license": "ISC",
@@ -23,9 +23,9 @@
     "seed": "ts-node prisma/seeders"
   },
   "bugs": {
-    "url": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service/issues"
+    "url": "https://github.com/christianmurillo10/microservice-user-service/issues"
   },
-  "homepage": "https://bitbucket.org/christianoroceomurillo/boilerplate-user-service#readme",
+  "homepage": "https://github.com/christianmurillo10/microservice-user-service#readme",
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",

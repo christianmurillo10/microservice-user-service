@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import Roles from "../entities/roles.entity";
+import Roles from "../models/roles.model";
 import RolesRepositoryInterface from "../shared/types/repositories/roles.interface";
 import {
   FindAllArgs,

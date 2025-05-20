@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY, MESSAGE_REQUIRED_API_KEY } from "../shared/constants/message.constant";
 import { verifyToken } from "../shared/helpers/jwt.helper";
-import { USERS_ACCESS_TYPE_BUSINESS } from "../shared/constants/users.constant";
 import UsersService from "../services/users.service";
 import BusinessesService from "../services/businesses.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
+import { UserAccessType } from "../entities/users.entity";
 
 const validateUserRecord = async (id: string) => {
   const usersService = new UsersService();
@@ -70,7 +70,7 @@ const authenticate = async (
     }
 
     // Validate via api_key if token client is BUSINESS
-    if (tokenData.client === USERS_ACCESS_TYPE_BUSINESS) {
+    if (tokenData.client === UserAccessType.BUSINESS) {
       const { api_key } = req.query;
 
       if (!api_key) {

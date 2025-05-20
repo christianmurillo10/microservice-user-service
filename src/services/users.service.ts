@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
 import UsersRepository from "../repositories/users.repository";
-import Users from "../entities/users.entity";
+import Users from "../models/users.model";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
 import { comparePassword, hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";

@@ -4,7 +4,7 @@ import _ from "lodash";
 import { validateInput } from "../../shared/helpers/common.helper";
 import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import { USERS_ACCESS_TYPE_APP_RECOGNIZED, USERS_ACCESS_TYPE_BUSINESS, USERS_ACCESS_TYPE_PORTAL } from "../../shared/constants/users.constant";
+import { UserAccessType } from "../../entities/users.entity";
 
 const usernameChecker = /^(?=[a-zA-Z0-9._]{1,30}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
@@ -24,9 +24,9 @@ export const create = async (
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).required(),
       password: joi.string().label("Password").max(100).required(),
       access_type: joi.string().label("Access Type").valid(
-        USERS_ACCESS_TYPE_PORTAL,
-        USERS_ACCESS_TYPE_BUSINESS,
-        USERS_ACCESS_TYPE_APP_RECOGNIZED
+        UserAccessType.PORTAL,
+        UserAccessType.BUSINESS,
+        UserAccessType.APP_RECOGNIZED
       ).required(),
       business_id: joi.number().label("Business").allow(null),
       role_id: joi.number().label("Role").required(),
@@ -54,9 +54,9 @@ export const update = async (
       email: joi.string().label("Email").max(100).email().empty(),
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
       access_type: joi.string().label("Access Type").valid(
-        USERS_ACCESS_TYPE_PORTAL,
-        USERS_ACCESS_TYPE_BUSINESS,
-        USERS_ACCESS_TYPE_APP_RECOGNIZED
+        UserAccessType.PORTAL,
+        UserAccessType.BUSINESS,
+        UserAccessType.APP_RECOGNIZED
       ).empty(),
       business_id: joi.number().label("Business").empty().allow(null),
       role_id: joi.number().label("Role").empty(),

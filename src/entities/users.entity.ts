@@ -1,26 +1,25 @@
-import { v4 as uuidv4 } from "uuid";
-import UsersModel, { AccessType } from "../models/users.model";
-
-class Users implements UsersModel {
-  id?: string = uuidv4();
-  name: string = "";
-  username: string = "";
-  email: string = "";
-  password: string = "";
-  access_type: AccessType = "BUSINESS";
-  image_path?: string | null = null;
-  business_id: number | null = null;
-  role_id!: number;
-  is_active: boolean = true;
-  is_logged: boolean = false;
-  last_logged_at?: Date | null = null;
-  created_at: Date = new Date();
-  updated_at?: Date | null = new Date();
-  deleted_at?: Date | null = null;
-
-  constructor(props: UsersModel) {
-    Object.assign(this, props);
-  };
+export enum UserAccessType {
+  PORTAL = "PORTAL",
+  BUSINESS = "BUSINESS",
+  APP_RECOGNIZED = "APP_RECOGNIZED"
 };
 
-export default Users;
+export type AccessType = UserAccessType.PORTAL | UserAccessType.BUSINESS | UserAccessType.APP_RECOGNIZED;
+
+export default interface UsersEntity {
+  id?: string;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  access_type: AccessType;
+  image_path?: string | null;
+  business_id?: number | null;
+  role_id: number;
+  is_active: boolean;
+  is_logged: boolean;
+  last_logged_at?: Date | null;
+  created_at: Date;
+  updated_at?: Date | null;
+  deleted_at?: Date | null;
+};

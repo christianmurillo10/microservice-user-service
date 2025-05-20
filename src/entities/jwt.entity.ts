@@ -1,6 +1,6 @@
-import { AccessType } from "./users.model";
+import { AccessType } from "./users.entity";
 
-export interface JWTModel {
+export interface JWTEntity {
   id: number;
   email: string;
   client: AccessType;

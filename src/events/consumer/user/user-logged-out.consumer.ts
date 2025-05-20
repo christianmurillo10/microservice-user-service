@@ -1,6 +1,6 @@
 import { Message } from "kafkajs";
 import UsersRepository from "../../../repositories/users.repository";
-import Users from "../../../entities/users.entity";
+import Users from "../../../models/users.model";
 
 const usersRepository = new UsersRepository();
 
