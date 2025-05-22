@@ -1,6 +1,6 @@
-export const MESSAGE_INVALID_PARAMETER = "Invalid Parameter.";
-export const MESSAGE_INVALID_BODY = "Invalid Body.";
-export const MESSAGE_INVALID_QUERY = "Invalid TQuery.";
+export const MESSAGE_INVALID_PARAMETER = "Invalid parameter.";
+export const MESSAGE_INVALID_BODY = "Invalid body.";
+export const MESSAGE_INVALID_QUERY = "Invalid query.";
 export const MESSAGE_INVALID_API_KEY = "Invalid API Key.";
 export const MESSAGE_REQUIRED_API_KEY = "API Key is required.";
 export const MESSAGE_DATA_CREATED = "Successfully created data.";
