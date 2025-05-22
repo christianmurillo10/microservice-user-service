@@ -1,24 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 import Businesses from "../models/businesses.model";
-import BusinessesRepositoryInterface from "../shared/types/repositories/businesses.interface";
+import IBusinessesRepository from "../shared/types/repositories/businesses.interface";
 import {
-  FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
-  FindByIdArgs,
-  FindByNameArgs,
-  FindByApiKeyArgs,
-  CreateArgs,
-  UpdateArgs,
-  SoftDeleteArgs,
-  SoftDeleteManyArgs,
-  CountArgs
+  TFindAllArgs,
+  TFindAllBetweenCreatedAtArgs,
+  TFindByIdArgs,
+  TFindByNameArgs,
+  TFindByApiKeyArgs,
+  TCreateArgs,
+  TUpdateArgs,
+  TSoftDeleteArgs,
+  TSoftDeleteManyArgs,
+  TCountArgs
 } from "../shared/types/repository.type";
-import { GenericObject } from "../shared/types/common.type";
+import { TGenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
 import { businessesSubsets } from "../shared/helpers/select-subset.helper";
 
-
-export default class BusinessesRepository implements BusinessesRepositoryInterface {
+export default class BusinessesRepository implements IBusinessesRepository {
   private client;
 
   readonly logoPath = "public/images/businesses/";
@@ -29,7 +28,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   findAll = async (
-    args: FindAllArgs
+    args: TFindAllArgs
   ): Promise<Businesses[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
@@ -53,7 +52,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   findAllBetweenCreatedAt = async (
-    args: FindAllBetweenCreatedAtArgs
+    args: TFindAllBetweenCreatedAtArgs
   ): Promise<Businesses[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.date_from && args.date_to
@@ -74,7 +73,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   findById = async (
-    args: FindByIdArgs<number>
+    args: TFindByIdArgs<number>
   ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -95,7 +94,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   findByName = async (
-    args: FindByNameArgs
+    args: TFindByNameArgs
   ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -116,7 +115,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   findByApiKey = async (
-    args: FindByApiKeyArgs
+    args: TFindByApiKeyArgs
   ): Promise<Businesses | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -137,7 +136,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   create = async (
-    args: CreateArgs<Businesses>
+    args: TCreateArgs<Businesses>
   ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -152,7 +151,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   update = async (
-    args: UpdateArgs<number, Businesses>
+    args: TUpdateArgs<number, Businesses>
   ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -171,7 +170,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   softDelete = async (
-    args: SoftDeleteArgs<number>
+    args: TSoftDeleteArgs<number>
   ): Promise<Businesses> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -189,8 +188,8 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   softDeleteMany = async (
-    args: SoftDeleteManyArgs<number>
-  ): Promise<GenericObject> => {
+    args: TSoftDeleteManyArgs<number>
+  ): Promise<TGenericObject> => {
     const data = await this.client.updateMany({
       where: {
         id: {
@@ -206,7 +205,7 @@ export default class BusinessesRepository implements BusinessesRepositoryInterfa
   };
 
   count = async (
-    args?: CountArgs
+    args?: TCountArgs
   ): Promise<number> => {
     const data = this.client.count({
       where: {

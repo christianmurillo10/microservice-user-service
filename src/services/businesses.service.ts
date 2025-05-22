@@ -3,7 +3,7 @@ import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import BusinessesRepository from "../repositories/businesses.repository";
 import Businesses from "../models/businesses.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
+import { TCountAllArgs, TGetAllArgs, TGetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
 
 export default class BusinessesService {
@@ -13,7 +13,7 @@ export default class BusinessesService {
     this.repository = new BusinessesRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<Businesses[]> => {
+  getAll = async (args?: TGetAllArgs): Promise<Businesses[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -23,7 +23,7 @@ export default class BusinessesService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<Businesses[]> => {
+  getAllBetweenCreatedAt = async (args: TGetAllBetweenCreatedAtArgs): Promise<Businesses[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       exclude: ["deleted_at"]
@@ -99,7 +99,7 @@ export default class BusinessesService {
     this.repository.softDeleteMany({ ids: ids });
   };
 
-  count = async (args: CountAllArgs): Promise<number> => {
+  count = async (args: TCountAllArgs): Promise<number> => {
     return await this.repository.count(args);
   };
 };

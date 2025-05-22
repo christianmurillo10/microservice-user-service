@@ -2,7 +2,7 @@ import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import RolesRepository from "../repositories/roles.repository";
 import Roles from "../models/roles.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { CountAllArgs, GetAllArgs, GetByIdArgs, GetByNameArgs } from "../shared/types/service.type";
+import { TCountAllArgs, TGetAllArgs, TGetByIdArgs, TGetByNameArgs } from "../shared/types/service.type";
 
 export default class RolesService {
   private repository: RolesRepository;
@@ -11,7 +11,7 @@ export default class RolesService {
     this.repository = new RolesRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<Roles[]> => {
+  getAll = async (args?: TGetAllArgs): Promise<Roles[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -22,7 +22,7 @@ export default class RolesService {
     return record;
   };
 
-  getById = async (args: GetByIdArgs<number>): Promise<Roles> => {
+  getById = async (args: TGetByIdArgs<number>): Promise<Roles> => {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
@@ -37,7 +37,7 @@ export default class RolesService {
     return record;
   };
 
-  getByName = async (args: GetByNameArgs): Promise<Roles> => {
+  getByName = async (args: TGetByNameArgs): Promise<Roles> => {
     const record = await this.repository.findByName({
       name: args.name,
       condition: args?.condition,
@@ -87,7 +87,7 @@ export default class RolesService {
     this.repository.softDeleteManyByBusinessIds({ ids: ids });
   };
 
-  count = async (args: CountAllArgs): Promise<number> => {
+  count = async (args: TCountAllArgs): Promise<number> => {
     return await this.repository.count(args);
   };
 };

@@ -1,6 +1,6 @@
-import RolesEntity from "../entities/roles.entity";
+import IRolesEntity from "../entities/roles.entity";
 
-class Roles implements RolesEntity {
+class Roles implements IRolesEntity {
   id?: number;
   name: string = "";
   description?: string | null = null;
@@ -9,7 +9,7 @@ class Roles implements RolesEntity {
   updated_at?: Date | null = new Date();
   deleted_at?: Date | null = null;
 
-  constructor(props: RolesEntity) {
+  constructor(props: IRolesEntity) {
     Object.assign(this, props);
   };
 };

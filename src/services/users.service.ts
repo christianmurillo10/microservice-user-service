@@ -2,7 +2,7 @@ import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
 import UsersRepository from "../repositories/users.repository";
 import Users from "../models/users.model";
-import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
+import { TCountAllArgs, TGetAllArgs, TGetAllBetweenCreatedAtArgs, TGetByIdArgs, TGetByUsernameOrEmailArgs } from "../shared/types/service.type";
 import { comparePassword, hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -15,7 +15,7 @@ export default class UsersService {
     this.repository = new UsersRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<Users[]> => {
+  getAll = async (args?: TGetAllArgs): Promise<Users[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -26,7 +26,7 @@ export default class UsersService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<Users[]> => {
+  getAllBetweenCreatedAt = async (args: TGetAllBetweenCreatedAtArgs): Promise<Users[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       // include: ["roles", "businesses"],
@@ -36,7 +36,7 @@ export default class UsersService {
     return record;
   };
 
-  getById = async (args: GetByIdArgs<string>): Promise<Users> => {
+  getById = async (args: TGetByIdArgs<string>): Promise<Users> => {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
@@ -51,7 +51,7 @@ export default class UsersService {
     return record;
   };
 
-  getByUsernameOrEmail = async (args: GetByUsernameOrEmailArgs): Promise<Users> => {
+  getByUsernameOrEmail = async (args: TGetByUsernameOrEmailArgs): Promise<Users> => {
     const record = await this.repository.findByUsernameOrEmail({
       username: args.username,
       email: args.email,
@@ -136,7 +136,7 @@ export default class UsersService {
     });
   };
 
-  count = async (args: CountAllArgs): Promise<number> => {
+  count = async (args: TCountAllArgs): Promise<number> => {
     return this.repository.count(args);
   };
 };

@@ -1,19 +1,19 @@
 import jwt from "jsonwebtoken";
 import config from "../../config/jwt.config";
-import { JWTEntity } from "../../entities/jwt.entity";
-import { AccessType, UserAccessType } from "../../entities/users.entity";
+import { IJWTEntity } from "../../entities/jwt.entity";
+import { TAccessType, EAccessType } from "../../entities/users.entity";
 
-class JWT implements JWTEntity {
+class JWT implements IJWTEntity {
   id: number = 0;
   email: string = "";
-  client: AccessType = UserAccessType.BUSINESS;
+  client: TAccessType = EAccessType.BUSINESS;
   scope: string = "";
   sub: number = 0;
   exp: number = 0;
   iat: number = Date.now();
   aud: string = "Microservice";
 
-  constructor(props: JWTEntity) {
+  constructor(props: IJWTEntity) {
     Object.assign(this, props);
   };
 

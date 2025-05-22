@@ -1,9 +1,9 @@
-import { AccessType } from "./users.entity";
+import { TAccessType } from "./users.entity";
 
-export interface JWTEntity {
+export interface IJWTEntity {
   id: number;
   email: string;
-  client: AccessType;
+  client: TAccessType;
   scope: string;
   sub: number;
   exp: number;

@@ -5,20 +5,11 @@ import BadRequestException from "../exceptions/bad-request.exception";
 import ErrorException from "../exceptions/error.exception";
 import { MESSAGE_ERROR_SERVER } from "../constants/message.constant";
 import { ERROR_ON_SERVER } from "../constants/error.constant";
-
-type ApiResponseInput = {
-  service?: string,
-  version?: string,
-  status_code: number,
-  status?: string,
-  message?: string,
-  errors?: string[],
-  result?: unknown,
-};
+import { TApiResponseInput } from "../types/common.type";
 
 export const apiResponse = (
   res: Response,
-  input: ApiResponseInput
+  input: TApiResponseInput
 ) => res.status(input.status_code ?? 200).send({
   service: config.app_name,
   version: config.version,

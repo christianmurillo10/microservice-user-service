@@ -1,4 +1,4 @@
-export default interface BusinessesEntity {
+export default interface IBusinessesEntity {
   id?: number;
   name: string;
   api_key: string;

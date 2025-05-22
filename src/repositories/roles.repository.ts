@@ -1,21 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import Roles from "../models/roles.model";
-import RolesRepositoryInterface from "../shared/types/repositories/roles.interface";
+import IRolesRepository from "../shared/types/repositories/roles.interface";
 import {
-  FindAllArgs,
-  FindByIdArgs,
-  FindByNameArgs,
-  CreateArgs,
-  UpdateArgs,
-  SoftDeleteArgs,
-  SoftDeleteManyArgs,
-  CountArgs
+  TFindAllArgs,
+  TFindByIdArgs,
+  TFindByNameArgs,
+  TCreateArgs,
+  TUpdateArgs,
+  TSoftDeleteArgs,
+  TSoftDeleteManyArgs,
+  TCountArgs
 } from "../shared/types/repository.type";
-import { GenericObject } from "../shared/types/common.type";
+import { TGenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
 import { businessesSubsets, rolesSubsets } from "../shared/helpers/select-subset.helper";
 
-export default class RolesRepository implements RolesRepositoryInterface {
+export default class RolesRepository implements IRolesRepository {
   private client;
 
   constructor() {
@@ -24,7 +24,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   findAll = async (
-    args: FindAllArgs
+    args: TFindAllArgs
   ): Promise<Roles[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const businessesSelect = args.include?.includes("businesses")
@@ -52,7 +52,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   findById = async (
-    args: FindByIdArgs<number>
+    args: TFindByIdArgs<number>
   ): Promise<Roles | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const businessesSelect = args.include?.includes("businesses")
@@ -77,7 +77,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   findByName = async (
-    args: FindByNameArgs
+    args: TFindByNameArgs
   ): Promise<Roles | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const businessesSelect = args.include?.includes("businesses")
@@ -102,7 +102,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   create = async (
-    args: CreateArgs<Roles>
+    args: TCreateArgs<Roles>
   ): Promise<Roles> => {
     const exclude = setSelectExclude(args.exclude!);
     const businessesSelect = args.include?.includes("businesses")
@@ -121,7 +121,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   update = async (
-    args: UpdateArgs<number, Roles>
+    args: TUpdateArgs<number, Roles>
   ): Promise<Roles> => {
     const exclude = setSelectExclude(args.exclude!);
     const businessesSelect = args.include?.includes("businesses")
@@ -144,7 +144,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   softDelete = async (
-    args: SoftDeleteArgs<number>
+    args: TSoftDeleteArgs<number>
   ): Promise<Roles> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -162,8 +162,8 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   softDeleteMany = async (
-    args: SoftDeleteManyArgs<number>
-  ): Promise<GenericObject> => {
+    args: TSoftDeleteManyArgs<number>
+  ): Promise<TGenericObject> => {
     const data = await this.client.updateMany({
       where: {
         id: {
@@ -179,8 +179,8 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   softDeleteManyByBusinessIds = async (
-    args: SoftDeleteManyArgs<number>
-  ): Promise<GenericObject> => {
+    args: TSoftDeleteManyArgs<number>
+  ): Promise<TGenericObject> => {
     const data = await this.client.updateMany({
       where: {
         business_id: {
@@ -196,7 +196,7 @@ export default class RolesRepository implements RolesRepositoryInterface {
   };
 
   count = async (
-    args?: CountArgs
+    args?: TCountArgs
   ): Promise<number> => {
     const data = this.client.count({
       where: {

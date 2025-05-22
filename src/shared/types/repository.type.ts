@@ -1,99 +1,99 @@
-import { GenericObject, Query } from "./common.type";
+import { TGenericObject, TQuery } from "./common.type";
 
-export type FindAllArgs = {
-  condition?: GenericObject | undefined,
-  query?: Query | undefined,
+export type TFindAllArgs = {
+  condition?: TGenericObject | undefined,
+  query?: TQuery | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindAllBetweenCreatedAtArgs = {
+export type TFindAllBetweenCreatedAtArgs = {
   date_from?: string | undefined,
   date_to?: string | undefined,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindByIdArgs<I> = {
+export type TFindByIdArgs<I> = {
   id: I,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindOne = {
-  condition: GenericObject,
+export type TFindOne = {
+  condition: TGenericObject,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindByNameArgs = {
+export type TFindByNameArgs = {
   name: string,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindByApiKeyArgs = {
+export type TFindByApiKeyArgs = {
   api_key: string,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindByEmailArgs = {
+export type TFindByEmailArgs = {
   email: string,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type FindByUsernameOrEmailArgs = {
+export type TFindByUsernameOrEmailArgs = {
   username: string,
   email: string,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type CreateArgs<P> = {
+export type TCreateArgs<P> = {
   params: P,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type CreateManyArgs<P> = {
+export type TCreateManyArgs<P> = {
   params: P[]
 };
 
-export type UpdateArgs<I, P> = {
+export type TUpdateArgs<I, P> = {
   id: I,
   params: P,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type SoftDeleteArgs<I> = {
+export type TSoftDeleteArgs<I> = {
   id: I,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
-export type DeleteArgs<I> = {
+export type TDeleteArgs<I> = {
   id: I
 };
 
-export type SoftDeleteManyArgs<I> = {
+export type TSoftDeleteManyArgs<I> = {
   ids: I[]
 };
 
-export type ChangePasswordArgs<I> = {
+export type TChangePasswordArgs<I> = {
   id: I,
   new_password: string
 };
 
-export type CountArgs = {
-  condition?: GenericObject | undefined,
-  query?: Query | undefined
+export type TCountArgs = {
+  condition?: TGenericObject | undefined,
+  query?: TQuery | undefined
 };

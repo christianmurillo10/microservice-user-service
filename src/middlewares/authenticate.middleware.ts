@@ -6,7 +6,7 @@ import UsersService from "../services/users.service";
 import BusinessesService from "../services/businesses.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
-import { UserAccessType } from "../entities/users.entity";
+import { EAccessType } from "../entities/users.entity";
 
 const validateUserRecord = async (id: string) => {
   const usersService = new UsersService();
@@ -70,7 +70,7 @@ const authenticate = async (
     }
 
     // Validate via api_key if token client is BUSINESS
-    if (tokenData.client === UserAccessType.BUSINESS) {
+    if (tokenData.client === EAccessType.BUSINESS) {
       const { api_key } = req.query;
 
       if (!api_key) {

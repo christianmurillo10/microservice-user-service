@@ -1,38 +1,38 @@
 import Users from "../../../models/users.model";
 import {
-  FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
-  FindByIdArgs,
-  FindByUsernameOrEmailArgs,
-  CreateArgs,
-  UpdateArgs,
-  SoftDeleteArgs,
-  SoftDeleteManyArgs,
-  ChangePasswordArgs,
-  CountArgs
+  TFindAllArgs,
+  TFindAllBetweenCreatedAtArgs,
+  TFindByIdArgs,
+  TFindByUsernameOrEmailArgs,
+  TCreateArgs,
+  TUpdateArgs,
+  TSoftDeleteArgs,
+  TSoftDeleteManyArgs,
+  TChangePasswordArgs,
+  TCountArgs
 } from "../repository.type";
-import { GenericObject } from "../common.type";
+import { TGenericObject } from "../common.type";
 
-export default interface UsersRepositoryInterface {
-  findAll: (args: FindAllArgs) => Promise<Users[]>;
+export default interface IUsersRepository {
+  findAll: (args: TFindAllArgs) => Promise<Users[]>;
 
-  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<Users[]>;
+  findAllBetweenCreatedAt: (args: TFindAllBetweenCreatedAtArgs) => Promise<Users[]>;
 
-  findById: (args: FindByIdArgs<string>) => Promise<Users | null>;
+  findById: (args: TFindByIdArgs<string>) => Promise<Users | null>;
 
-  findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<Users | null>;
+  findByUsernameOrEmail: (args: TFindByUsernameOrEmailArgs) => Promise<Users | null>;
 
-  create: (args: CreateArgs<Users>) => Promise<Users>;
+  create: (args: TCreateArgs<Users>) => Promise<Users>;
 
-  update: (args: UpdateArgs<string, Users>) => Promise<Users>;
+  update: (args: TUpdateArgs<string, Users>) => Promise<Users>;
 
-  softDelete: (args: SoftDeleteArgs<string>) => Promise<Users>;
+  softDelete: (args: TSoftDeleteArgs<string>) => Promise<Users>;
 
-  softDeleteMany: (args: SoftDeleteManyArgs<string>) => Promise<GenericObject>;
+  softDeleteMany: (args: TSoftDeleteManyArgs<string>) => Promise<TGenericObject>;
 
-  softDeleteManyByBusinessIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteManyByBusinessIds: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
 
-  changePassword: (args: ChangePasswordArgs<string>) => Promise<void>;
+  changePassword: (args: TChangePasswordArgs<string>) => Promise<void>;
 
-  count: (args?: CountArgs) => Promise<number>;
+  count: (args?: TCountArgs) => Promise<number>;
 };

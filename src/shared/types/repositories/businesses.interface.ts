@@ -1,36 +1,36 @@
 import Businesses from "../../../models/businesses.model";
 import {
-  CountArgs,
-  CreateArgs,
-  FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
-  FindByApiKeyArgs,
-  FindByIdArgs,
-  FindByNameArgs,
-  SoftDeleteArgs,
-  SoftDeleteManyArgs,
-  UpdateArgs
+  TCountArgs,
+  TCreateArgs,
+  TFindAllArgs,
+  TFindAllBetweenCreatedAtArgs,
+  TFindByApiKeyArgs,
+  TFindByIdArgs,
+  TFindByNameArgs,
+  TSoftDeleteArgs,
+  TSoftDeleteManyArgs,
+  TUpdateArgs
 } from "../repository.type";
-import { GenericObject } from "../common.type";
+import { TGenericObject } from "../common.type";
 
-export default interface BusinessesRepositoryInterface {
-  findAll: (args: FindAllArgs) => Promise<Businesses[]>;
+export default interface IBusinessesRepository {
+  findAll: (args: TFindAllArgs) => Promise<Businesses[]>;
 
-  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<Businesses[]>;
+  findAllBetweenCreatedAt: (args: TFindAllBetweenCreatedAtArgs) => Promise<Businesses[]>;
 
-  findById: (args: FindByIdArgs<number>) => Promise<Businesses | null>;
+  findById: (args: TFindByIdArgs<number>) => Promise<Businesses | null>;
 
-  findByName: (args: FindByNameArgs) => Promise<Businesses | null>;
+  findByName: (args: TFindByNameArgs) => Promise<Businesses | null>;
 
-  findByApiKey: (args: FindByApiKeyArgs) => Promise<Businesses | null>;
+  findByApiKey: (args: TFindByApiKeyArgs) => Promise<Businesses | null>;
 
-  create: (args: CreateArgs<Businesses>) => Promise<Businesses>;
+  create: (args: TCreateArgs<Businesses>) => Promise<Businesses>;
 
-  update: (args: UpdateArgs<number, Businesses>) => Promise<Businesses>;
+  update: (args: TUpdateArgs<number, Businesses>) => Promise<Businesses>;
 
-  softDelete: (args: SoftDeleteArgs<number>) => Promise<Businesses>;
+  softDelete: (args: TSoftDeleteArgs<number>) => Promise<Businesses>;
 
-  softDeleteMany: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteMany: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
 
-  count: (args?: CountArgs) => Promise<number>;
+  count: (args?: TCountArgs) => Promise<number>;
 };

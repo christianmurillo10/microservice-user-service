@@ -1,33 +1,33 @@
-import { GenericObject, Query } from "./common.type";
+import { TGenericObject, TQuery } from "./common.type";
 
-export type GetAllArgs = {
-  condition?: GenericObject,
-  query?: Query
+export type TGetAllArgs = {
+  condition?: TGenericObject,
+  query?: TQuery
 };
 
-export type GetAllBetweenCreatedAtArgs = {
+export type TGetAllBetweenCreatedAtArgs = {
   date_from: string,
   date_to: string,
-  condition?: GenericObject
+  condition?: TGenericObject
 };
 
-export type GetByIdArgs<I> = {
+export type TGetByIdArgs<I> = {
   id: I,
-  condition?: GenericObject
+  condition?: TGenericObject
 };
 
-export type GetByNameArgs = {
+export type TGetByNameArgs = {
   name: string,
-  condition?: GenericObject
+  condition?: TGenericObject
 };
 
-export type GetByUsernameOrEmailArgs = {
+export type TGetByUsernameOrEmailArgs = {
   username: string,
   email: string,
-  condition?: GenericObject | undefined,
+  condition?: TGenericObject | undefined,
 };
 
-export type CountAllArgs = {
-  condition?: GenericObject,
-  query?: Query
+export type TCountAllArgs = {
+  condition?: TGenericObject,
+  query?: TQuery
 };

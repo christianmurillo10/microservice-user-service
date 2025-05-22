@@ -1,32 +1,32 @@
 import Roles from "../../../models/roles.model";
 import {
-  FindAllArgs,
-  FindByIdArgs,
-  FindByNameArgs,
-  CreateArgs,
-  UpdateArgs,
-  SoftDeleteArgs,
-  SoftDeleteManyArgs,
-  CountArgs
+  TFindAllArgs,
+  TFindByIdArgs,
+  TFindByNameArgs,
+  TCreateArgs,
+  TUpdateArgs,
+  TSoftDeleteArgs,
+  TSoftDeleteManyArgs,
+  TCountArgs
 } from "../repository.type";
-import { GenericObject } from "../common.type";
+import { TGenericObject } from "../common.type";
 
-export default interface RolesRepositoryInterface {
-  findAll: (args: FindAllArgs) => Promise<Roles[]>;
+export default interface IRolesRepository {
+  findAll: (args: TFindAllArgs) => Promise<Roles[]>;
 
-  findById: (args: FindByIdArgs<number>) => Promise<Roles | null>;
+  findById: (args: TFindByIdArgs<number>) => Promise<Roles | null>;
 
-  findByName: (args: FindByNameArgs) => Promise<Roles | null>;
+  findByName: (args: TFindByNameArgs) => Promise<Roles | null>;
 
-  create: (args: CreateArgs<Roles>) => Promise<Roles>;
+  create: (args: TCreateArgs<Roles>) => Promise<Roles>;
 
-  update: (args: UpdateArgs<number, Roles>) => Promise<Roles>;
+  update: (args: TUpdateArgs<number, Roles>) => Promise<Roles>;
 
-  softDelete: (args: SoftDeleteArgs<number>) => Promise<Roles>;
+  softDelete: (args: TSoftDeleteArgs<number>) => Promise<Roles>;
 
-  softDeleteMany: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteMany: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
 
-  softDeleteManyByBusinessIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteManyByBusinessIds: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
 
-  count: (args?: CountArgs) => Promise<number>;
+  count: (args?: TCountArgs) => Promise<number>;
 };
