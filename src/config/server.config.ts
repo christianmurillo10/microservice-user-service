@@ -1,7 +1,7 @@
 export default {
-  node_env: process.env.NODE_ENV || "development",
-  app_name: "Microservice User Service",
-  app_env: process.env.APP_ENV || "local",
-  version: process.env.APP_VERSION || "v1.0.0",
-  port: process.env.APP_PORT || "3000"
+  node_env: process.env.NODE_ENV || "",
+  app_name: process.env.APP_NAME || "",
+  app_env: process.env.APP_ENV || "",
+  version: process.env.APP_VERSION || "",
+  port: process.env.APP_PORT || ""
 };
