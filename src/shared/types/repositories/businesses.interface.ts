@@ -1,36 +1,36 @@
-import Businesses from "../../../models/businesses.model";
+import BusinessesModel from "../../../models/businesses.model";
 import {
-  TCountArgs,
-  TCreateArgs,
-  TFindAllArgs,
-  TFindAllBetweenCreatedAtArgs,
-  TFindByApiKeyArgs,
-  TFindByIdArgs,
-  TFindByNameArgs,
-  TSoftDeleteArgs,
-  TSoftDeleteManyArgs,
-  TUpdateArgs
+  CountArgs,
+  CreateArgs,
+  FindAllArgs,
+  FindAllBetweenCreatedAtArgs,
+  FindByApiKeyArgs,
+  FindByIdArgs,
+  FindByNameArgs,
+  SoftDeleteArgs,
+  SoftDeleteManyArgs,
+  UpdateArgs
 } from "../repository.type";
-import { TGenericObject } from "../common.type";
+import { GenericObject } from "../common.type";
 
-export default interface IBusinessesRepository {
-  findAll: (args: TFindAllArgs) => Promise<Businesses[]>;
+export default interface BusinessesRepository {
+  findAll: (args: FindAllArgs) => Promise<BusinessesModel[]>;
 
-  findAllBetweenCreatedAt: (args: TFindAllBetweenCreatedAtArgs) => Promise<Businesses[]>;
+  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<BusinessesModel[]>;
 
-  findById: (args: TFindByIdArgs<number>) => Promise<Businesses | null>;
+  findById: (args: FindByIdArgs<number>) => Promise<BusinessesModel | null>;
 
-  findByName: (args: TFindByNameArgs) => Promise<Businesses | null>;
+  findByName: (args: FindByNameArgs) => Promise<BusinessesModel | null>;
 
-  findByApiKey: (args: TFindByApiKeyArgs) => Promise<Businesses | null>;
+  findByApiKey: (args: FindByApiKeyArgs) => Promise<BusinessesModel | null>;
 
-  create: (args: TCreateArgs<Businesses>) => Promise<Businesses>;
+  create: (args: CreateArgs<BusinessesModel>) => Promise<BusinessesModel>;
 
-  update: (args: TUpdateArgs<number, Businesses>) => Promise<Businesses>;
+  update: (args: UpdateArgs<number, BusinessesModel>) => Promise<BusinessesModel>;
 
-  softDelete: (args: TSoftDeleteArgs<number>) => Promise<Businesses>;
+  softDelete: (args: SoftDeleteArgs<number>) => Promise<BusinessesModel>;
 
-  softDeleteMany: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
+  softDeleteMany: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
-  count: (args?: TCountArgs) => Promise<number>;
+  count: (args?: CountArgs) => Promise<number>;
 };

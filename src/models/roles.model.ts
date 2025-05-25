@@ -1,6 +1,6 @@
-import IRolesEntity from "../entities/roles.entity";
+import Roles from "../entities/roles.entity";
 
-class Roles implements IRolesEntity {
+class RolesModel implements Roles {
   id?: number;
   name: string = "";
   description?: string | null = null;
@@ -9,9 +9,9 @@ class Roles implements IRolesEntity {
   updated_at?: Date | null = new Date();
   deleted_at?: Date | null = null;
 
-  constructor(props: IRolesEntity) {
+  constructor(props: Roles) {
     Object.assign(this, props);
   };
 };
 
-export default Roles;
+export default RolesModel;

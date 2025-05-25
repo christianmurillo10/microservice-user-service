@@ -1,5 +1,5 @@
 import { Message } from "kafkajs";
-import Users from "../../../models/users.model";
+import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
@@ -26,7 +26,7 @@ const subscribeUserLoggedIn = async (message: Message): Promise<void> => {
     is_logged: value.is_logged,
     last_logged_at: value.last_logged_at,
     updated_at: new Date(),
-  } as Users;
+  } as UsersModel;
 
   await usersService.save(data)
     .catch(err => {

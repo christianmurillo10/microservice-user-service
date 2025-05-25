@@ -1,23 +1,23 @@
 import { PrismaClient } from "@prisma/client";
-import Businesses from "../models/businesses.model";
-import IBusinessesRepository from "../shared/types/repositories/businesses.interface";
+import BusinessesModel from "../models/businesses.model";
+import BusinessesRepository from "../shared/types/repositories/businesses.interface";
 import {
-  TFindAllArgs,
-  TFindAllBetweenCreatedAtArgs,
-  TFindByIdArgs,
-  TFindByNameArgs,
-  TFindByApiKeyArgs,
-  TCreateArgs,
-  TUpdateArgs,
-  TSoftDeleteArgs,
-  TSoftDeleteManyArgs,
-  TCountArgs
+  FindAllArgs,
+  FindAllBetweenCreatedAtArgs,
+  FindByIdArgs,
+  FindByNameArgs,
+  FindByApiKeyArgs,
+  CreateArgs,
+  UpdateArgs,
+  SoftDeleteArgs,
+  SoftDeleteManyArgs,
+  CountArgs
 } from "../shared/types/repository.type";
-import { TGenericObject } from "../shared/types/common.type";
+import { GenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
 import { businessesSubsets } from "../shared/helpers/select-subset.helper";
 
-export default class BusinessesRepository implements IBusinessesRepository {
+export default class PrismaBusinessesRepository implements BusinessesRepository {
   private client;
 
   readonly logoPath = "public/images/businesses/";
@@ -28,8 +28,8 @@ export default class BusinessesRepository implements IBusinessesRepository {
   };
 
   findAll = async (
-    args: TFindAllArgs
-  ): Promise<Businesses[]> => {
+    args: FindAllArgs
+  ): Promise<BusinessesModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -48,12 +48,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
       take: args.query?.limit
     });
 
-    return res.map(item => new Businesses(item));
+    return res.map(item => new BusinessesModel(item));
   };
 
   findAllBetweenCreatedAt = async (
-    args: TFindAllBetweenCreatedAtArgs
-  ): Promise<Businesses[]> => {
+    args: FindAllBetweenCreatedAtArgs
+  ): Promise<BusinessesModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.date_from && args.date_to
       ? { created_at: { gte: new Date(args.date_from), lte: new Date(args.date_to) } }
@@ -69,12 +69,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
       }
     });
 
-    return res.map(item => new Businesses(item));
+    return res.map(item => new BusinessesModel(item));
   };
 
   findById = async (
-    args: TFindByIdArgs<number>
-  ): Promise<Businesses | null> => {
+    args: FindByIdArgs<number>
+  ): Promise<BusinessesModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -90,12 +90,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
 
     if (!res) return null;
 
-    return new Businesses(res);
+    return new BusinessesModel(res);
   };
 
   findByName = async (
-    args: TFindByNameArgs
-  ): Promise<Businesses | null> => {
+    args: FindByNameArgs
+  ): Promise<BusinessesModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -111,12 +111,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
 
     if (!res) return null;
 
-    return new Businesses(res);
+    return new BusinessesModel(res);
   };
 
   findByApiKey = async (
-    args: TFindByApiKeyArgs
-  ): Promise<Businesses | null> => {
+    args: FindByApiKeyArgs
+  ): Promise<BusinessesModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -132,12 +132,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
 
     if (!res) return null;
 
-    return new Businesses(res);
+    return new BusinessesModel(res);
   };
 
   create = async (
-    args: TCreateArgs<Businesses>
-  ): Promise<Businesses> => {
+    args: CreateArgs<BusinessesModel>
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
@@ -147,12 +147,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
       data: args.params
     });
 
-    return new Businesses(data);
+    return new BusinessesModel(data);
   };
 
   update = async (
-    args: TUpdateArgs<number, Businesses>
-  ): Promise<Businesses> => {
+    args: UpdateArgs<number, BusinessesModel>
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -166,12 +166,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
       }
     });
 
-    return new Businesses(data);
+    return new BusinessesModel(data);
   };
 
   softDelete = async (
-    args: TSoftDeleteArgs<number>
-  ): Promise<Businesses> => {
+    args: SoftDeleteArgs<number>
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -184,12 +184,12 @@ export default class BusinessesRepository implements IBusinessesRepository {
       }
     });
 
-    return new Businesses(data);
+    return new BusinessesModel(data);
   };
 
   softDeleteMany = async (
-    args: TSoftDeleteManyArgs<number>
-  ): Promise<TGenericObject> => {
+    args: SoftDeleteManyArgs<number>
+  ): Promise<GenericObject> => {
     const data = await this.client.updateMany({
       where: {
         id: {
@@ -205,7 +205,7 @@ export default class BusinessesRepository implements IBusinessesRepository {
   };
 
   count = async (
-    args?: TCountArgs
+    args?: CountArgs
   ): Promise<number> => {
     const data = this.client.count({
       where: {

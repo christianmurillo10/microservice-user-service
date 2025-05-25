@@ -1,17 +1,17 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import RolesRepository from "../repositories/roles.repository";
-import Roles from "../models/roles.model";
+import PrismaRolesRepository from "../repositories/roles.repository";
+import RolesModel from "../models/roles.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { TCountAllArgs, TGetAllArgs, TGetByIdArgs, TGetByNameArgs } from "../shared/types/service.type";
+import { CountAllArgs, GetAllArgs, GetByIdArgs, GetByNameArgs } from "../shared/types/service.type";
 
 export default class RolesService {
-  private repository: RolesRepository;
+  private repository: PrismaRolesRepository;
 
   constructor() {
-    this.repository = new RolesRepository();
+    this.repository = new PrismaRolesRepository();
   };
 
-  getAll = async (args?: TGetAllArgs): Promise<Roles[]> => {
+  getAll = async (args?: GetAllArgs): Promise<RolesModel[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -22,7 +22,7 @@ export default class RolesService {
     return record;
   };
 
-  getById = async (args: TGetByIdArgs<number>): Promise<Roles> => {
+  getById = async (args: GetByIdArgs<number>): Promise<RolesModel> => {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
@@ -37,7 +37,7 @@ export default class RolesService {
     return record;
   };
 
-  getByName = async (args: TGetByNameArgs): Promise<Roles> => {
+  getByName = async (args: GetByNameArgs): Promise<RolesModel> => {
     const record = await this.repository.findByName({
       name: args.name,
       condition: args?.condition,
@@ -52,9 +52,9 @@ export default class RolesService {
     return record;
   };
 
-  save = async (data: Roles): Promise<Roles> => {
-    let record: Roles;
-    let newData = new Roles(data);
+  save = async (data: RolesModel): Promise<RolesModel> => {
+    let record: RolesModel;
+    let newData = new RolesModel(data);
     let option = {
       params: newData,
       // include: ["businesses"],
@@ -75,19 +75,19 @@ export default class RolesService {
     return record;
   };
 
-  delete = async (id: number): Promise<Roles> => {
+  delete = async (id: number): Promise<RolesModel> => {
     return await this.repository.softDelete({ id: id });
   };
 
   deleteMany = async (ids: number[]): Promise<void> => {
-    this.repository.softDeleteMany({ ids: ids });
+    await this.repository.softDeleteMany({ ids: ids });
   };
 
   deleteManyByBusinessIds = async (ids: number[]): Promise<void> => {
-    this.repository.softDeleteManyByBusinessIds({ ids: ids });
+    await this.repository.softDeleteManyByBusinessIds({ ids: ids });
   };
 
-  count = async (args: TCountAllArgs): Promise<number> => {
+  count = async (args: CountAllArgs): Promise<number> => {
     return await this.repository.count(args);
   };
 };

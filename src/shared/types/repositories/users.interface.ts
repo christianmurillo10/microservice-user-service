@@ -1,38 +1,38 @@
-import Users from "../../../models/users.model";
+import UsersModel from "../../../models/users.model";
 import {
-  TFindAllArgs,
-  TFindAllBetweenCreatedAtArgs,
-  TFindByIdArgs,
-  TFindByUsernameOrEmailArgs,
-  TCreateArgs,
-  TUpdateArgs,
-  TSoftDeleteArgs,
-  TSoftDeleteManyArgs,
-  TChangePasswordArgs,
-  TCountArgs
+  FindAllArgs,
+  FindAllBetweenCreatedAtArgs,
+  FindByIdArgs,
+  FindByUsernameOrEmailArgs,
+  CreateArgs,
+  UpdateArgs,
+  SoftDeleteArgs,
+  SoftDeleteManyArgs,
+  ChangePasswordArgs,
+  CountArgs
 } from "../repository.type";
-import { TGenericObject } from "../common.type";
+import { GenericObject } from "../common.type";
 
-export default interface IUsersRepository {
-  findAll: (args: TFindAllArgs) => Promise<Users[]>;
+export default interface UsersRepository {
+  findAll: (args: FindAllArgs) => Promise<UsersModel[]>;
 
-  findAllBetweenCreatedAt: (args: TFindAllBetweenCreatedAtArgs) => Promise<Users[]>;
+  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<UsersModel[]>;
 
-  findById: (args: TFindByIdArgs<string>) => Promise<Users | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<UsersModel | null>;
 
-  findByUsernameOrEmail: (args: TFindByUsernameOrEmailArgs) => Promise<Users | null>;
+  findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UsersModel | null>;
 
-  create: (args: TCreateArgs<Users>) => Promise<Users>;
+  create: (args: CreateArgs<UsersModel>) => Promise<UsersModel>;
 
-  update: (args: TUpdateArgs<string, Users>) => Promise<Users>;
+  update: (args: UpdateArgs<string, UsersModel>) => Promise<UsersModel>;
 
-  softDelete: (args: TSoftDeleteArgs<string>) => Promise<Users>;
+  softDelete: (args: SoftDeleteArgs<string>) => Promise<UsersModel>;
 
-  softDeleteMany: (args: TSoftDeleteManyArgs<string>) => Promise<TGenericObject>;
+  softDeleteMany: (args: SoftDeleteManyArgs<string>) => Promise<GenericObject>;
 
-  softDeleteManyByBusinessIds: (args: TSoftDeleteManyArgs<number>) => Promise<TGenericObject>;
+  softDeleteManyByBusinessIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
-  changePassword: (args: TChangePasswordArgs<string>) => Promise<void>;
+  changePassword: (args: ChangePasswordArgs<string>) => Promise<void>;
 
-  count: (args?: TCountArgs) => Promise<number>;
+  count: (args?: CountArgs) => Promise<number>;
 };

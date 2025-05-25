@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import UserRequestHeader from "../models/user-request-header.model";
+import UserRequestHeaderModel from "../models/user-request-header.model";
 
 const userRequestHeader = (
   req: Request,
   _res: Response,
   next: NextFunction
 ) => {
-  const userRequestHeader = new UserRequestHeader();
+  const userRequestHeader = new UserRequestHeaderModel();
   userRequestHeader.user_agent = req.headers["user-agent"] ?? null;
   userRequestHeader.host = req.headers["host"] ?? null;
   userRequestHeader.ip_address = req.ip ?? null;

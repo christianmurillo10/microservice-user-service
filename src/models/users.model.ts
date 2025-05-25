@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
-import IUsersEntity, { TAccessType, EAccessType } from "../entities/users.entity";
+import Users, { UsersAccessTypeValue, UsersAccessType } from "../entities/users.entity";
 
-class Users implements IUsersEntity {
+class UsersModel implements Users {
   id?: string = uuidv4();
   name: string = "";
   username: string = "";
   email: string = "";
   password: string = "";
-  access_type: TAccessType = EAccessType.BUSINESS;
+  access_type: UsersAccessTypeValue = UsersAccessType.Business;
   image_path?: string | null = null;
   business_id: number | null = null;
   role_id!: number;
@@ -18,9 +18,9 @@ class Users implements IUsersEntity {
   updated_at?: Date | null = new Date();
   deleted_at?: Date | null = null;
 
-  constructor(props: IUsersEntity) {
+  constructor(props: Users) {
     Object.assign(this, props);
   };
 };
 
-export default Users;
+export default UsersModel;

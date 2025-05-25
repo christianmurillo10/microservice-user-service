@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import IBusinessesEntity from "../entities/businesses.entity";
+import Businesses from "../entities/businesses.entity";
 
-class Businesses implements IBusinessesEntity {
+class BusinessesModel implements Businesses {
   id?: number;
   name: string = "";
   api_key: string = `key-${uuidv4()}`;
@@ -13,9 +13,9 @@ class Businesses implements IBusinessesEntity {
   updated_at?: Date | null = new Date();
   deleted_at?: Date | null = null;
 
-  constructor(props: IBusinessesEntity) {
+  constructor(props: Businesses) {
     Object.assign(this, props);
   };
 };
 
-export default Businesses;
+export default BusinessesModel;

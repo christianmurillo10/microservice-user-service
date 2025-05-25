@@ -1,5 +1,5 @@
 import { Schema } from "joi";
-import { TGenericObject } from "../types/common.type";
+import { GenericObject } from "../types/common.type";
 
 export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => {
   const options = {
@@ -19,7 +19,7 @@ export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => 
   return await schema.validateAsync(input, options);
 };
 
-export const parseQueryFilters = <T>(data: T): TGenericObject => {
+export const parseQueryFilters = <T>(data: T): GenericObject => {
   return data
     ? Object.assign({}, ...Object.entries(data)
       .map(([key, value]) => {
@@ -56,6 +56,6 @@ export const generateNonce = (): string => {
   return Math.floor(Math.random() * Date.now()).toString(16);
 };
 
-export const setSelectExclude = (val: string[]): TGenericObject => {
+export const setSelectExclude = (val: string[]): GenericObject => {
   return val ? val.reduce((acc, item) => ({ ...acc, [item]: false }), {}) : {};
 };

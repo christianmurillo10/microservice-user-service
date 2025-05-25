@@ -1,24 +1,24 @@
-export type TGenericObject = Record<string, string> | object;
+export type GenericObject = Record<string, string> | object;
 
-export type TGenericArray = any[];
+export type GenericArray = any[];
 
-export type TUniqueId = number | string | null;
+export type UniqueId = number | string | null;
 
-export type TGender = "MALE" | "FEMALE" | "OTHER";
+export type Gender = "MALE" | "FEMALE" | "OTHER";
 
-export type TChangePassword = {
+export type ChangePassword = {
   old_password: string,
   new_password: string,
 };
 
-export type TQuery = {
-  filters?: TGenericObject,
-  sorting?: TGenericObject,
+export type Query = {
+  filters?: GenericObject,
+  sorting?: GenericObject,
   offset?: number,
   limit?: number
 };
 
-export type TApiResponseInput = {
+export type ApiResponseInput = {
   service?: string,
   version?: string,
   status_code: number,

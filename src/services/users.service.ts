@@ -1,21 +1,21 @@
 import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
-import UsersRepository from "../repositories/users.repository";
-import Users from "../models/users.model";
-import { TCountAllArgs, TGetAllArgs, TGetAllBetweenCreatedAtArgs, TGetByIdArgs, TGetByUsernameOrEmailArgs } from "../shared/types/service.type";
+import PrismaUsersRepository from "../repositories/users.repository";
+import UsersModel from "../models/users.model";
+import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
 import { comparePassword, hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
 
 export default class UsersService {
-  private repository: UsersRepository;
+  private repository: PrismaUsersRepository;
 
   constructor() {
-    this.repository = new UsersRepository();
+    this.repository = new PrismaUsersRepository();
   };
 
-  getAll = async (args?: TGetAllArgs): Promise<Users[]> => {
+  getAll = async (args?: GetAllArgs): Promise<UsersModel[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -26,7 +26,7 @@ export default class UsersService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: TGetAllBetweenCreatedAtArgs): Promise<Users[]> => {
+  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<UsersModel[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       // include: ["roles", "businesses"],
@@ -36,7 +36,7 @@ export default class UsersService {
     return record;
   };
 
-  getById = async (args: TGetByIdArgs<string>): Promise<Users> => {
+  getById = async (args: GetByIdArgs<string>): Promise<UsersModel> => {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
@@ -51,7 +51,7 @@ export default class UsersService {
     return record;
   };
 
-  getByUsernameOrEmail = async (args: TGetByUsernameOrEmailArgs): Promise<Users> => {
+  getByUsernameOrEmail = async (args: GetByUsernameOrEmailArgs): Promise<UsersModel> => {
     const record = await this.repository.findByUsernameOrEmail({
       username: args.username,
       email: args.email,
@@ -66,10 +66,10 @@ export default class UsersService {
     return record;
   };
 
-  save = async (data: Users, file?: Express.Multer.File): Promise<Users> => {
+  save = async (data: UsersModel, file?: Express.Multer.File): Promise<UsersModel> => {
     const uploadPath = setUploadPath(file, this.repository.imagePath);
-    let record: Users;
-    let newData = new Users(data);
+    let record: UsersModel;
+    let newData = new UsersModel(data);
     let option = {
       params: newData,
       // include: ["roles", "businesses"],
@@ -97,7 +97,7 @@ export default class UsersService {
     return record;
   };
 
-  delete = async (id: string): Promise<Users> => {
+  delete = async (id: string): Promise<UsersModel> => {
     return await this.repository.softDelete({
       id: id,
       exclude: ["password"]
@@ -136,7 +136,7 @@ export default class UsersService {
     });
   };
 
-  count = async (args: TCountAllArgs): Promise<number> => {
+  count = async (args: CountAllArgs): Promise<number> => {
     return this.repository.count(args);
   };
 };

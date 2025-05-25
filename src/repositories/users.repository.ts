@@ -1,24 +1,24 @@
 import { PrismaClient } from "@prisma/client";
-import Users from "../models/users.model";
-import IUsersRepository from "../shared/types/repositories/users.interface";
+import UsersModel from "../models/users.model";
+import UsersRepository from "../shared/types/repositories/users.interface";
 import {
-  TFindAllArgs,
-  TFindAllBetweenCreatedAtArgs,
-  TFindByIdArgs,
-  TFindByUsernameOrEmailArgs,
-  TCreateArgs,
-  TUpdateArgs,
-  TSoftDeleteArgs,
-  TSoftDeleteManyArgs,
-  TChangePasswordArgs,
-  TCountArgs
+  FindAllArgs,
+  FindAllBetweenCreatedAtArgs,
+  FindByIdArgs,
+  FindByUsernameOrEmailArgs,
+  CreateArgs,
+  UpdateArgs,
+  SoftDeleteArgs,
+  SoftDeleteManyArgs,
+  ChangePasswordArgs,
+  CountArgs
 } from "../shared/types/repository.type";
-import { TGenericObject } from "../shared/types/common.type";
+import { GenericObject } from "../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets, rolesSubsets, businessesSubsets } from "../shared/helpers/select-subset.helper";
-import { TAccessType } from "../entities/users.entity";
+import { UsersAccessTypeValue } from "../entities/users.entity";
 
-export default class UsersRepository implements IUsersRepository {
+export default class PrismaUsersRepository implements UsersRepository {
   private client;
 
   readonly imagePath = "public/images/users/";
@@ -29,8 +29,8 @@ export default class UsersRepository implements IUsersRepository {
   };
 
   findAll = async (
-    args: TFindAllArgs
-  ): Promise<Users[]> => {
+    args: FindAllArgs
+  ): Promise<UsersModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -57,15 +57,15 @@ export default class UsersRepository implements IUsersRepository {
       take: args.query?.limit
     });
 
-    return res.map(item => new Users({
+    return res.map(item => new UsersModel({
       ...item,
-      access_type: item.access_type as TAccessType
+      access_type: item.access_type as UsersAccessTypeValue
     }));
   };
 
   findAllBetweenCreatedAt = async (
-    args: TFindAllBetweenCreatedAtArgs
-  ): Promise<Users[]> => {
+    args: FindAllBetweenCreatedAtArgs
+  ): Promise<UsersModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -89,15 +89,15 @@ export default class UsersRepository implements IUsersRepository {
       }
     });
 
-    return res.map(item => new Users({
+    return res.map(item => new UsersModel({
       ...item,
-      access_type: item.access_type as TAccessType
+      access_type: item.access_type as UsersAccessTypeValue
     }));
   };
 
   findById = async (
-    args: TFindByIdArgs<string>
-  ): Promise<Users | null> => {
+    args: FindByIdArgs<string>
+  ): Promise<UsersModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -121,15 +121,15 @@ export default class UsersRepository implements IUsersRepository {
 
     if (!res) return null;
 
-    return new Users({
+    return new UsersModel({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   findByUsernameOrEmail = async (
-    args: TFindByUsernameOrEmailArgs
-  ): Promise<Users | null> => {
+    args: FindByUsernameOrEmailArgs
+  ): Promise<UsersModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -164,15 +164,15 @@ export default class UsersRepository implements IUsersRepository {
 
     if (!res) return null;
 
-    return new Users({
+    return new UsersModel({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   create = async (
-    args: TCreateArgs<Users>
-  ): Promise<Users> => {
+    args: CreateArgs<UsersModel>
+  ): Promise<UsersModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -190,15 +190,15 @@ export default class UsersRepository implements IUsersRepository {
       data: args.params
     });
 
-    return new Users({
+    return new UsersModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   update = async (
-    args: TUpdateArgs<string, Users>
-  ): Promise<Users> => {
+    args: UpdateArgs<string, UsersModel>
+  ): Promise<UsersModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const rolesSelect = args.include?.includes("roles")
       ? { roles: { select: { ...rolesSubsets, deleted_at: false, business_id: false } } }
@@ -220,15 +220,15 @@ export default class UsersRepository implements IUsersRepository {
       }
     });
 
-    return new Users({
+    return new UsersModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   softDelete = async (
-    args: TSoftDeleteArgs<string>
-  ): Promise<Users> => {
+    args: SoftDeleteArgs<string>
+  ): Promise<UsersModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -241,15 +241,15 @@ export default class UsersRepository implements IUsersRepository {
       }
     });
 
-    return new Users({
+    return new UsersModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   softDeleteMany = async (
-    args: TSoftDeleteManyArgs<string>
-  ): Promise<TGenericObject> => {
+    args: SoftDeleteManyArgs<string>
+  ): Promise<GenericObject> => {
     const data = await this.client.updateMany({
       where: {
         id: {
@@ -265,8 +265,8 @@ export default class UsersRepository implements IUsersRepository {
   };
 
   softDeleteManyByBusinessIds = async (
-    args: TSoftDeleteManyArgs<number>
-  ): Promise<TGenericObject> => {
+    args: SoftDeleteManyArgs<number>
+  ): Promise<GenericObject> => {
     const data = await this.client.updateMany({
       where: {
         business_id: {
@@ -282,7 +282,7 @@ export default class UsersRepository implements IUsersRepository {
   };
 
   changePassword = async (
-    args: TChangePasswordArgs<string>
+    args: ChangePasswordArgs<string>
   ): Promise<void> => {
     await this.client.update({
       where: { id: args.id },
@@ -294,7 +294,7 @@ export default class UsersRepository implements IUsersRepository {
   };
 
   count = async (
-    args?: TCountArgs
+    args?: CountArgs
   ): Promise<number> => {
     const data = this.client.count({
       where: {

@@ -1,4 +1,4 @@
-export default interface IRolesEntity {
+export default interface Roles {
   id?: number;
   name: string;
   description?: string | null;

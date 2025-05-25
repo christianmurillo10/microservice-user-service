@@ -4,14 +4,10 @@ import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import BusinessesService from "../../../services/businesses.service";
-import RolesRepository from "../../../repositories/roles.repository";
-import UsersRepository from "../../../repositories/users.repository";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
 const router = Router();
 const service = new BusinessesService();
-const rolesRepository = new RolesRepository();
-const usersRepository = new UsersRepository();
 
 const controller = async (
   req: Request,
@@ -27,8 +23,6 @@ const controller = async (
     }
 
     await service.getById(id);
-    await rolesRepository.softDeleteManyByBusinessIds({ ids: [id] });
-    await usersRepository.softDeleteManyByBusinessIds({ ids: [id] });
     return await service.delete(id);
   })
   .then(result => {
