@@ -1,5 +1,5 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaRolesRepository from "../repositories/roles.repository";
+import PrismaRolesRepository from "../repositories/prisma/roles.repository";
 import RolesModel from "../models/roles.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetByIdArgs, GetByNameArgs } from "../shared/types/service.type";

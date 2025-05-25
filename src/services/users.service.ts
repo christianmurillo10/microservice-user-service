@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
-import PrismaUsersRepository from "../repositories/users.repository";
+import PrismaUsersRepository from "../repositories/prisma/users.repository";
 import UsersModel from "../models/users.model";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
 import { comparePassword, hashPassword } from "../shared/utils/bcrypt";

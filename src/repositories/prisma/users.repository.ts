@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import UsersModel from "../models/users.model";
-import UsersRepository from "../shared/types/repositories/users.interface";
+import UsersModel from "../../models/users.model";
+import UsersRepository from "../users.interface";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
@@ -12,11 +12,11 @@ import {
   SoftDeleteManyArgs,
   ChangePasswordArgs,
   CountArgs
-} from "../shared/types/repository.type";
-import { GenericObject } from "../shared/types/common.type";
-import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
-import { usersSubsets, rolesSubsets, businessesSubsets } from "../shared/helpers/select-subset.helper";
-import { UsersAccessTypeValue } from "../entities/users.entity";
+} from "../../shared/types/repository.type";
+import { GenericObject } from "../../shared/types/common.type";
+import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
+import { usersSubsets, rolesSubsets, businessesSubsets } from "../../shared/helpers/select-subset.helper";
+import { UsersAccessTypeValue } from "../../entities/users.entity";
 
 export default class PrismaUsersRepository implements UsersRepository {
   private client;

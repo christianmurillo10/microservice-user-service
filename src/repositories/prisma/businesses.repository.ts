@@ -1,40 +1,40 @@
 import { PrismaClient } from "@prisma/client";
-import RolesModel from "../models/roles.model";
-import RolesRepository from "../shared/types/repositories/roles.interface";
+import BusinessesModel from "../../models/businesses.model";
+import BusinessesRepository from "../businesses.interface";
 import {
   FindAllArgs,
+  FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByNameArgs,
+  FindByApiKeyArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../shared/types/repository.type";
-import { GenericObject } from "../shared/types/common.type";
-import { parseQueryFilters, setSelectExclude } from "../shared/helpers/common.helper";
-import { businessesSubsets, rolesSubsets } from "../shared/helpers/select-subset.helper";
+} from "../../shared/types/repository.type";
+import { GenericObject } from "../../shared/types/common.type";
+import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
+import { businessesSubsets } from "../../shared/helpers/select-subset.helper";
 
-export default class PrismaRolesRepository implements RolesRepository {
+export default class PrismaBusinessesRepository implements BusinessesRepository {
   private client;
+
+  readonly logoPath = "public/images/businesses/";
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.roles;
+    this.client = prisma.businesses;
   };
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<RolesModel[]> => {
+  ): Promise<BusinessesModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessesSelect = args.include?.includes("businesses")
-      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
-      : undefined;
     const res = await this.client.findMany({
       select: {
-        ...rolesSubsets,
-        ...exclude,
-        ...businessesSelect
+        ...businessesSubsets,
+        ...exclude
       },
       where: {
         deleted_at: null,
@@ -48,21 +48,38 @@ export default class PrismaRolesRepository implements RolesRepository {
       take: args.query?.limit
     });
 
-    return res.map(item => new RolesModel(item));
+    return res.map(item => new BusinessesModel(item));
+  };
+
+  findAllBetweenCreatedAt = async (
+    args: FindAllBetweenCreatedAtArgs
+  ): Promise<BusinessesModel[]> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const betweenCreatedAt = args.date_from && args.date_to
+      ? { created_at: { gte: new Date(args.date_from), lte: new Date(args.date_to) } }
+      : undefined;
+    const res = await this.client.findMany({
+      select: {
+        ...businessesSubsets,
+        ...exclude
+      },
+      where: {
+        ...args.condition,
+        ...betweenCreatedAt,
+      }
+    });
+
+    return res.map(item => new BusinessesModel(item));
   };
 
   findById = async (
     args: FindByIdArgs<number>
-  ): Promise<RolesModel | null> => {
+  ): Promise<BusinessesModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessesSelect = args.include?.includes("businesses")
-      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
-      : undefined;
     const res = await this.client.findFirst({
       select: {
-        ...rolesSubsets,
-        ...exclude,
-        ...businessesSelect
+        ...businessesSubsets,
+        ...exclude
       },
       where: {
         id: args.id,
@@ -73,21 +90,17 @@ export default class PrismaRolesRepository implements RolesRepository {
 
     if (!res) return null;
 
-    return new RolesModel(res);
+    return new BusinessesModel(res);
   };
 
   findByName = async (
     args: FindByNameArgs
-  ): Promise<RolesModel | null> => {
+  ): Promise<BusinessesModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessesSelect = args.include?.includes("businesses")
-      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
-      : undefined;
     const res = await this.client.findFirst({
       select: {
-        ...rolesSubsets,
-        ...exclude,
-        ...businessesSelect
+        ...businessesSubsets,
+        ...exclude
       },
       where: {
         name: args.name,
@@ -98,40 +111,53 @@ export default class PrismaRolesRepository implements RolesRepository {
 
     if (!res) return null;
 
-    return new RolesModel(res);
+    return new BusinessesModel(res);
+  };
+
+  findByApiKey = async (
+    args: FindByApiKeyArgs
+  ): Promise<BusinessesModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...businessesSubsets,
+        ...exclude
+      },
+      where: {
+        api_key: args.api_key,
+        deleted_at: null,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new BusinessesModel(res);
   };
 
   create = async (
-    args: CreateArgs<RolesModel>
-  ): Promise<RolesModel> => {
+    args: CreateArgs<BusinessesModel>
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessesSelect = args.include?.includes("businesses")
-      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
-      : undefined;
     const data = await this.client.create({
       select: {
-        ...rolesSubsets,
-        ...exclude,
-        ...businessesSelect
+        ...businessesSubsets,
+        ...exclude
       },
       data: args.params
     });
 
-    return new RolesModel(data);
+    return new BusinessesModel(data);
   };
 
   update = async (
-    args: UpdateArgs<number, RolesModel>
-  ): Promise<RolesModel> => {
+    args: UpdateArgs<number, BusinessesModel>
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessesSelect = args.include?.includes("businesses")
-      ? { businesses: { select: { ...businessesSubsets, deleted_at: false } } }
-      : undefined;
     const data = await this.client.update({
       select: {
-        ...rolesSubsets,
-        ...exclude,
-        ...businessesSelect
+        ...businessesSubsets,
+        ...exclude
       },
       where: { id: args.id },
       data: {
@@ -140,16 +166,16 @@ export default class PrismaRolesRepository implements RolesRepository {
       }
     });
 
-    return new RolesModel(data);
+    return new BusinessesModel(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<number>
-  ): Promise<RolesModel> => {
+  ): Promise<BusinessesModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...rolesSubsets,
+        ...businessesSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -158,7 +184,7 @@ export default class PrismaRolesRepository implements RolesRepository {
       }
     });
 
-    return new RolesModel(data);
+    return new BusinessesModel(data);
   };
 
   softDeleteMany = async (
@@ -167,23 +193,6 @@ export default class PrismaRolesRepository implements RolesRepository {
     const data = await this.client.updateMany({
       where: {
         id: {
-          in: args.ids
-        }
-      },
-      data: {
-        deleted_at: new Date(),
-      }
-    });
-
-    return data;
-  };
-
-  softDeleteManyByBusinessIds = async (
-    args: SoftDeleteManyArgs<number>
-  ): Promise<GenericObject> => {
-    const data = await this.client.updateMany({
-      where: {
-        business_id: {
           in: args.ids
         }
       },

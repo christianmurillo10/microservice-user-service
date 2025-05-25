@@ -1,4 +1,4 @@
-import RolesModel from "../../../models/roles.model";
+import RolesModel from "../models/roles.model";
 import {
   FindAllArgs,
   FindByIdArgs,
@@ -8,8 +8,8 @@ import {
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   CountArgs
-} from "../repository.type";
-import { GenericObject } from "../common.type";
+} from "../shared/types/repository.type";
+import { GenericObject } from "../shared/types/common.type";
 
 export default interface RolesRepository {
   findAll: (args: FindAllArgs) => Promise<RolesModel[]>;

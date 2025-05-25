@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaBusinessesRepository from "../repositories/businesses.repository";
-import PrismaRolesRepository from "../repositories/roles.repository";
-import PrismaUsersRepository from "../repositories/users.repository";
+import PrismaBusinessesRepository from "../repositories/prisma/businesses.repository";
+import PrismaRolesRepository from "../repositories/prisma/roles.repository";
+import PrismaUsersRepository from "../repositories/prisma/users.repository";
 import BusinessesModel from "../models/businesses.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";

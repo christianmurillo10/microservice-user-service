@@ -1,4 +1,4 @@
-import UsersModel from "../../../models/users.model";
+import UsersModel from "../models/users.model";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
@@ -10,8 +10,8 @@ import {
   SoftDeleteManyArgs,
   ChangePasswordArgs,
   CountArgs
-} from "../repository.type";
-import { GenericObject } from "../common.type";
+} from "../shared/types/repository.type";
+import { GenericObject } from "../shared/types/common.type";
 
 export default interface UsersRepository {
   findAll: (args: FindAllArgs) => Promise<UsersModel[]>;
