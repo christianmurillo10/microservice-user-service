@@ -13,3 +13,8 @@ export type UserLoggedOut = {
   id: string,
   is_logged: boolean
 };
+
+export type UserLoggedOutData = {
+  old_details: UserLoggedOut,
+  new_details: UserLoggedOut
+};
