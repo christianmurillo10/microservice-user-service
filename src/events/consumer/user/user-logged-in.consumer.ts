@@ -2,15 +2,17 @@ import { Message } from "kafkajs";
 import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
+import { UserLoggedInData } from "../../../shared/types/events/users.type";
 
 const usersService = new UsersService();
 
 const subscribeUserLoggedIn = async (message: Message): Promise<void> => {
-  const value = JSON.parse(message.value?.toString() ?? '{}');
-  const record = await usersService.getById(value.id)
+  const value: UserLoggedInData = JSON.parse(message.value?.toString() ?? '{}');
+  const userId = value.new_details.id;
+  const record = await usersService.getById({ id: userId })
     .catch(err => {
       if (err instanceof NotFoundException) {
-        console.log(`User ${value.id} not exist!`);
+        console.log(`User ${userId} not exist!`);
         return;
       }
 
@@ -23,8 +25,8 @@ const subscribeUserLoggedIn = async (message: Message): Promise<void> => {
 
   const data = {
     ...record,
-    is_logged: value.is_logged,
-    last_logged_at: value.last_logged_at,
+    is_logged: value.new_details.is_logged,
+    last_logged_at: value.new_details.last_logged_at,
     updated_at: new Date(),
   } as UsersModel;
 
