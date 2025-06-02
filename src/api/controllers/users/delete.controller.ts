@@ -5,6 +5,7 @@ import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import UsersService from "../../../services/users.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
 const service = new UsersService();
@@ -15,7 +16,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, businesses } = req;
+    const { params, businesses, userRequestHeader } = req;
     const id = params.id;
 
     if (id === ":id") {
@@ -23,8 +24,24 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    await service.getById({ id: id, condition });
-    return await service.delete(id);
+    const record = await service.getById({ id: id, condition });
+    const result = await service.delete(id);
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    await userProducer.publishUserDeleted(
+      {
+        old_details: record,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {
