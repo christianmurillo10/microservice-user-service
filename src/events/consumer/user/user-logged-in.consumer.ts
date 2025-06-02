@@ -2,7 +2,8 @@ import { Message } from "kafkajs";
 import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
-import { MessageData, UserLoggedIn } from "../../../shared/types/events/users.type";
+import { MessageData } from "../../../shared/types/common.type";
+import { UserLoggedIn } from "../../../shared/types/events/users.type";
 
 const usersService = new UsersService();
 

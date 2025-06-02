@@ -27,3 +27,8 @@ export type ApiResponseInput = {
   errors?: string[],
   result?: unknown,
 };
+
+export type MessageData<T> = {
+  old_details: T,
+  new_details: T
+};
