@@ -28,7 +28,7 @@ export type ApiResponseInput = {
   result?: unknown,
 };
 
-export type MessageData<T> = {
+export type EventMessageData<T> = {
   old_details: T,
   new_details: T
 };
