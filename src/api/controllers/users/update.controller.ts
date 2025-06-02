@@ -19,7 +19,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body, file, businesses } = req;
+    const { params, body, file, businesses, userRequestHeader } = req;
     const id = params.id;
 
     if (id === ":id") {
@@ -32,7 +32,16 @@ const controller = async (
 
     // Execute producer
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserUpdated(result);
+    await userProducer.publishUserUpdated(
+      {
+        old_details: record,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      });
 
     return result;
   })

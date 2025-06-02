@@ -1,4 +1,4 @@
-import { ConsumerConfig, EachMessagePayload, Kafka, KafkaConfig, logLevel, Message, Producer } from "kafkajs";
+import { ConsumerConfig, EachMessagePayload, IHeaders, Kafka, KafkaConfig, logLevel, Message, Producer } from "kafkajs";
 
 export default class KafkaService {
   private kafka: Kafka;
@@ -23,12 +23,14 @@ export default class KafkaService {
   initializeProducer = async (
     topic: string,
     event: string,
-    data: unknown
+    data: unknown,
+    headers?: IHeaders
   ) => {
     try {
       const msg: Message = {
         key: event,
-        value: JSON.stringify(data)
+        value: JSON.stringify(data),
+        headers
       }
       await this.producer.send({
         topic: topic,
@@ -36,7 +38,7 @@ export default class KafkaService {
       })
       console.info(`Message sent to topic ${topic}`)
     } catch (error) {
-      console.info("failed to initialise producer")
+      console.error("failed to initialise producer")
     }
   };
 

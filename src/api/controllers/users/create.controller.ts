@@ -9,6 +9,7 @@ import UsersService from "../../../services/users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
 import UserKafkaProducer from "../../../events/producer/user.producer";
+import UsersModel from "../../../models/users.model";
 
 const router = Router();
 const upload = multer();
@@ -20,7 +21,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, file, businesses } = req;
+    const { body, file, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
     const record = await service.getByUsernameOrEmail({
       username: body.username,
@@ -43,7 +44,17 @@ const controller = async (
 
     // Execute producer
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserCreated(result);
+    await userProducer.publishUserCreated(
+      {
+        old_details: {} as UsersModel,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
 
     return result;
   })
