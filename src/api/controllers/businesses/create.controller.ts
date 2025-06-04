@@ -8,6 +8,8 @@ import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import BusinessesService from "../../../services/businesses.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
+import BusinessKafkaProducer from "../../../events/producer/business.producer";
+import BusinessesModel from "../../../models/businesses.model";
 
 const router = Router();
 const upload = multer();
@@ -19,7 +21,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, file } = req;
+    const { body, file, userRequestHeader } = req;
     const record = await service.getByName(body.name)
       .catch(err => {
         if (err instanceof NotFoundException) {
@@ -33,7 +35,23 @@ const controller = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    return await service.save(body, file);
+    const result = await service.save(body, file);
+
+    // Execute producer
+    const businessProducer = new BusinessKafkaProducer();
+    await businessProducer.publishBusinessCreated(
+      {
+        old_details: {} as BusinessesModel,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

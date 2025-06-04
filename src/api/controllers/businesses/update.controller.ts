@@ -7,6 +7,7 @@ import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
 import BusinessesService from "../../../services/businesses.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import BusinessKafkaProducer from "../../../events/producer/business.producer";
 
 const router = Router();
 const upload = multer();
@@ -18,7 +19,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body, file } = req;
+    const { params, body, file, userRequestHeader } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
@@ -26,7 +27,22 @@ const controller = async (
     }
 
     const record = await service.getById(id);
-    return await service.save({ ...record, ...body }, file);
+    const result = await service.save({ ...record, ...body }, file);
+
+    // Execute producer
+    const businessProducer = new BusinessKafkaProducer();
+    await businessProducer.publishBusinessUpdated(
+      {
+        old_details: record,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      });
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

@@ -5,3 +5,7 @@ export const EVENT_USER_DELETED = "user-deleted";
 export const EVENT_USER_BULK_DELETED = "user-bulk_deleted";
 export const EVENT_USER_LOGGED_IN = "user-logged-in";
 export const EVENT_USER_LOGGED_OUT = "user-logged-out";
+export const EVENT_BUSINESS = "business-events";
+export const EVENT_BUSINESS_CREATED = "business-created";
+export const EVENT_BUSINESS_UPDATED = "business-updated";
+export const EVENT_BUSINESS_DELETED = "business-deleted";
