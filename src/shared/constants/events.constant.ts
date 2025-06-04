@@ -9,3 +9,7 @@ export const EVENT_BUSINESS = "business-events";
 export const EVENT_BUSINESS_CREATED = "business-created";
 export const EVENT_BUSINESS_UPDATED = "business-updated";
 export const EVENT_BUSINESS_DELETED = "business-deleted";
+export const EVENT_ROLE = "role-events";
+export const EVENT_ROLE_CREATED = "role-created";
+export const EVENT_ROLE_UPDATED = "role-updated";
+export const EVENT_ROLE_DELETED = "role-deleted";

@@ -7,6 +7,8 @@ import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import RolesService from "../../../services/roles.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
+import RoleKafkaProducer from "../../../events/producer/role.producer";
+import RolesModel from "../../../models/roles.model";
 
 const router = Router();
 const service = new RolesService();
@@ -17,7 +19,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, businesses } = req;
+    const { body, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
     const record = await service.getByName({
       name: body.name,
@@ -35,7 +37,23 @@ const controller = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    return await service.save(body);
+    const result = await service.save(body);
+
+    // Execute producer
+    const roleProducer = new RoleKafkaProducer();
+    await roleProducer.publishRoleCreated(
+      {
+        old_details: {} as RolesModel,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

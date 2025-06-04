@@ -5,6 +5,7 @@ import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import RolesService from "../../../services/roles.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import RoleKafkaProducer from "../../../events/producer/role.producer";
 
 const router = Router();
 const service = new RolesService();
@@ -15,7 +16,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, businesses } = req;
+    const { params, businesses, userRequestHeader } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
@@ -23,8 +24,24 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    await service.getById({ id: Number(id), condition });
-    return await service.delete(Number(id));
+    const record = await service.getById({ id: Number(id), condition });
+    const result = await service.delete(Number(id));
+
+    // Execute producer
+    const roleProducer = new RoleKafkaProducer();
+    await roleProducer.publishRoleDeleted(
+      {
+        old_details: record,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {

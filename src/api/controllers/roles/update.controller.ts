@@ -6,6 +6,7 @@ import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
 import RolesService from "../../../services/roles.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import RoleKafkaProducer from "../../../events/producer/role.producer";
 
 const router = Router();
 const service = new RolesService();
@@ -16,7 +17,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body, businesses } = req;
+    const { params, body, businesses, userRequestHeader } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
@@ -25,7 +26,22 @@ const controller = async (
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
     const record = await service.getById({ id, condition });
-    return await service.save({ ...record, ...body });
+    const result = await service.save({ ...record, ...body });
+
+    // Execute producer
+    const roleProducer = new RoleKafkaProducer();
+    await roleProducer.publishRoleUpdated(
+      {
+        old_details: record,
+        new_details: result
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      });
+
+    return result;
   })
   .then(result => {
     apiResponse(res, {
