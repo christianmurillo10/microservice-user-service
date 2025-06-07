@@ -83,6 +83,7 @@ const authenticate = async (
         throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
       }
 
+      req.auth = usersRecord;
       req.businesses = businessesRecord;
       req.body.business_id = businessesRecord.id;
     }

@@ -21,7 +21,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, file, userRequestHeader } = req;
+    const { body, file, auth, userRequestHeader } = req;
     const record = await service.getByName(body.name)
       .catch(err => {
         if (err instanceof NotFoundException) {
@@ -44,6 +44,7 @@ const controller = async (
         old_details: {} as BusinessesModel,
         new_details: result
       },
+      auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,

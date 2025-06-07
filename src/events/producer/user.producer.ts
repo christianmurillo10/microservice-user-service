@@ -15,21 +15,21 @@ export default class UserKafkaProducer {
     });
   };
 
-  publishUserCreated = async (data: EventMessageData<UsersModel>, headers?: IHeaders): Promise<void> => {
+  publishUserCreated = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_CREATED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_CREATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserUpdated = async (data: EventMessageData<UsersModel>, headers?: IHeaders): Promise<void> => {
+  publishUserUpdated = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_UPDATED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_UPDATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserDeleted = async (data: EventMessageData<UsersModel>, headers?: IHeaders): Promise<void> => {
+  publishUserDeleted = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_DELETED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 };

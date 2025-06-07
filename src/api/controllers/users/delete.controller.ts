@@ -16,7 +16,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, businesses, userRequestHeader } = req;
+    const { params, auth, businesses, userRequestHeader } = req;
     const id = params.id;
 
     if (id === ":id") {
@@ -34,6 +34,7 @@ const controller = async (
         old_details: record,
         new_details: result
       },
+      auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,

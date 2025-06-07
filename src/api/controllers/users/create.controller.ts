@@ -21,7 +21,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, file, businesses, userRequestHeader } = req;
+    const { body, file, auth, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
     const record = await service.getByUsernameOrEmail({
       username: body.username,
@@ -49,6 +49,7 @@ const controller = async (
         old_details: {} as UsersModel,
         new_details: result
       },
+      auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,

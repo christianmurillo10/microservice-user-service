@@ -24,12 +24,17 @@ export default class KafkaService {
     topic: string,
     event: string,
     data: unknown,
+    key?: string,
     headers?: IHeaders
   ) => {
     try {
       const msg: Message = {
-        key: event,
-        value: JSON.stringify(data),
+        key: key,
+        value: JSON.stringify({
+          eventType: event,
+          timeStamp: new Date().toISOString(),
+          data
+        }),
         headers
       }
       await this.producer.send({

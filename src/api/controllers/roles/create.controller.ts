@@ -19,7 +19,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body, businesses, userRequestHeader } = req;
+    const { body, auth, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
     const record = await service.getByName({
       name: body.name,
@@ -46,6 +46,7 @@ const controller = async (
         old_details: {} as RolesModel,
         new_details: result
       },
+      auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,

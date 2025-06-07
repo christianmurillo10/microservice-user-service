@@ -15,21 +15,21 @@ export default class RoleKafkaProducer {
     });
   };
 
-  publishRoleCreated = async (data: EventMessageData<RolesModel>, headers?: IHeaders): Promise<void> => {
+  publishRoleCreated = async (data: EventMessageData<RolesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_CREATED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_CREATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishRoleUpdated = async (data: EventMessageData<RolesModel>, headers?: IHeaders): Promise<void> => {
+  publishRoleUpdated = async (data: EventMessageData<RolesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_UPDATED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_UPDATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishRoleDeleted = async (data: EventMessageData<RolesModel>, headers?: IHeaders): Promise<void> => {
+  publishRoleDeleted = async (data: EventMessageData<RolesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_DELETED, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_ROLE, EVENT_ROLE_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 };

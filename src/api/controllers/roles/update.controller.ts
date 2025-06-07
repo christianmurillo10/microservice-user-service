@@ -17,7 +17,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body, businesses, userRequestHeader } = req;
+    const { params, body, auth, businesses, userRequestHeader } = req;
     const id = Number(params.id);
 
     if (isNaN(id)) {
@@ -35,6 +35,7 @@ const controller = async (
         old_details: record,
         new_details: result
       },
+      auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,
