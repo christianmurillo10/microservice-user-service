@@ -17,17 +17,18 @@ export default class UserKafkaConsumer {
 
   private eachMessageHandler = async (payload: EachMessagePayload) => {
     const { message, heartbeat } = payload;
+    const value = JSON.parse(message.value?.toString() ?? '{}');
 
-    if (!message.key) {
+    if (!value) {
       return;
     };
 
-    switch (message.key.toString()) {
+    switch (value.eventType) {
       case EVENT_USER_LOGGED_IN:
-        await subscribeUserLoggedIn(message);
+        await subscribeUserLoggedIn(value.data);
         break;
       case EVENT_USER_LOGGED_OUT:
-        await subscribeUserLoggedOut(message);
+        await subscribeUserLoggedOut(value.data);
         break;
     };
 
