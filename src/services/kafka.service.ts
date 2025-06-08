@@ -16,7 +16,7 @@ export default class KafkaService {
       await this.producer.connect();
       console.info("Producer connected successfully connected successfully")
     } catch (error) {
-      console.error("Failed to connect Kafka producer:", error);
+      console.error("Failed to connect kafka producer:", error);
     }
   };
 
@@ -53,25 +53,28 @@ export default class KafkaService {
       await this.producer.disconnect();
       console.info("Producer disconnected successfully")
     } catch (error) {
-      console.error("Failed to disconnect Kafka producer:", error);
+      console.error("Failed to disconnect kafka producer:", error);
     }
   };
 
   initializeConsumer = async (
-    topic: string,
+    topics: string[],
     groupId: string,
     eachMessageHandler: (payload: EachMessagePayload) => Promise<void>
   ) => {
     try {
+      console.info(`Initializing kafka consumer for groupId: ${groupId}`);
       const consumerConfig: ConsumerConfig = { groupId: groupId };
       const consumer = this.kafka.consumer(consumerConfig);
 
-      console.info(`Connecting Kafka consumer for topic: ${topic}`);
+      console.info("Connecting kafka consumer");
       await consumer.connect();
-      console.info(`Kafka consumer connected for topic: ${topic}`);
+      console.info("Connected kafka consumer");
 
-      await consumer.subscribe({ topic, fromBeginning: true });
-      console.info(`Subscribed to topic ${topic}`);
+      for (const topic of topics) {
+        await consumer.subscribe({ topic, fromBeginning: true });
+        console.info(`Subscribed to topic: ${topic}`);
+      }
 
       await consumer.run({
         eachMessage: async (payload) => {
@@ -79,9 +82,9 @@ export default class KafkaService {
         },
       });
 
-      this.consumers.set(topic, consumer);
+      topics.forEach(topic => this.consumers.set(topic, consumer));
     } catch (error) {
-      console.error("Failed to initialize Kafka consumer:", error);
+      console.error("Failed to initialize kafka consumer:", error);
     }
   };
 
@@ -89,12 +92,12 @@ export default class KafkaService {
     const consumer = this.consumers.get(topic);
     if (consumer) {
       try {
-        console.info(`Disconnecting Kafka consumer for topic: ${topic}`);
+        console.info(`Disconnecting kafka consumer for topic: ${topic}`);
         await consumer.disconnect();
-        console.info(`Kafka consumer disconnected for topic: ${topic}`);
+        console.info(`Disconnected kafa consumer: ${topic}`);
         this.consumers.delete(topic);
       } catch (error) {
-        console.error(`Failed to disconnect Kafka consumer for topic: ${topic}`, error);
+        console.error(`Failed to disconnect kafka consumer for topic: ${topic}`, error);
       }
     } else {
       console.info(`No consumer found for topic: ${topic}`);
