@@ -5,6 +5,7 @@ import { changePassword as validator } from "../../../middlewares/validators/use
 import { MESSAGE_DATA_PASSWORD_CHANGED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CHANGE_PASSWORD } from "../../../shared/constants/error.constant";
 import UsersService from "../../../services/users.service";
+import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
 const service = new UsersService();
@@ -15,7 +16,7 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { params, body } = req;
+    const { params, body, auth, userRequestHeader } = req;
     const id = params.id;
     const record = await service.getById({ id: id });
     await service.changePassword(
@@ -23,6 +24,21 @@ const controller = async (
       record.password as string,
       body.old_password,
       body.new_password
+    );
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    await userProducer.publishUserPasswordChanged(
+      {
+        old_details: {},
+        new_details: {}
+      },
+      auth.id!,
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
     );
   })
   .then(() => {

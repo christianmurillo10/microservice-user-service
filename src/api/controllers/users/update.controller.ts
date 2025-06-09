@@ -42,7 +42,8 @@ const controller = async (
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,
         user_agent: userRequestHeader.user_agent ?? undefined
-      });
+      }
+    );
 
     return result;
   })
