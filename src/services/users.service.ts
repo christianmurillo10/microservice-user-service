@@ -117,7 +117,7 @@ export default class UsersService {
     hash_password: string,
     old_password: string,
     new_password: string
-  ): Promise<void> => {
+  ): Promise<UsersModel> => {
     const compareOldPassword = comparePassword(old_password, hash_password);
 
     if (!compareOldPassword) {
@@ -130,7 +130,7 @@ export default class UsersService {
       throw new BadRequestException([MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD]);
     };
 
-    await this.repository.changePassword({
+    return await this.repository.changePassword({
       id: id,
       new_password: hashPassword(new_password)
     });

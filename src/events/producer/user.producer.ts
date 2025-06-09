@@ -3,7 +3,7 @@ import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
 import { EVENT_USER, EVENT_USER_CREATED, EVENT_USER_DELETED, EVENT_USER_PASSWORD_CHANGED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
 import UsersModel from "../../models/users.model";
-import { EventMessageData, GenericObject } from "../../shared/types/common.type";
+import { EventMessageData } from "../../shared/types/common.type";
 
 export default class UserKafkaProducer {
   private kafkaService: KafkaService;
@@ -33,7 +33,7 @@ export default class UserKafkaProducer {
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserPasswordChanged = async (data: EventMessageData<GenericObject>, userId: string, headers?: IHeaders): Promise<void> => {
+  publishUserPasswordChanged = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_PASSWORD_CHANGED, data, userId, headers);
     await this.kafkaService.disconnectProducer();

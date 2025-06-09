@@ -19,7 +19,7 @@ const controller = async (
     const { params, body, auth, userRequestHeader } = req;
     const id = params.id;
     const record = await service.getById({ id: id });
-    await service.changePassword(
+    const newRecord = await service.changePassword(
       id,
       record.password as string,
       body.old_password,
@@ -30,8 +30,8 @@ const controller = async (
     const userProducer = new UserKafkaProducer();
     await userProducer.publishUserPasswordChanged(
       {
-        old_details: {},
-        new_details: {}
+        old_details: record,
+        new_details: newRecord
       },
       auth.id!,
       {

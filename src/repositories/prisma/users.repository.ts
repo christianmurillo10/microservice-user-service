@@ -283,13 +283,18 @@ export default class PrismaUsersRepository implements UsersRepository {
 
   changePassword = async (
     args: ChangePasswordArgs<string>
-  ): Promise<void> => {
-    await this.client.update({
+  ): Promise<UsersModel> => {
+    const data = await this.client.update({
       where: { id: args.id },
       data: {
         password: args.new_password,
         updated_at: new Date(),
       }
+    });
+
+    return new UsersModel({
+      ...data,
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
