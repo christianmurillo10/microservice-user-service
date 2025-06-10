@@ -5,6 +5,7 @@ import { deleteByIds as validator } from "../../../middlewares/validators/users.
 import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import UsersService from "../../../services/users.service";
+import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
 const service = new UsersService();
@@ -15,8 +16,23 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const { body } = req;
+    const { body, auth, userRequestHeader } = req;
     await service.deleteMany(body.ids);
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    await userProducer.publishUserBulkDeleted(
+      {
+        old_details: {},
+        new_details: body
+      },
+      auth.id!,
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
   })
   .then(() => {
     apiResponse(res, {

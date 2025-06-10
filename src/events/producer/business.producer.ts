@@ -1,7 +1,7 @@
 import { IHeaders } from "kafkajs";
 import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
-import { EVENT_BUSINESS, EVENT_BUSINESS_CREATED, EVENT_BUSINESS_DELETED, EVENT_BUSINESS_UPDATED } from "../../shared/constants/events.constant";
+import { EVENT_BUSINESS, EVENT_BUSINESS_BULK_DELETED, EVENT_BUSINESS_CREATED, EVENT_BUSINESS_DELETED, EVENT_BUSINESS_UPDATED } from "../../shared/constants/events.constant";
 import BusinessesModel from "../../models/businesses.model";
 import { EventMessageData } from "../../shared/types/common.type";
 
@@ -30,6 +30,12 @@ export default class BusinessKafkaProducer {
   publishBusinessDeleted = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_DELETED, data, userId, headers);
+    await this.kafkaService.disconnectProducer();
+  };
+
+  publishBusinessBulkDeleted = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
+    await this.kafkaService.connectProducer();
+    await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_BULK_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 };

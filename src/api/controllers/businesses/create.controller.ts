@@ -37,21 +37,6 @@ const controller = async (
 
     const result = await service.save(body, file);
 
-    console.log("auth", auth)
-
-    console.log("TEST",
-      {
-        old_details: {} as BusinessesModel,
-        new_details: result
-      },
-      auth.id!,
-      {
-        ip_address: userRequestHeader.ip_address ?? undefined,
-        host: userRequestHeader.host ?? undefined,
-        user_agent: userRequestHeader.user_agent ?? undefined
-      }
-    )
-
     // Execute producer
     const businessProducer = new BusinessKafkaProducer();
     await businessProducer.publishBusinessCreated(

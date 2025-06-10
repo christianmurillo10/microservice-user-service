@@ -1,7 +1,7 @@
 import { IHeaders } from "kafkajs";
 import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
-import { EVENT_USER, EVENT_USER_CREATED, EVENT_USER_DELETED, EVENT_USER_PASSWORD_CHANGED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
+import { EVENT_USER, EVENT_USER_BULK_DELETED, EVENT_USER_CREATED, EVENT_USER_DELETED, EVENT_USER_PASSWORD_CHANGED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
 import UsersModel from "../../models/users.model";
 import { EventMessageData } from "../../shared/types/common.type";
 
@@ -30,6 +30,12 @@ export default class UserKafkaProducer {
   publishUserDeleted = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_DELETED, data, userId, headers);
+    await this.kafkaService.disconnectProducer();
+  };
+
+  publishUserBulkDeleted = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
+    await this.kafkaService.connectProducer();
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_BULK_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
