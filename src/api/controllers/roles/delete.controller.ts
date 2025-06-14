@@ -8,14 +8,14 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 import RoleKafkaProducer from "../../../events/producer/role.producer";
 
 const router = Router();
-const service = new RolesService();
+const rolesService = new RolesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, auth, businesses, userRequestHeader } = req;
     const id = Number(params.id);
 
@@ -24,15 +24,15 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    const record = await service.getById({ id: Number(id), condition });
-    const result = await service.delete(Number(id));
+    const existingRole = await rolesService.getById({ id: Number(id), condition });
+    const newRole = await rolesService.delete(Number(id));
 
-    // Execute producer
+    // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
     await roleProducer.publishRoleDeleted(
       {
-        old_details: record,
-        new_details: result
+        old_details: existingRole,
+        new_details: newRole
       },
       auth.id!,
       {
@@ -42,19 +42,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_DELETED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_DELETE}: `, err);
-    next(err)
-  });
+      result: newRole
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_DELETE}: `, error);
+    next(error);
+  };
+};
 
 export default router.delete(
   "/:id",

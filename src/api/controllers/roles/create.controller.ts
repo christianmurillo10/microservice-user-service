@@ -11,40 +11,37 @@ import RoleKafkaProducer from "../../../events/producer/role.producer";
 import RolesModel from "../../../models/roles.model";
 
 const router = Router();
-const service = new RolesService();
+const rolesService = new RolesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { body, auth, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
-    const record = await service.getByName({
+    const existingRole = await rolesService.getByName({
       name: body.name,
       condition
     })
       .catch(err => {
-        if (err instanceof NotFoundException) {
-          return null;
-        }
-
+        if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    if (record) {
+    if (existingRole) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const result = await service.save(body);
+    const newRole = await rolesService.save(body);
 
-    // Execute producer
+    // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
     await roleProducer.publishRoleCreated(
       {
         old_details: {} as RolesModel,
-        new_details: result
+        new_details: newRole
       },
       auth.id!,
       {
@@ -54,19 +51,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 201,
       message: MESSAGE_DATA_CREATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_CREATE}: `, err);
-    next(err)
-  });
+      result: newRole
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_CREATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/",

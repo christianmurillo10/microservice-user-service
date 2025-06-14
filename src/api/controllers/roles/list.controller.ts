@@ -7,45 +7,39 @@ import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
 import RolesService from "../../../services/roles.service";
 
 const router = Router();
-const service = new RolesService();
+const rolesService = new RolesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { query, businesses } = req;
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    const record = await service.getAll({ query, condition });
-    const record_count = record.length;
-    const all_record_count = await service.count({ query });
+    const roles = await rolesService.getAll({ query, condition });
+    const rolesCount = roles.length;
+    const allRolesCount = await rolesService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
-    if (record.length < 1) {
+    if (roles.length < 1) {
       message = MESSAGE_DATA_NOT_FOUND;
     };
 
-    return {
-      message,
-      result: {
-        all_data_count: all_record_count,
-        data_count: record_count,
-        data: record
-      }
-    };
-  })
-  .then(({ message, result }) => {
     apiResponse(res, {
       status_code: 200,
       message,
-      result
+      result: {
+        all_data_count: allRolesCount,
+        data_count: rolesCount,
+        data: roles
+      }
     })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_LIST}: `, err);
-    next(err)
-  });
+  } catch (error) {
+    console.error(`${ERROR_ON_LIST}: `, error);
+    next(error);
+  };
+};
 
 export default router.get(
   "/",

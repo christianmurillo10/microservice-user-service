@@ -7,14 +7,14 @@ import RolesService from "../../../services/roles.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const service = new RolesService();
+const rolesService = new RolesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, businesses } = req;
     const id = Number(params.id);
 
@@ -23,19 +23,18 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    return await service.getById({ id, condition });
-  })
-  .then(result => {
+    const role = await rolesService.getById({ id, condition });
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_FIND,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_READ}: `, err);
-    next(err)
-  });
+      result: role
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_READ}: `, error);
+    next(error);
+  };
+};
 
 export default router.get(
   "/:id",

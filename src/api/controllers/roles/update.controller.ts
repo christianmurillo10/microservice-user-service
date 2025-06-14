@@ -15,8 +15,8 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, body, auth, businesses, userRequestHeader } = req;
     const id = Number(params.id);
 
@@ -25,36 +25,34 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    const record = await service.getById({ id, condition });
-    const result = await service.save({ ...record, ...body });
+    const oldRole = await service.getById({ id, condition });
+    const newRole = await service.save({ ...oldRole, ...body });
 
-    // Execute producer
+    // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
     await roleProducer.publishRoleUpdated(
       {
-        old_details: record,
-        new_details: result
+        old_details: oldRole,
+        new_details: newRole
       },
       auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,
         user_agent: userRequestHeader.user_agent ?? undefined
-      });
+      }
+    );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_UPDATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_UPDATE}: `, err);
-    next(err)
-  });
+      result: newRole
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_UPDATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.put(
   "/:id",
