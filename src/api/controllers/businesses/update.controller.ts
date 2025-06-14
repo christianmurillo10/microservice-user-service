@@ -17,8 +17,8 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, body, file, auth, userRequestHeader } = req;
     const id = Number(params.id);
 
@@ -26,36 +26,34 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const record = await service.getById(id);
-    const result = await service.save({ ...record, ...body }, file);
+    const existingBusiness = await service.getById(id);
+    const newBusiness = await service.save({ ...existingBusiness, ...body }, file);
 
-    // Execute producer
+    // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
     await businessProducer.publishBusinessUpdated(
       {
-        old_details: record,
-        new_details: result
+        old_details: existingBusiness,
+        new_details: newBusiness
       },
       auth.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,
         user_agent: userRequestHeader.user_agent ?? undefined
-      });
+      }
+    );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_UPDATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_UPDATE}: `, err);
-    next(err)
-  });
+      result: newBusiness
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_UPDATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.put(
   "/:id",

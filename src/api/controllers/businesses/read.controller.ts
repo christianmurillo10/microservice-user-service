@@ -7,14 +7,14 @@ import BusinessesService from "../../../services/businesses.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const service = new BusinessesService();
+const businessesService = new BusinessesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params } = req;
     const id = Number(params.id);
 
@@ -22,19 +22,18 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    return await service.getById(id);
-  })
-  .then(result => {
+    const business = await businessesService.getById(id);
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_FIND,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_READ}: `, err);
-    next(err)
-  });
+      result: business
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_READ}: `, error);
+    next(error);
+  };
+};
 
 export default router.get(
   "/:id",

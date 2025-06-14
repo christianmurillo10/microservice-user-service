@@ -8,18 +8,18 @@ import BusinessesService from "../../../services/businesses.service";
 import BusinessKafkaProducer from "../../../events/producer/business.producer";
 
 const router = Router();
-const service = new BusinessesService();
+const businessesService = new BusinessesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { body, auth, userRequestHeader } = req;
-    await service.deleteMany(body.ids);
+    await businessesService.deleteMany(body.ids);
 
-    // Execute producer
+    // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
     await businessProducer.publishBusinessBulkDeleted(
       {
@@ -33,17 +33,16 @@ const controller = async (
         user_agent: userRequestHeader.user_agent ?? undefined
       }
     );
-  })
-  .then(() => {
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_DELETED
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_DELETE}: `, err);
-    next(err)
-  });
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_DELETE}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/delete-by-ids",

@@ -13,36 +13,33 @@ import BusinessesModel from "../../../models/businesses.model";
 
 const router = Router();
 const upload = multer();
-const service = new BusinessesService();
+const businessesService = new BusinessesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { body, file, auth, userRequestHeader } = req;
-    const record = await service.getByName(body.name)
+    const existingBusiness = await businessesService.getByName(body.name)
       .catch(err => {
-        if (err instanceof NotFoundException) {
-          return null;
-        }
-
+        if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    if (record) {
+    if (existingBusiness) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const result = await service.save(body, file);
+    const newBusiness = await businessesService.save(body, file);
 
-    // Execute producer
+    // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
     await businessProducer.publishBusinessCreated(
       {
         old_details: {} as BusinessesModel,
-        new_details: result
+        new_details: newBusiness
       },
       auth.id!,
       {
@@ -52,19 +49,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 201,
       message: MESSAGE_DATA_CREATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_CREATE}: `, err);
-    next(err)
-  });
+      result: newBusiness
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_CREATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/",

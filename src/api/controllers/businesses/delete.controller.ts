@@ -8,14 +8,14 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 import BusinessKafkaProducer from "../../../events/producer/business.producer";
 
 const router = Router();
-const service = new BusinessesService();
+const businessesService = new BusinessesService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, auth, userRequestHeader } = req;
     const id = Number(params.id);
 
@@ -23,15 +23,15 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const record = await service.getById(id);
-    const result = await service.delete(id);
+    const existingBusiness = await businessesService.getById(id);
+    const newBusiness = await businessesService.delete(id);
 
-    // Execute producer
+    // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
     await businessProducer.publishBusinessDeleted(
       {
-        old_details: record,
-        new_details: result
+        old_details: existingBusiness,
+        new_details: newBusiness
       },
       auth.id!,
       {
@@ -41,19 +41,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_DELETED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_DELETE}: `, err);
-    next(err)
-  });
+      result: newBusiness
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_DELETE}: `, error);
+    next(error);
+  };
+};
 
 export default router.delete(
   "/:id",
