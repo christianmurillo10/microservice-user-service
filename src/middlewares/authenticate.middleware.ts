@@ -16,8 +16,10 @@ const authenticate = async (
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     };
 
-    const token = authorization.split(" ")[1];
-    const authenticateService = new AuthenticateService({ token, api_key: apiKey });
+    const authenticateService = new AuthenticateService({
+      token: authorization.split(" ")[1],
+      api_key: apiKey
+    });
     const authenticateOutput = await authenticateService.execute();
 
     if (authenticateOutput.businesses) {
