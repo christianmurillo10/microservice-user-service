@@ -9,7 +9,7 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 import RoleKafkaProducer from "../../../events/producer/role.producer";
 
 const router = Router();
-const service = new RolesService();
+const rolesService = new RolesService();
 
 const controller = async (
   req: Request,
@@ -25,8 +25,8 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    const oldRole = await service.getById({ id, condition });
-    const newRole = await service.save({ ...oldRole, ...body });
+    const oldRole = await rolesService.getById({ id, condition });
+    const newRole = await rolesService.save({ ...oldRole, ...body });
 
     // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
