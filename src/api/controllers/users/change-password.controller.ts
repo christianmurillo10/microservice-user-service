@@ -8,30 +8,30 @@ import UsersService from "../../../services/users.service";
 import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
-const service = new UsersService();
+const usersService = new UsersService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, body, auth, userRequestHeader } = req;
     const id = params.id;
-    const record = await service.getById({ id: id });
-    const newRecord = await service.changePassword(
+    const oldUser = await usersService.getById({ id: id });
+    const newUser = await usersService.changePassword(
       id,
-      record.password as string,
+      oldUser.password as string,
       body.old_password,
       body.new_password
     );
 
-    // Execute producer
+    // Send to Kafka
     const userProducer = new UserKafkaProducer();
     await userProducer.publishUserPasswordChanged(
       {
-        old_details: record,
-        new_details: newRecord
+        old_details: oldUser,
+        new_details: newUser
       },
       auth.id!,
       {
@@ -40,17 +40,16 @@ const controller = async (
         user_agent: userRequestHeader.user_agent ?? undefined
       }
     );
-  })
-  .then(() => {
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_PASSWORD_CHANGED
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_CHANGE_PASSWORD}: `, err);
-    next(err)
-  });
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_CHANGE_PASSWORD}: `, error);
+    next(error);
+  };
+};
 
 export default router.put(
   "/change-password/:id",

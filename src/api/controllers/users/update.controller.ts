@@ -11,14 +11,14 @@ import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
 const upload = multer();
-const service = new UsersService();
+const usersService = new UsersService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, body, file, auth, businesses, userRequestHeader } = req;
     const id = params.id;
 
@@ -27,15 +27,15 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    const record = await service.getById({ id, condition });
-    const result = await service.save({ ...record, ...body }, file);
+    const oldUser = await usersService.getById({ id, condition });
+    const newUser = await usersService.save({ ...oldUser, ...body }, file);
 
-    // Execute producer
+    // Send to Kafka
     const userProducer = new UserKafkaProducer();
     await userProducer.publishUserUpdated(
       {
-        old_details: record,
-        new_details: result
+        old_details: oldUser,
+        new_details: newUser
       },
       auth.id!,
       {
@@ -45,19 +45,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_UPDATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_UPDATE}: `, err);
-    next(err)
-  });
+      result: newUser
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_UPDATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.put(
   "/:id",

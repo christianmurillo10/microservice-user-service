@@ -13,41 +13,38 @@ import UsersModel from "../../../models/users.model";
 
 const router = Router();
 const upload = multer();
-const service = new UsersService();
+const usersService = new UsersService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { body, file, auth, businesses, userRequestHeader } = req;
     const condition = { business_id: businesses?.id || body.business_id || undefined };
-    const record = await service.getByUsernameOrEmail({
+    const oldUser = await usersService.getByUsernameOrEmail({
       username: body.username,
       email: body.email,
       condition
     })
       .catch(err => {
-        if (err instanceof NotFoundException) {
-          return null;
-        }
-
+        if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    if (record) {
+    if (oldUser) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const result = await service.save(body, file);
+    const newUser = await usersService.save(body, file);
 
-    // Execute producer
+    // Send to Kafka
     const userProducer = new UserKafkaProducer();
     await userProducer.publishUserCreated(
       {
         old_details: {} as UsersModel,
-        new_details: result
+        new_details: newUser
       },
       auth.id!,
       {
@@ -57,19 +54,16 @@ const controller = async (
       }
     );
 
-    return result;
-  })
-  .then(result => {
     apiResponse(res, {
       status_code: 201,
       message: MESSAGE_DATA_CREATED,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_CREATE}: `, err);
-    next(err)
-  });
+      result: newUser
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_CREATE}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/",

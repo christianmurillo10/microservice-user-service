@@ -7,14 +7,14 @@ import UsersService from "../../../services/users.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const service = new UsersService();
+const usersService = new UsersService();
 
 const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+): Promise<void> => {
+  try {
     const { params, businesses } = req;
     const id = params.id;
 
@@ -23,19 +23,18 @@ const controller = async (
     }
 
     const condition = businesses ? { business_id: businesses.id } : undefined;
-    return await service.getById({ id, condition });
-  })
-  .then(result => {
+    const user = await usersService.getById({ id, condition });
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_FIND,
-      result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_READ}: `, err);
-    next(err)
-  });
+      result: user
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_READ}: `, error);
+    next(error);
+  };
+};
 
 export default router.get(
   "/:id",
