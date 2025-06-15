@@ -22,12 +22,7 @@ const subscribeUserLoggedOut = async (value: EventMessageData<UserLoggedOut>): P
     return;
   }
 
-  const data = {
-    ...record,
-    is_logged: value.new_details.is_logged,
-    updated_at: new Date(),
-  } as UsersModel;
-
+  const data = new UsersModel({ ...record, ...value.new_details });
   await usersService.save(data)
     .catch(err => {
       console.log("Error on updating users", err);

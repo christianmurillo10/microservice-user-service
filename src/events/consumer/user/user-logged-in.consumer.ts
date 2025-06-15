@@ -22,13 +22,7 @@ const subscribeUserLoggedIn = async (value: EventMessageData<UserLoggedIn>): Pro
     return;
   }
 
-  const data = {
-    ...record,
-    is_logged: value.new_details.is_logged,
-    last_logged_at: value.new_details.last_logged_at,
-    updated_at: new Date(),
-  } as UsersModel;
-
+  const data = new UsersModel({ ...record, ...value.new_details });
   await usersService.save(data)
     .catch(err => {
       console.log("Error on updating users", err);
