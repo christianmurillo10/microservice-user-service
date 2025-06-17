@@ -8,7 +8,7 @@ const usersService = new UsersService();
 
 const subscribeUserLoggedOut = async (value: EventMessageData<UserLoggedOut>): Promise<void> => {
   const userId = value.new_details.id;
-  const record = await usersService.getById({ id: userId })
+  const existingUser = await usersService.getById({ id: userId })
     .catch(err => {
       if (err instanceof NotFoundException) {
         console.log(`User ${userId} not exist!`);
@@ -18,16 +18,19 @@ const subscribeUserLoggedOut = async (value: EventMessageData<UserLoggedOut>): P
       throw err;
     });
 
-  if (!record) {
+  if (!existingUser) {
     return;
   }
 
-  const data = new UsersModel({ ...record, ...value.new_details });
-  await usersService.save(data)
+  const user = new UsersModel({
+    ...existingUser,
+    ...value.new_details
+  });
+  await usersService.save(user)
     .catch(err => {
       console.log("Error on updating users", err);
     });
-  console.info(`Event Notification: Successfully logged out user ${data.id}.`);
+  console.info(`Event Notification: Successfully logged out user ${user.id}.`);
 };
 
 export default subscribeUserLoggedOut;
