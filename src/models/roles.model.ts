@@ -10,7 +10,13 @@ class RolesModel implements Roles {
   deleted_at?: Date | null = null;
 
   constructor(props: Roles) {
-    Object.assign(this, props);
+    this.id = props.id;
+    this.name = props.name;
+    this.description = props.description;
+    this.business_id = props.business_id;
+    this.created_at = props.created_at;
+    this.updated_at = props.updated_at;
+    this.deleted_at = props.deleted_at;
   };
 };
 

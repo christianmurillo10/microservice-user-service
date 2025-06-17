@@ -14,7 +14,14 @@ class JWTModel implements JWT {
   aud: string = "Microservice";
 
   constructor(props: JWT) {
-    Object.assign(this, props);
+    this.id = props.id;
+    this.email = props.email;
+    this.client = props.client;
+    this.scope = props.scope;
+    this.sub = props.sub;
+    this.exp = props.exp;
+    this.iat = props.iat;
+    this.aud = props.aud;
   };
 
   static decodeToken = (token: string): JWTModel => jwt.verify(token, config.secret) as unknown as JWTModel;

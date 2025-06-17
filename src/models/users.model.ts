@@ -9,7 +9,7 @@ class UsersModel implements Users {
   password: string = "";
   access_type: UsersAccessTypeValue = UsersAccessType.Business;
   image_path?: string | null = null;
-  business_id: number | null = null;
+  business_id?: number | null = null;
   role_id!: number;
   is_active: boolean = true;
   is_logged: boolean = false;
@@ -19,7 +19,21 @@ class UsersModel implements Users {
   deleted_at?: Date | null = null;
 
   constructor(props: Users) {
-    Object.assign(this, props);
+    this.id = props.id;
+    this.name = props.name;
+    this.username = props.username;
+    this.email = props.email;
+    this.password = props.password;
+    this.access_type = props.access_type;
+    this.image_path = props.image_path;
+    this.business_id = props.business_id;
+    this.role_id = props.role_id;
+    this.is_active = props.is_active;
+    this.is_logged = props.is_logged;
+    this.last_logged_at = props.last_logged_at;
+    this.created_at = props.created_at;
+    this.updated_at = props.updated_at;
+    this.deleted_at = props.deleted_at;
   };
 };
 
