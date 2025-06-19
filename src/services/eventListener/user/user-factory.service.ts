@@ -1,25 +1,18 @@
 import {
-  EVENT_USER_BULK_DELETED,
-  EVENT_USER_CREATED,
-  EVENT_USER_DELETED,
-  EVENT_USER_PASSWORD_CHANGED,
-  EVENT_USER_UPDATED
+  EVENT_USER_LOGGED_IN,
+  EVENT_USER_LOGGED_OUT
 } from "../../../shared/constants/events.constant";
 import InvalidEventTypeEventListenerService from "../invalid-event-type.service";
+import UserLoggedInEventListenerService from "./user-logged-in.service";
+import UserLoggedOutEventListenerService from "./user-logged-out.service";
 
 export default class UserEventListenerServiceFactory {
   public static createInstance(type: string) {
     switch (type) {
-      case EVENT_USER_CREATED:
-        return new InvalidEventTypeEventListenerService();
-      case EVENT_USER_UPDATED:
-        return new InvalidEventTypeEventListenerService();
-      case EVENT_USER_DELETED:
-        return new InvalidEventTypeEventListenerService();
-      case EVENT_USER_BULK_DELETED:
-        return new InvalidEventTypeEventListenerService();
-      case EVENT_USER_PASSWORD_CHANGED:
-        return new InvalidEventTypeEventListenerService();
+      case EVENT_USER_LOGGED_IN:
+        return new UserLoggedInEventListenerService();
+      case EVENT_USER_LOGGED_OUT:
+        return new UserLoggedOutEventListenerService();
       default:
         return new InvalidEventTypeEventListenerService();
     };
