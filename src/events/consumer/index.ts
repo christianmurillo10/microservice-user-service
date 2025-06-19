@@ -4,7 +4,7 @@ import kafkaConfig from "../../config/kafka.config";
 import {
   EVENT_USER
 } from "../../shared/constants/events.constant";
-import userConsumer from "./user";
+import userConsumer from "./user.consumer";
 
 export default class KafkaConsumer {
   private kafkaService: KafkaService;
