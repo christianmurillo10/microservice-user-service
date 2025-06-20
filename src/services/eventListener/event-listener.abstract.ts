@@ -1,5 +1,7 @@
-export default abstract class EventListenerAbstract<State> {
-  state: State | undefined;
+import { EventMessageData } from "../../shared/types/common.type";
 
-  setState = (state: State) => this.state = state;
+export default abstract class EventListenerAbstract<T> {
+  state: EventMessageData<T> | undefined;
+
+  setState = (state: EventMessageData<T>) => this.state = state;
 };

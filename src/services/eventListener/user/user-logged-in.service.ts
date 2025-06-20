@@ -1,11 +1,10 @@
 import UsersModel from "../../../models/users.model";
-import { EventMessageData } from "../../../shared/types/common.type";
 import UserEventListenerServiceAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UsersService from "../../users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserLoggedInEventListenerService extends UserEventListenerServiceAbstract<EventMessageData<UsersModel>> implements EventListenerService<UsersModel> {
+export default class UserLoggedInEventListenerService extends UserEventListenerServiceAbstract<UsersModel> implements EventListenerService<UsersModel> {
   usersService: UsersService;
 
   constructor() {
