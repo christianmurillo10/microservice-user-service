@@ -21,7 +21,7 @@ const controller = async (
 
     // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
-    await businessProducer.publishBusinessBulkDeleted(
+    await businessProducer.businessBulkDeletedEventEmitter(
       {
         old_details: {},
         new_details: body

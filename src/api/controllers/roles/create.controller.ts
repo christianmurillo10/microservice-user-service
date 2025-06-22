@@ -38,7 +38,7 @@ const controller = async (
 
     // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
-    await roleProducer.publishRoleCreated(
+    await roleProducer.roleCreatedEventEmitter(
       {
         old_details: {} as RolesModel,
         new_details: newRole

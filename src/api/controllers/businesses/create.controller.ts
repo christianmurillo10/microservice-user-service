@@ -36,7 +36,7 @@ const controller = async (
 
     // Send to Kafka
     const businessProducer = new BusinessKafkaProducer();
-    await businessProducer.publishBusinessCreated(
+    await businessProducer.businessCreatedEventEmitter(
       {
         old_details: {} as BusinessesModel,
         new_details: newBusiness

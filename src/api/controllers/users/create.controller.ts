@@ -41,7 +41,7 @@ const controller = async (
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserCreated(
+    await userProducer.userCreatedEventEmitter(
       {
         old_details: {} as UsersModel,
         new_details: newUser

@@ -21,7 +21,7 @@ const controller = async (
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserBulkDeleted(
+    await userProducer.userBulkDeletedEventEmitter(
       {
         old_details: {},
         new_details: body

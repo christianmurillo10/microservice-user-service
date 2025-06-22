@@ -28,7 +28,7 @@ const controller = async (
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserPasswordChanged(
+    await userProducer.userPasswordChangedEventEmitter(
       {
         old_details: oldUser,
         new_details: newUser

@@ -15,25 +15,25 @@ export default class BusinessKafkaProducer {
     });
   };
 
-  publishBusinessCreated = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  businessCreatedEventEmitter = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_CREATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishBusinessUpdated = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  businessUpdatedEventEmitter = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_UPDATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishBusinessDeleted = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  businessDeletedEventEmitter = async (data: EventMessageData<BusinessesModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishBusinessBulkDeleted = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
+  businessBulkDeletedEventEmitter = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_BULK_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();

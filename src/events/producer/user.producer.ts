@@ -15,31 +15,31 @@ export default class UserKafkaProducer {
     });
   };
 
-  publishUserCreated = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  userCreatedEventEmitter = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_CREATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserUpdated = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  userUpdatedEventEmitter = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_UPDATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserDeleted = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  userDeletedEventEmitter = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserBulkDeleted = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
+  userBulkDeletedEventEmitter = async (data: EventMessageData<unknown>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_BULK_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserPasswordChanged = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  userPasswordChangedEventEmitter = async (data: EventMessageData<UsersModel>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_PASSWORD_CHANGED, data, userId, headers);
     await this.kafkaService.disconnectProducer();

@@ -29,7 +29,7 @@ const controller = async (
 
     // Send to Kafka
     const roleProducer = new RoleKafkaProducer();
-    await roleProducer.publishRoleDeleted(
+    await roleProducer.roleDeletedEventEmitter(
       {
         old_details: existingRole,
         new_details: newRole
