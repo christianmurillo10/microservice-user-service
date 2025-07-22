@@ -29,7 +29,7 @@ const controller = async (
     apiResponse(res, {
       status_code: 200,
       message,
-      result: {
+      data: {
         all_data_count: allRolesCount,
         data_count: rolesCount,
         data: roles

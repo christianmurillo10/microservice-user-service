@@ -46,7 +46,7 @@ const controller = async (
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_UPDATED,
-      result: newRole
+      data: newRole
     });
   } catch (error) {
     console.error(`${ERROR_ON_UPDATE}: `, error);

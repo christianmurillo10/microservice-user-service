@@ -27,7 +27,7 @@ const controller = async (
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_FIND,
-      result: business
+      data: business
     });
   } catch (error) {
     console.error(`${ERROR_ON_READ}: `, error);

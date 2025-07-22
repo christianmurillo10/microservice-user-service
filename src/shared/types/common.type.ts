@@ -18,6 +18,16 @@ export type Query = {
   limit?: number
 };
 
+export type Pagination = {
+  total_items: number,
+  total_page_items: number,
+  total_pages: number,
+  page: number,
+  page_size: number,
+  has_next_page: boolean,
+  has_previous_page: boolean,
+};
+
 export type ApiResponseInput = {
   service?: string,
   version?: string,
@@ -25,7 +35,8 @@ export type ApiResponseInput = {
   status?: string,
   message?: string,
   errors?: string[],
-  result?: unknown,
+  data?: unknown,
+  pagination?: Pagination,
 };
 
 export type EventMessageData<T> = {

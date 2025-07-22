@@ -1,5 +1,5 @@
 import { Schema } from "joi";
-import { GenericObject } from "../types/common.type";
+import { GenericObject, Pagination } from "../types/common.type";
 
 export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => {
   const options = {
@@ -59,3 +59,22 @@ export const generateNonce = (): string => {
 export const setSelectExclude = (val: string[]): GenericObject => {
   return val ? val.reduce((acc, item) => ({ ...acc, [item]: false }), {}) : {};
 };
+
+export const getPagination = (
+  totalItems: number,
+  totalPageItems: number,
+  page: number,
+  pageSize: number
+): Pagination => {
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  return {
+    page,
+    page_size: pageSize,
+    total_items: totalItems,
+    total_page_items: totalPageItems,
+    total_pages: totalPages,
+    has_next_page: page < totalPages,
+    has_previous_page: page > 1
+  };
+}

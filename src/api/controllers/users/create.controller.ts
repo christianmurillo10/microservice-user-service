@@ -57,7 +57,7 @@ const controller = async (
     apiResponse(res, {
       status_code: 201,
       message: MESSAGE_DATA_CREATED,
-      result: newUser
+      data: newUser
     });
   } catch (error) {
     console.error(`${ERROR_ON_CREATE}: `, error);

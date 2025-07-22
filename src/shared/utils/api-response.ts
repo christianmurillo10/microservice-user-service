@@ -17,7 +17,8 @@ export const apiResponse = (
   status: input.status ?? "success",
   message: input.message,
   errors: input.errors ?? undefined,
-  result: input.result ?? undefined,
+  data: input.data ?? undefined,
+  pagination: input.pagination ?? undefined,
 });
 
 export const apiErrorResponse = (

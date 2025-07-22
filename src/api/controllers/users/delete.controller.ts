@@ -45,7 +45,7 @@ const controller = async (
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_DELETED,
-      result: newUser
+      data: newUser
     });
   } catch (error) {
     console.error(`${ERROR_ON_DELETE}: `, error);
