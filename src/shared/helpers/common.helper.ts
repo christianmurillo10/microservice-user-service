@@ -69,11 +69,11 @@ export const getPagination = (
   const totalPages = Math.ceil(totalItems / pageSize);
 
   return {
-    page,
-    page_size: pageSize,
     total_items: totalItems,
     total_page_items: totalPageItems,
     total_pages: totalPages,
+    page,
+    page_size: pageSize,
     has_next_page: page < totalPages,
     has_previous_page: page > 1
   };
