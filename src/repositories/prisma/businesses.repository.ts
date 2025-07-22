@@ -44,8 +44,10 @@ export default class PrismaBusinessesRepository implements BusinessesRepository 
       orderBy: {
         ...args.query?.sorting
       },
-      skip: args.query?.offset,
-      take: args.query?.limit
+      take: args.query?.limit,
+      skip: args.query?.page && args.query?.limit ?
+        (args.query?.page - 1) * args.query?.limit :
+        undefined
     });
 
     return res.map(item => new BusinessesModel(item));

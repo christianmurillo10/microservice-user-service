@@ -77,8 +77,8 @@ export const list = async (
         preferred_timezone: joi.string().label("Preferred Timezone").valid("asc", "desc").empty(),
         currency: joi.string().label("Currency").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
-      offset: joi.number().label("Offset").empty(),
-      limit: joi.number().label("Limit").empty(),
+      page: joi.number().min(1).label("Page").empty(),
+      limit: joi.number().min(1).label("Limit").empty(),
     });
     const stringifyQuery = JSON.stringify(await validateInput(req.query, schema));
     req.query = JSON.parse(stringifyQuery);

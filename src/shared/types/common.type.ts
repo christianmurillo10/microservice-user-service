@@ -14,7 +14,7 @@ export type ChangePassword = {
 export type Query = {
   filters?: GenericObject,
   sorting?: GenericObject,
-  offset?: number,
+  page?: number,
   limit?: number
 };
 

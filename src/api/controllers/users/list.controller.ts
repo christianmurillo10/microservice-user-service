@@ -34,7 +34,7 @@ const controller = async (
       pagination: getPagination(
         allUsersCount,
         usersCount,
-        Number(query.offset ?? 1) + 1,
+        Number(query.page ?? 1),
         Number(query.limit ?? 10)
       )
     });

@@ -71,8 +71,8 @@ export const list = async (
         updated_at: joi.string().label("Last Modified").valid("asc", "desc").empty(),
         name: joi.string().label("Name").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
-      offset: joi.number().label("Offset").empty(),
-      limit: joi.number().label("Limit").empty(),
+      page: joi.number().min(1).label("Page").empty(),
+      limit: joi.number().min(1).label("Limit").empty(),
     });
     const stringifyQuery = JSON.stringify(await validateInput(req.query, schema));
     req.query = JSON.parse(stringifyQuery);

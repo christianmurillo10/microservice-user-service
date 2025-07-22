@@ -119,8 +119,8 @@ export const list = async (
         username: joi.string().label("Username").valid("asc", "desc").empty(),
         access_type: joi.string().label("Access Type").valid("asc", "desc").empty(),
       }).label("Sorting").empty(),
-      offset: joi.number().label("Offset").empty(),
-      limit: joi.number().label("Limit").empty(),
+      page: joi.number().min(1).label("Page").empty(),
+      limit: joi.number().min(1).label("Limit").empty(),
     });
     const stringifyQuery = JSON.stringify(await validateInput(req.query, schema));
     req.query = JSON.parse(stringifyQuery);
