@@ -13,8 +13,8 @@ export default class KafkaServer {
 
   static disconnect = async () => {
     const kafkaService = new KafkaService({
-      clientId: kafkaConfig.kafka_client_id,
-      brokers: [kafkaConfig.kafka_broker]
+      clientId: kafkaConfig.kafkaClientId,
+      brokers: [kafkaConfig.kafkaBroker]
     });
     await kafkaService.disconnectProducer();
     await kafkaService.disconnectConsumer(EVENT_USER);

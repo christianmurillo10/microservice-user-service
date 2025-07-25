@@ -6,8 +6,8 @@ export type GetAllArgs = {
 };
 
 export type GetAllBetweenCreatedAtArgs = {
-  date_from: string,
-  date_to: string,
+  dateFrom: string,
+  dateTo: string,
   condition?: GenericObject
 };
 

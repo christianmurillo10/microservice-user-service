@@ -1,6 +1,6 @@
 export default interface UserRequestHeader {
-  user_agent?: string | null,
+  userAgent?: string | null,
   host?: string | null,
-  ip_address?: string | null,
+  ipAddress?: string | null,
   timestamp: Date
 };

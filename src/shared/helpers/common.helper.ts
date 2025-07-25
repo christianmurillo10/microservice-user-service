@@ -24,11 +24,11 @@ export const parseQueryFilters = <T>(data: T): GenericObject => {
     ? Object.assign({}, ...Object.entries(data)
       .map(([key, value]) => {
         const dateFields = [
-          "created_at",
-          "updated_at",
-          "deleted_at",
-          "last_logged_at",
-          "verified_at",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+          "lastLoggedAt",
+          "verifiedAt",
           "date"
         ];
 
@@ -69,12 +69,12 @@ export const getPagination = (
   const totalPages = Math.ceil(totalItems / pageSize);
 
   return {
-    total_items: totalItems,
-    total_page_items: totalPageItems,
-    total_pages: totalPages,
+    totalItems: totalItems,
+    totalPageItems: totalPageItems,
+    totalPages: totalPages,
     page,
-    page_size: pageSize,
-    has_next_page: page < totalPages,
-    has_previous_page: page > 1
+    pageSize: pageSize,
+    hasNextPage: page < totalPages,
+    hasPreviousPage: page > 1
   };
 }

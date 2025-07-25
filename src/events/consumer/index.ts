@@ -12,8 +12,8 @@ export default class KafkaConsumer {
 
   constructor(topics: string[]) {
     this.kafkaService = new KafkaService({
-      clientId: kafkaConfig.kafka_client_id,
-      brokers: [kafkaConfig.kafka_broker]
+      clientId: kafkaConfig.kafkaClientId,
+      brokers: [kafkaConfig.kafkaBroker]
     });
     this.topics = topics;
   };
@@ -33,7 +33,7 @@ export default class KafkaConsumer {
   execute = async (): Promise<void> => {
     await this.kafkaService.initializeConsumer(
       this.topics,
-      kafkaConfig.kafka_group_id,
+      kafkaConfig.kafkaGroupId,
       this.eachMessageHandler
     );
   };

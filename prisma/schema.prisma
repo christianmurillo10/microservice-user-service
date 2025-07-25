@@ -17,29 +17,12 @@ model Business {
   preferredTimezone String?   @map("preferred_timezone") @db.VarChar(100)
   currency          String?   @db.VarChar(100)
   createdAt         DateTime  @map("created_at") @db.DateTime(0)
-  updatedAt         DateTime? @map("updated_at") @db.DateTime(0)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
 
-  roles Role[] @relation("RoleToBusiness")
   users User[] @relation("UserToBusiness")
 
   @@map("businesses")
-}
-
-model Role {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(100)
-  description String?   @db.Text
-  businessId  Int?      @map("business_id")
-  createdAt   DateTime  @map("created_at") @db.DateTime(0)
-  updatedAt   DateTime? @map("updated_at") @db.DateTime(0)
-  deletedAt   DateTime? @map("deleted_at") @db.DateTime(0)
-
-  business Business? @relation("RoleToBusiness", fields: [businessId], references: [id])
-  users    User[]    @relation("UserToRole")
-
-  @@index([businessId], map: "business_id")
-  @@map("roles")
 }
 
 model User {
@@ -51,18 +34,15 @@ model User {
   accessType   String    @map("access_type") @db.VarChar(100)
   imagePath    String?   @map("image_path") @db.VarChar(255)
   businessId   Int?      @map("business_id")
-  roleId       Int       @map("role_id")
   isActive     Boolean   @default(true) @map("is_active")
   isLogged     Boolean   @default(false) @map("is_logged")
   lastLoggedAt DateTime? @map("last_logged_at") @db.DateTime(0)
   createdAt    DateTime  @map("created_at") @db.DateTime(0)
-  updatedAt    DateTime? @map("updated_at") @db.DateTime(0)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt    DateTime? @map("deleted_at") @db.DateTime(0)
 
-  business Business? @relation("UserToBusiness", fields: [businessId], references: [id])
-  role     Role      @relation("UserToRole", fields: [roleId], references: [id])
+  business Business? @relation("UserToBusiness", fields: [businessId], references: [id], onDelete: Cascade)
 
   @@index([businessId], map: "business_id")
-  @@index([roleId], map: "role_id")
   @@map("users")
 }

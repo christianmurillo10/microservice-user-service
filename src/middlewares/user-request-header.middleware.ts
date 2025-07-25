@@ -7,9 +7,9 @@ const userRequestHeader = (
   next: NextFunction
 ) => {
   const userRequestHeader = new UserRequestHeaderModel();
-  userRequestHeader.user_agent = req.headers["user-agent"] ?? null;
+  userRequestHeader.userAgent = req.headers["user-agent"] ?? null;
   userRequestHeader.host = req.headers["host"] ?? null;
-  userRequestHeader.ip_address = req.ip ?? null;
+  userRequestHeader.ipAddress = req.ip ?? null;
   userRequestHeader.timestamp = new Date();
   req.userRequestHeader = userRequestHeader;
   next();

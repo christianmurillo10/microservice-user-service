@@ -10,7 +10,7 @@ const authenticate = async (
 ): Promise<void> => {
   try {
     const { authorization } = req.headers;
-    const apiKey = req.query.api_key as string;
+    const apiKey = req.query.apiKey as string;
 
     if (!authorization) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
@@ -18,16 +18,16 @@ const authenticate = async (
 
     const authenticateService = new AuthenticateService({
       token: authorization.split(" ")[1],
-      api_key: apiKey
+      apiKey: apiKey
     });
     const authenticateOutput = await authenticateService.execute();
 
-    if (authenticateOutput.businesses) {
-      req.businesses = authenticateOutput.businesses;
-      req.body.business_id = authenticateOutput.businesses.id;
+    if (authenticateOutput.business) {
+      req.business = authenticateOutput.business;
+      req.body.businessId = authenticateOutput.business.id;
     }
 
-    req.auth = authenticateOutput.users;
+    req.auth = authenticateOutput.user;
     next();
   } catch (error) {
     next(error);

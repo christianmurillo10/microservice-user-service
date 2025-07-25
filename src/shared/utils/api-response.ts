@@ -10,10 +10,10 @@ import { ApiResponseInput } from "../types/common.type";
 export const apiResponse = (
   res: Response,
   input: ApiResponseInput
-) => res.status(input.status_code ?? 200).send({
-  service: config.app_name,
+) => res.status(input.statusCode ?? 200).send({
+  service: config.appName,
   version: config.version,
-  status_code: input.status_code ?? 200,
+  statusCode: input.statusCode ?? 200,
   status: input.status ?? "success",
   message: input.message,
   errors: input.errors ?? undefined,
@@ -25,7 +25,7 @@ export const apiErrorResponse = (
   res: Response,
   err: Error
 ) => {
-  let status_code = 500;
+  let statusCode = 500;
   let message = MESSAGE_ERROR_SERVER;
   let errors = [ERROR_ON_SERVER];
 
@@ -34,17 +34,17 @@ export const apiErrorResponse = (
   };
 
   if (err instanceof ErrorException) {
-    status_code = err.status_code;
+    statusCode = err.statusCode;
     message = err.message;
     errors = err.errors;
   };
 
-  if (status_code === 500) {
+  if (statusCode === 500) {
     console.log(err);
   };
 
   return apiResponse(res, {
-    status_code: status_code,
+    statusCode: statusCode,
     status: "error",
     message: message,
     errors: errors,

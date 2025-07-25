@@ -1,8 +1,8 @@
-import UsersModel from "../../models/users.model";
+import UserModel from "../../models/user.model";
 import EventListenerService from "./event-listener.interface";
 import EventListenerAbstract from "./event-listener.abstract";
 
-export default class InvalidEventTypeEventListenerService extends EventListenerAbstract<UsersModel> implements EventListenerService<UsersModel> {
+export default class InvalidEventTypeEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
   constructor() {
     super();
   };

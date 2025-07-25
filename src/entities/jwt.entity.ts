@@ -1,9 +1,9 @@
-import { UsersAccessTypeValue } from "./users.entity";
+import { UserAccessTypeValue } from "./user.entity";
 
 export interface JWT {
   id: number;
   email: string;
-  client: UsersAccessTypeValue;
+  client: UserAccessTypeValue;
   scope: string;
   sub: number;
   exp: number;

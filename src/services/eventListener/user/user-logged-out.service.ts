@@ -1,15 +1,15 @@
-import UsersModel from "../../../models/users.model";
+import UserModel from "../../../models/user.model";
 import UserEventListenerServiceAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
-import UsersService from "../../users.service";
+import UserService from "../../user.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserLoggedOutEventListenerService extends UserEventListenerServiceAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  private usersService: UsersService;
+export default class UserLoggedOutEventListenerService extends UserEventListenerServiceAbstract<UserModel> implements EventListenerService<UserModel> {
+  private userService: UserService;
 
   constructor() {
     super();
-    this.usersService = new UsersService();
+    this.userService = new UserService();
   };
 
   execute = async (): Promise<void> => {
@@ -18,8 +18,8 @@ export default class UserLoggedOutEventListenerService extends UserEventListener
       return;
     };
 
-    const userId = this.state.new_details.id!;
-    const existingUser = await this.usersService.getById({ id: userId })
+    const userId = this.state.newDetails.id!;
+    const existingUser = await this.userService.getById({ id: userId })
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -33,13 +33,13 @@ export default class UserLoggedOutEventListenerService extends UserEventListener
       return;
     }
 
-    const user = new UsersModel({
+    const user = new UserModel({
       ...existingUser,
-      ...this.state.new_details
+      ...this.state.newDetails
     });
-    await this.usersService.save(user)
+    await this.userService.save(user)
       .catch(err => {
-        console.log("Error on updating users", err);
+        console.log("Error on updating user", err);
       });
 
     console.info(`Event Notification: Successfully logged out user ${user.id}.`);

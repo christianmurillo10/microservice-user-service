@@ -1,91 +1,91 @@
-import { UsersAccessType } from "../entities/users.entity";
-import BusinessesModel from "../models/businesses.model";
-import UsersModel from "../models/users.model";
+import { UserAccessType } from "../entities/user.entity";
+import BusinessModel from "../models/business.model";
+import UserModel from "../models/user.model";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY, MESSAGE_REQUIRED_API_KEY } from "../shared/constants/message.constant";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { verifyToken } from "../shared/helpers/jwt.helper";
-import BusinessesService from "./businesses.service";
-import UsersService from "./users.service";
+import BusinessService from "./business.service";
+import UserService from "./user.service";
 
 type Input = {
   token: string,
-  api_key?: string,
+  apiKey?: string,
 };
 
 type Output = {
-  businesses?: BusinessesModel,
-  users: UsersModel
+  business?: BusinessModel,
+  user: UserModel
 };
 
 export default class AuthenticateService {
   private input: Input;
-  private businessesService: BusinessesService;
-  private usersService: UsersService;
+  private businessService: BusinessService;
+  private userService: UserService;
 
   constructor(input: Input) {
     this.input = input;
-    this.businessesService = new BusinessesService();
-    this.usersService = new UsersService();
+    this.businessService = new BusinessService();
+    this.userService = new UserService();
   };
 
   private validateUserRecord = async (id: string) => {
-    const usersRecord = await this.usersService.getById({ id })
+    const userRecord = await this.userService.getById({ id })
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    return usersRecord;
+    return userRecord;
   };
 
-  private validateApiKey = async (api_key: string) => {
-    const businessesRecord = await this.businessesService.getByApiKey(api_key)
+  private validateApiKey = async (apiKey: string) => {
+    const businessRecord = await this.businessService.getByApiKey(apiKey)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    return businessesRecord;
+    return businessRecord;
   };
 
   execute = async (): Promise<Output> => {
-    const { token, api_key } = this.input;
-    let businessesRecord;
+    const { token, apiKey } = this.input;
+    let businessRecord;
     const tokenData = verifyToken(token);
 
     if (!tokenData) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };
 
-    // Validate users logged status
-    const usersRecord = await this.validateUserRecord(tokenData.id as unknown as string);
+    // Validate user logged status
+    const userRecord = await this.validateUserRecord(tokenData.id as unknown as string);
 
-    if (!usersRecord) {
+    if (!userRecord) {
       throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
     }
 
-    if (Boolean(usersRecord.is_logged) === false) {
+    if (Boolean(userRecord.isLogged) === false) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     }
 
-    // Validate via api_key if token client is BUSINESS
-    if (tokenData.client === UsersAccessType.Business) {
-      if (!api_key) {
+    // Validate via apiKey if token client is BUSINESS
+    if (tokenData.client === UserAccessType.Business) {
+      if (!apiKey) {
         throw new ForbiddenException([MESSAGE_REQUIRED_API_KEY]);
       };
 
-      businessesRecord = await this.validateApiKey(api_key as string);
+      businessRecord = await this.validateApiKey(apiKey as string);
 
-      if (!businessesRecord) {
+      if (!businessRecord) {
         throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
       }
     }
 
     return {
-      businesses: businessesRecord,
-      users: usersRecord
+      business: businessRecord,
+      user: userRecord
     };
   };
 };

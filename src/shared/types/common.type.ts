@@ -7,8 +7,8 @@ export type UniqueId = number | string | null;
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
 export type ChangePassword = {
-  old_password: string,
-  new_password: string,
+  oldPassword: string,
+  newPassword: string,
 };
 
 export type Query = {
@@ -19,19 +19,19 @@ export type Query = {
 };
 
 export type Pagination = {
-  total_items: number,
-  total_page_items: number,
-  total_pages: number,
+  totalItems: number,
+  totalPageItems: number,
+  totalPages: number,
   page: number,
-  page_size: number,
-  has_next_page: boolean,
-  has_previous_page: boolean,
+  pageSize: number,
+  hasNextPage: boolean,
+  hasPreviousPage: boolean,
 };
 
 export type ApiResponseInput = {
   service?: string,
   version?: string,
-  status_code: number,
+  statusCode: number,
   status?: string,
   message?: string,
   errors?: string[],
@@ -40,6 +40,6 @@ export type ApiResponseInput = {
 };
 
 export type EventMessageData<T> = {
-  old_details: T,
-  new_details: T
+  oldDetails: T,
+  newDetails: T
 };

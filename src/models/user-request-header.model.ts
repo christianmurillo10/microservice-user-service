@@ -1,9 +1,9 @@
 import UserRequestHeader from "../entities/user-request-header.entity";
 
 class UserRequestHeaderModel implements UserRequestHeader {
-  user_agent?: string | null = null;
+  userAgent?: string | null = null;
   host?: string | null = null;
-  ip_address?: string | null = null;
+  ipAddress?: string | null = null;
   timestamp: Date = new Date();
 };
 
