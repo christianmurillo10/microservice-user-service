@@ -6,10 +6,11 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev": "ts-node-dev --respawn src/index.ts",
     "db-migrate": "prisma migrate dev --skip-seed --name migration",
     "db-migrate-reset": "prisma migrate reset --skip-seed",
     "db-seed": "prisma db seed",
+    "db-generate": "prisma generate",
     "prisma": "prisma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -53,10 +54,9 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.10",
     "@types/uuid": "^10.0.0",
-    "concurrently": "^9.1.2",
-    "nodemon": "^3.1.9",
     "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
   }
 }

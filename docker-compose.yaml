@@ -22,7 +22,7 @@ services:
     environment:
       NODE_ENV: development
       APP_ENV: local
-      DATABASE_URL: mysql://root:password@host.docker.internal:3402/microservice_user_live
+      DATABASE_URL: mysql://root:password@database:3402/microservice_user_live
       KAFKA_BROKER: host.docker.internal:9092
     ports:
       - "5002:3000"
