@@ -77,4 +77,4 @@ export const getPagination = (
     hasNextPage: page < totalPages,
     hasPreviousPage: page > 1
   };
-}
+};
