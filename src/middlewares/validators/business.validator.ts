@@ -78,7 +78,7 @@ export const list = async (
         currency: joi.string().label("Currency").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
       page: joi.number().min(1).label("Page").empty(),
-      limit: joi.number().min(1).label("Limit").empty(),
+      pageSize: joi.number().min(1).label("Page Size").empty(),
     });
     const stringifyQuery = JSON.stringify(await validateInput(req.query, schema));
     req.query = JSON.parse(stringifyQuery);

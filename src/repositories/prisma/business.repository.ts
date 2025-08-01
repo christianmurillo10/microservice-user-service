@@ -44,9 +44,9 @@ export default class PrismaBusinessRepository implements BusinessRepository {
       orderBy: {
         ...args.query?.sorting
       },
-      take: args.query?.limit,
-      skip: args.query?.page && args.query?.limit ?
-        (args.query?.page - 1) * args.query?.limit :
+      take: args.query?.pageSize,
+      skip: args.query?.page && args.query?.pageSize ?
+        (args.query?.page - 1) * args.query?.pageSize :
         undefined
     });
 

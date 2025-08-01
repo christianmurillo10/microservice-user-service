@@ -15,7 +15,7 @@ export type Query = {
   filters?: GenericObject,
   sorting?: GenericObject,
   page?: number,
-  limit?: number
+  pageSize?: number
 };
 
 export type Pagination = {
