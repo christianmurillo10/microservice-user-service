@@ -1,13 +1,13 @@
 -- CreateTable
 CREATE TABLE `businesses` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` CHAR(36) NOT NULL,
     `name` VARCHAR(100) NOT NULL,
     `api_key` VARCHAR(255) NOT NULL,
     `domain` VARCHAR(255) NULL,
     `logo_path` VARCHAR(255) NULL,
     `preferred_timezone` VARCHAR(100) NULL,
     `currency` VARCHAR(100) NULL,
-    `created_at` DATETIME(0) NOT NULL,
+    `created_at` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` DATETIME(0) NOT NULL,
     `deleted_at` DATETIME(0) NULL,
 
@@ -23,11 +23,11 @@ CREATE TABLE `users` (
     `password` VARCHAR(100) NOT NULL,
     `access_type` VARCHAR(100) NOT NULL,
     `image_path` VARCHAR(255) NULL,
-    `business_id` INTEGER NULL,
+    `business_id` VARCHAR(191) NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,
     `is_logged` BOOLEAN NOT NULL DEFAULT false,
     `last_logged_at` DATETIME(0) NULL,
-    `created_at` DATETIME(0) NOT NULL,
+    `created_at` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` DATETIME(0) NOT NULL,
     `deleted_at` DATETIME(0) NULL,
 

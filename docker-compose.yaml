@@ -1,20 +1,6 @@
 version: "3.9"
 
 services:
-  database:
-    container_name: microservice_user_database
-    image: mysql:8.0.32
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: microservice_user_live
-    ports:
-      - "3402:3306"
-    volumes:
-      - "user_local_mysql_data:/var/lib/mysql"
-    networks:
-      - microservices_network
-
   app:
     container_name: microservice_user_service
     image: node:20.13
@@ -26,8 +12,6 @@ services:
       KAFKA_BROKER: host.docker.internal:9092
     ports:
       - "5002:3000"
-    depends_on:
-      - database
     working_dir: /var/app/current
     volumes:
       - "./:/var/app/current"
@@ -37,6 +21,3 @@ services:
 networks:
   microservices_network:
     driver: bridge
-
-volumes:
-  user_local_mysql_data:
