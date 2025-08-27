@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import BusinessModel from "../../models/business.model";
-import BusinessRepository from "../business.interface";
+import OrganizationModel from "../../models/organization.model";
+import OrganizationRepository from "../organization.interface";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
@@ -15,25 +15,25 @@ import {
 } from "../../shared/types/repository.type";
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
-import { businessSubsets } from "../../shared/helpers/select-subset.helper";
+import { organizationSubsets } from "../../shared/helpers/select-subset.helper";
 
-export default class PrismaBusinessRepository implements BusinessRepository {
+export default class PrismaOrganizationRepository implements OrganizationRepository {
   private client;
 
-  readonly logoPath = "public/images/business/";
+  readonly logoPath = "public/images/organization/";
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.business;
+    this.client = prisma.organization;
   };
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<BusinessModel[]> => {
+  ): Promise<OrganizationModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -50,19 +50,19 @@ export default class PrismaBusinessRepository implements BusinessRepository {
         undefined
     });
 
-    return res.map(item => new BusinessModel(item));
+    return res.map(item => new OrganizationModel(item));
   };
 
   findAllBetweenCreatedAt = async (
     args: FindAllBetweenCreatedAtArgs
-  ): Promise<BusinessModel[]> => {
+  ): Promise<OrganizationModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo
       ? { createdAt: { gte: new Date(args.dateFrom), lte: new Date(args.dateTo) } }
       : undefined;
     const res = await this.client.findMany({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -71,16 +71,16 @@ export default class PrismaBusinessRepository implements BusinessRepository {
       }
     });
 
-    return res.map(item => new BusinessModel(item));
+    return res.map(item => new OrganizationModel(item));
   };
 
   findById = async (
     args: FindByIdArgs<number>
-  ): Promise<BusinessModel | null> => {
+  ): Promise<OrganizationModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -92,16 +92,16 @@ export default class PrismaBusinessRepository implements BusinessRepository {
 
     if (!res) return null;
 
-    return new BusinessModel(res);
+    return new OrganizationModel(res);
   };
 
   findByName = async (
     args: FindByNameArgs
-  ): Promise<BusinessModel | null> => {
+  ): Promise<OrganizationModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -113,16 +113,16 @@ export default class PrismaBusinessRepository implements BusinessRepository {
 
     if (!res) return null;
 
-    return new BusinessModel(res);
+    return new OrganizationModel(res);
   };
 
   findByApiKey = async (
     args: FindByApiKeyArgs
-  ): Promise<BusinessModel | null> => {
+  ): Promise<OrganizationModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -134,31 +134,31 @@ export default class PrismaBusinessRepository implements BusinessRepository {
 
     if (!res) return null;
 
-    return new BusinessModel(res);
+    return new OrganizationModel(res);
   };
 
   create = async (
-    args: CreateArgs<BusinessModel>
-  ): Promise<BusinessModel> => {
+    args: CreateArgs<OrganizationModel>
+  ): Promise<OrganizationModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       data: args.params
     });
 
-    return new BusinessModel(data);
+    return new OrganizationModel(data);
   };
 
   update = async (
-    args: UpdateArgs<number, BusinessModel>
-  ): Promise<BusinessModel> => {
+    args: UpdateArgs<number, OrganizationModel>
+  ): Promise<OrganizationModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -168,16 +168,16 @@ export default class PrismaBusinessRepository implements BusinessRepository {
       }
     });
 
-    return new BusinessModel(data);
+    return new OrganizationModel(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<number>
-  ): Promise<BusinessModel> => {
+  ): Promise<OrganizationModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...businessSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -186,7 +186,7 @@ export default class PrismaBusinessRepository implements BusinessRepository {
       }
     });
 
-    return new BusinessModel(data);
+    return new OrganizationModel(data);
   };
 
   softDeleteMany = async (

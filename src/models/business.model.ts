@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import Business from "../entities/business.entity";
+import Organization from "../entities/organization.entity";
 
-class BusinessModel implements Business {
+class OrganizationModel implements Organization {
   id?: number;
   name: string = "";
   apiKey: string = `key-${uuidv4()}`;
@@ -13,7 +13,7 @@ class BusinessModel implements Business {
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
 
-  constructor(props: Business) {
+  constructor(props: Organization) {
     this.id = props.id;
     this.name = props.name;
     this.apiKey = props.apiKey;
@@ -27,4 +27,4 @@ class BusinessModel implements Business {
   };
 };
 
-export default BusinessModel;
+export default OrganizationModel;

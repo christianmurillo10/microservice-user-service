@@ -25,10 +25,10 @@ export const create = async (
       password: joi.string().label("Password").max(100).required(),
       accessType: joi.string().label("Access Type").valid(
         UserAccessType.Portal,
-        UserAccessType.Business,
+        UserAccessType.Organization,
         UserAccessType.AppRecognized
       ).required(),
-      businessId: joi.number().label("Business").allow(null),
+      organizationId: joi.number().label("Organization").allow(null),
       isActive: joi.boolean().label("Active?"),
     });
     req.body = await validateInput(req.body, schema);
@@ -54,10 +54,10 @@ export const update = async (
       username: joi.string().label("Username").min(6).max(30).regex(usernameChecker).empty(),
       accessType: joi.string().label("Access Type").valid(
         UserAccessType.Portal,
-        UserAccessType.Business,
+        UserAccessType.Organization,
         UserAccessType.AppRecognized
       ).empty(),
-      businessId: joi.number().label("Business").empty().allow(null),
+      organizationId: joi.number().label("Organization").empty().allow(null),
       isActive: joi.boolean().label("Active?").empty(),
     });
     req.body = await validateInput(req.body, schema);
@@ -105,7 +105,7 @@ export const list = async (
         email: joi.string().label("Email").max(100).empty(),
         username: joi.string().label("Username").empty(),
         accessType: joi.string().label("Access Type").empty(),
-        businessId: joi.number().label("Business").empty(),
+        organizationId: joi.number().label("Organization").empty(),
         isActive: joi.boolean().label("Active?").empty(),
       }).label("Filters").empty(),
       sorting: joi.object({

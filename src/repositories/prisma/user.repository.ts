@@ -15,7 +15,7 @@ import {
 } from "../../shared/types/repository.type";
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
-import { userSubsets, businessSubsets } from "../../shared/helpers/select-subset.helper";
+import { userSubsets, organizationSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../entities/user.entity";
 
 export default class PrismaUserRepository implements UserRepository {
@@ -32,14 +32,14 @@ export default class PrismaUserRepository implements UserRepository {
     args: FindAllArgs
   ): Promise<UserModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const res = await this.client.findMany({
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       where: {
         deletedAt: null,
@@ -65,8 +65,8 @@ export default class PrismaUserRepository implements UserRepository {
     args: FindAllBetweenCreatedAtArgs
   ): Promise<UserModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const betweenCreatedAt = args.dateFrom && args.dateTo
       ? { createdAt: { gte: new Date(args.dateFrom), lte: new Date(args.dateTo) } }
@@ -75,7 +75,7 @@ export default class PrismaUserRepository implements UserRepository {
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       where: {
         ...args.condition,
@@ -93,14 +93,14 @@ export default class PrismaUserRepository implements UserRepository {
     args: FindByIdArgs<string>
   ): Promise<UserModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const res = await this.client.findFirst({
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       where: {
         id: args.id,
@@ -121,14 +121,14 @@ export default class PrismaUserRepository implements UserRepository {
     args: FindByUsernameOrEmailArgs
   ): Promise<UserModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const res = await this.client.findFirst({
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       where: {
         OR: [
@@ -160,14 +160,14 @@ export default class PrismaUserRepository implements UserRepository {
     args: CreateArgs<UserModel>
   ): Promise<UserModel> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const data = await this.client.create({
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       data: args.params
     });
@@ -182,14 +182,14 @@ export default class PrismaUserRepository implements UserRepository {
     args: UpdateArgs<string, UserModel>
   ): Promise<UserModel> => {
     const exclude = setSelectExclude(args.exclude!);
-    const businessSelect = args.include?.includes("business")
-      ? { business: { select: { ...businessSubsets, deletedAt: false } } }
+    const organizationSelect = args.include?.includes("organization")
+      ? { organization: { select: { ...organizationSubsets, deletedAt: false } } }
       : undefined;
     const data = await this.client.update({
       select: {
         ...userSubsets,
         ...exclude,
-        ...businessSelect
+        ...organizationSelect
       },
       where: { id: args.id },
       data: {
@@ -242,12 +242,12 @@ export default class PrismaUserRepository implements UserRepository {
     return data;
   };
 
-  softDeleteManyByBusinessIds = async (
+  softDeleteManyByOrganizationIds = async (
     args: SoftDeleteManyArgs<number>
   ): Promise<GenericObject> => {
     const data = await this.client.updateMany({
       where: {
-        businessId: {
+        organizationId: {
           in: args.ids
         }
       },

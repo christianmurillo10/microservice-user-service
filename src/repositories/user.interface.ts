@@ -30,7 +30,7 @@ export default interface UserRepository {
 
   softDeleteMany: (args: SoftDeleteManyArgs<string>) => Promise<GenericObject>;
 
-  softDeleteManyByBusinessIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
+  softDeleteManyByOrganizationIds: (args: SoftDeleteManyArgs<number>) => Promise<GenericObject>;
 
   changePassword: (args: ChangePasswordArgs<string>) => Promise<UserModel>;
 

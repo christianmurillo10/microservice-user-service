@@ -1,20 +1,20 @@
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaBusinessRepository from "../repositories/prisma/business.repository";
+import PrismaOrganizationRepository from "../repositories/prisma/organization.repository";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
-import BusinessModel from "../models/business.model";
+import OrganizationModel from "../models/organization.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
 
-export default class BusinessService {
-  private repository: PrismaBusinessRepository;
+export default class OrganizationService {
+  private repository: PrismaOrganizationRepository;
 
   constructor() {
-    this.repository = new PrismaBusinessRepository();
+    this.repository = new PrismaOrganizationRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<BusinessModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<OrganizationModel[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -24,7 +24,7 @@ export default class BusinessService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<BusinessModel[]> => {
+  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<OrganizationModel[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       exclude: ["deletedAt"]
@@ -33,7 +33,7 @@ export default class BusinessService {
     return record;
   };
 
-  getById = async (id: number): Promise<BusinessModel> => {
+  getById = async (id: number): Promise<OrganizationModel> => {
     const record = await this.repository.findById({ id: id });
 
     if (!record) {
@@ -43,7 +43,7 @@ export default class BusinessService {
     return record;
   };
 
-  getByName = async (name: string): Promise<BusinessModel> => {
+  getByName = async (name: string): Promise<OrganizationModel> => {
     const record = await this.repository.findByName({ name: name });
 
     if (!record) {
@@ -53,7 +53,7 @@ export default class BusinessService {
     return record;
   };
 
-  getByApiKey = async (apiKey: string): Promise<BusinessModel> => {
+  getByApiKey = async (apiKey: string): Promise<OrganizationModel> => {
     const record = await this.repository.findByApiKey({ apiKey: apiKey });
 
     if (!record) {
@@ -63,10 +63,10 @@ export default class BusinessService {
     return record;
   };
 
-  save = async (data: BusinessModel, file?: Express.Multer.File): Promise<BusinessModel> => {
+  save = async (data: OrganizationModel, file?: Express.Multer.File): Promise<OrganizationModel> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
-    let record: BusinessModel;
-    let newData = new BusinessModel(data);
+    let record: OrganizationModel;
+    let newData = new OrganizationModel(data);
     let option = {
       params: newData,
       exclude: ["deletedAt"]
@@ -92,17 +92,17 @@ export default class BusinessService {
     return record;
   };
 
-  delete = async (id: number): Promise<BusinessModel> => {
+  delete = async (id: number): Promise<OrganizationModel> => {
     const userRepository = new PrismaUserRepository();
     const record = await this.repository.softDelete({ id: id });
-    await userRepository.softDeleteManyByBusinessIds({ ids: [id] });
+    await userRepository.softDeleteManyByOrganizationIds({ ids: [id] });
     return record
   };
 
   deleteMany = async (ids: number[]): Promise<void> => {
     const userRepository = new PrismaUserRepository();
     await this.repository.softDeleteMany({ ids: ids });
-    await userRepository.softDeleteManyByBusinessIds({ ids: ids });
+    await userRepository.softDeleteManyByOrganizationIds({ ids: ids });
   };
 
   count = async (args: CountAllArgs): Promise<number> => {

@@ -1,14 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { deleteByIds as validator } from "../../../middlewares/validators/business.validator";
+import { deleteByIds as validator } from "../../../middlewares/validators/organization.validator";
 import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
-import BusinessService from "../../../services/business.service";
-import BusinessKafkaProducer from "../../../events/producer/business.producer";
+import OrganizationService from "../../../services/organization.service";
+import OrganizationKafkaProducer from "../../../events/producer/organization.producer";
 
 const router = Router();
-const businessService = new BusinessService();
+const organizationService = new OrganizationService();
 
 const controller = async (
   req: Request,
@@ -17,11 +17,11 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { body, auth, userRequestHeader } = req;
-    await businessService.deleteMany(body.ids);
+    await organizationService.deleteMany(body.ids);
 
     // Send to Kafka
-    const businessProducer = new BusinessKafkaProducer();
-    await businessProducer.businessBulkDeletedEventEmitter(
+    const organizationProducer = new OrganizationKafkaProducer();
+    await organizationProducer.organizationBulkDeletedEventEmitter(
       {
         oldDetails: {},
         newDetails: body

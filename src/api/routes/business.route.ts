@@ -1,10 +1,10 @@
 import { Router } from "express";
-import create from "../controllers/business/create.controller";
-import read from "../controllers/business/read.controller";
-import update from "../controllers/business/update.controller";
-import remove from "../controllers/business/delete.controller";
-import list from "../controllers/business/list.controller";
-import deleteByIds from "../controllers/business/delete-by-ids.controller";
+import create from "../controllers/organization/create.controller";
+import read from "../controllers/organization/read.controller";
+import update from "../controllers/organization/update.controller";
+import remove from "../controllers/organization/delete.controller";
+import list from "../controllers/organization/list.controller";
+import deleteByIds from "../controllers/organization/delete-by-ids.controller";
 
 const router = Router();
 router.use(create);

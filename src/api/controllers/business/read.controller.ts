@@ -3,11 +3,11 @@ import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_FIND, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_READ } from "../../../shared/constants/error.constant";
-import BusinessService from "../../../services/business.service";
+import OrganizationService from "../../../services/organization.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
 const router = Router();
-const businessService = new BusinessService();
+const organizationService = new OrganizationService();
 
 const controller = async (
   req: Request,
@@ -22,12 +22,12 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const business = await businessService.getById(id);
+    const organization = await organizationService.getById(id);
 
     apiResponse(res, {
       statusCode: 200,
       message: MESSAGE_DATA_FIND,
-      data: business
+      data: organization
     });
   } catch (error) {
     console.error(`${ERROR_ON_READ}: `, error);

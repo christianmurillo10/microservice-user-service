@@ -1,4 +1,4 @@
-export const businessSubsets = {
+export const organizationSubsets = {
   id: true,
   name: true,
   apiKey: true,
@@ -19,7 +19,7 @@ export const userSubsets = {
   password: true,
   accessType: true,
   imagePath: true,
-  businessId: true,
+  organizationId: true,
   isActive: true,
   isLogged: true,
   lastLoggedAt: true,

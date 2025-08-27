@@ -1,14 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { list as validator } from "../../../middlewares/validators/business.validator";
+import { list as validator } from "../../../middlewares/validators/organization.validator";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../shared/constants/message.constant";
 import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
 import { getPagination } from "../../../shared/helpers/common.helper";
-import BusinessService from "../../../services/business.service";
+import OrganizationService from "../../../services/organization.service";
 
 const router = Router();
-const businessService = new BusinessService();
+const organizationService = new OrganizationService();
 
 const controller = async (
   req: Request,
@@ -17,22 +17,22 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { query } = req;
-    const business = await businessService.getAll({ query });
-    const businessCount = business.length;
-    const allBusinessCount = await businessService.count({ query });
+    const organization = await organizationService.getAll({ query });
+    const organizationCount = organization.length;
+    const allOrganizationCount = await organizationService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
-    if (business.length < 1) {
+    if (organization.length < 1) {
       message = MESSAGE_DATA_NOT_FOUND;
     };
 
     apiResponse(res, {
       statusCode: 200,
       message,
-      data: business,
+      data: organization,
       pagination: getPagination(
-        allBusinessCount,
-        businessCount,
+        allOrganizationCount,
+        organizationCount,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

@@ -22,9 +22,9 @@ const authenticate = async (
     });
     const authenticateOutput = await authenticateService.execute();
 
-    if (authenticateOutput.business) {
-      req.business = authenticateOutput.business;
-      req.body.businessId = authenticateOutput.business.id;
+    if (authenticateOutput.organization) {
+      req.organization = authenticateOutput.organization;
+      req.body.organizationId = authenticateOutput.organization.id;
     }
 
     req.auth = authenticateOutput.user;

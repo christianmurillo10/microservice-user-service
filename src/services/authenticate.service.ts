@@ -1,12 +1,12 @@
 import { UserAccessType } from "../entities/user.entity";
-import BusinessModel from "../models/business.model";
+import OrganizationModel from "../models/organization.model";
 import UserModel from "../models/user.model";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY, MESSAGE_REQUIRED_API_KEY } from "../shared/constants/message.constant";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { verifyToken } from "../shared/helpers/jwt.helper";
-import BusinessService from "./business.service";
+import OrganizationService from "./organization.service";
 import UserService from "./user.service";
 
 type Input = {
@@ -15,18 +15,18 @@ type Input = {
 };
 
 type Output = {
-  business?: BusinessModel,
+  organization?: OrganizationModel,
   user: UserModel
 };
 
 export default class AuthenticateService {
   private input: Input;
-  private businessService: BusinessService;
+  private organizationService: OrganizationService;
   private userService: UserService;
 
   constructor(input: Input) {
     this.input = input;
-    this.businessService = new BusinessService();
+    this.organizationService = new OrganizationService();
     this.userService = new UserService();
   };
 
@@ -41,18 +41,18 @@ export default class AuthenticateService {
   };
 
   private validateApiKey = async (apiKey: string) => {
-    const businessRecord = await this.businessService.getByApiKey(apiKey)
+    const organizationRecord = await this.organizationService.getByApiKey(apiKey)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    return businessRecord;
+    return organizationRecord;
   };
 
   execute = async (): Promise<Output> => {
     const { token, apiKey } = this.input;
-    let businessRecord;
+    let organizationRecord;
     const tokenData = verifyToken(token);
 
     if (!tokenData) {
@@ -71,20 +71,20 @@ export default class AuthenticateService {
     }
 
     // Validate via apiKey if token client is BUSINESS
-    if (tokenData.client === UserAccessType.Business) {
+    if (tokenData.client === UserAccessType.Organization) {
       if (!apiKey) {
         throw new ForbiddenException([MESSAGE_REQUIRED_API_KEY]);
       };
 
-      businessRecord = await this.validateApiKey(apiKey as string);
+      organizationRecord = await this.validateApiKey(apiKey as string);
 
-      if (!businessRecord) {
+      if (!organizationRecord) {
         throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
       }
     }
 
     return {
-      business: businessRecord,
+      organization: organizationRecord,
       user: userRecord
     };
   };

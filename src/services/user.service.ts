@@ -19,7 +19,7 @@ export default class UserService {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
-      // include: ["business"],
+      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
@@ -29,7 +29,7 @@ export default class UserService {
   getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<UserModel[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
-      // include: ["business"],
+      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
@@ -40,7 +40,7 @@ export default class UserService {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
-      // include: ["business"],
+      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
@@ -55,7 +55,7 @@ export default class UserService {
     const record = await this.repository.findByUsernameOrEmail({
       username: args.username,
       email: args.email,
-      // include: ["business"],
+      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
@@ -72,7 +72,7 @@ export default class UserService {
     let newData = new UserModel(data);
     let option = {
       params: newData,
-      // include: ["business"],
+      // include: ["organization"],
       exclude: ["deletedAt"]
     };
 
@@ -108,8 +108,8 @@ export default class UserService {
     await this.repository.softDeleteMany({ ids: ids });
   };
 
-  deleteManyByBusinessIds = async (ids: number[]): Promise<void> => {
-    await this.repository.softDeleteManyByBusinessIds({ ids: ids });
+  deleteManyByOrganizationIds = async (ids: number[]): Promise<void> => {
+    await this.repository.softDeleteManyByOrganizationIds({ ids: ids });
   };
 
   changePassword = async (

@@ -1,0 +1,49 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  output        = "../src/prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id                String    @id @default(uuid()) @db.Char(36)
+  name              String    @db.VarChar(100)
+  apiKey            String    @map("api_key") @db.VarChar(255)
+  domain            String?   @db.VarChar(255)
+  logoPath          String?   @map("logo_path") @db.VarChar(255)
+  preferredTimezone String?   @map("preferred_timezone") @db.VarChar(100)
+  currency          String?   @db.VarChar(100)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
+  deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
+
+  users User[] @relation("UserToOrganization")
+
+  @@map("organizations")
+}
+
+model User {
+  id             String    @id @default(uuid()) @db.Char(36)
+  name           String    @db.VarChar(100)
+  username       String    @db.VarChar(100)
+  email          String    @db.VarChar(100)
+  password       String    @db.VarChar(100)
+  accessType     String    @map("access_type") @db.VarChar(100)
+  imagePath      String?   @map("image_path") @db.VarChar(255)
+  organizationId String?   @map("organization_id")
+  isActive       Boolean   @default(true) @map("is_active")
+  isLogged       Boolean   @default(false) @map("is_logged")
+  lastLoggedAt   DateTime? @map("last_logged_at") @db.DateTime(0)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
+  deletedAt      DateTime? @map("deleted_at") @db.DateTime(0)
+
+  organization Organization? @relation("UserToOrganization", fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId], map: "organization_id")
+  @@map("users")
+}

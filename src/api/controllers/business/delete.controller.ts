@@ -3,12 +3,12 @@ import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
-import BusinessService from "../../../services/business.service";
+import OrganizationService from "../../../services/organization.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
-import BusinessKafkaProducer from "../../../events/producer/business.producer";
+import OrganizationKafkaProducer from "../../../events/producer/organization.producer";
 
 const router = Router();
-const businessService = new BusinessService();
+const organizationService = new OrganizationService();
 
 const controller = async (
   req: Request,
@@ -23,15 +23,15 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const existingBusiness = await businessService.getById(id);
-    const newBusiness = await businessService.delete(id);
+    const existingOrganization = await organizationService.getById(id);
+    const newOrganization = await organizationService.delete(id);
 
     // Send to Kafka
-    const businessProducer = new BusinessKafkaProducer();
-    await businessProducer.businessDeletedEventEmitter(
+    const organizationProducer = new OrganizationKafkaProducer();
+    await organizationProducer.organizationDeletedEventEmitter(
       {
-        oldDetails: existingBusiness,
-        newDetails: newBusiness
+        oldDetails: existingOrganization,
+        newDetails: newOrganization
       },
       auth.id!,
       {
@@ -44,7 +44,7 @@ const controller = async (
     apiResponse(res, {
       statusCode: 200,
       message: MESSAGE_DATA_DELETED,
-      data: newBusiness
+      data: newOrganization
     });
   } catch (error) {
     console.error(`${ERROR_ON_DELETE}: `, error);

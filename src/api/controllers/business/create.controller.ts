@@ -2,18 +2,18 @@ import { Router, Request, Response, NextFunction } from "express";
 import multer from "multer";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { create as validator } from "../../../middlewares/validators/business.validator";
+import { create as validator } from "../../../middlewares/validators/organization.validator";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
-import BusinessService from "../../../services/business.service";
+import OrganizationService from "../../../services/organization.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
-import BusinessKafkaProducer from "../../../events/producer/business.producer";
-import BusinessModel from "../../../models/business.model";
+import OrganizationKafkaProducer from "../../../events/producer/organization.producer";
+import OrganizationModel from "../../../models/organization.model";
 
 const router = Router();
 const upload = multer();
-const businessService = new BusinessService();
+const organizationService = new OrganizationService();
 
 const controller = async (
   req: Request,
@@ -22,24 +22,24 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { body, file, auth, userRequestHeader } = req;
-    const existingBusiness = await businessService.getByName(body.name)
+    const existingOrganization = await organizationService.getByName(body.name)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
       });
 
-    if (existingBusiness) {
+    if (existingOrganization) {
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newBusiness = await businessService.save(body, file);
+    const newOrganization = await organizationService.save(body, file);
 
     // Send to Kafka
-    const businessProducer = new BusinessKafkaProducer();
-    await businessProducer.businessCreatedEventEmitter(
+    const organizationProducer = new OrganizationKafkaProducer();
+    await organizationProducer.organizationCreatedEventEmitter(
       {
-        oldDetails: {} as BusinessModel,
-        newDetails: newBusiness
+        oldDetails: {} as OrganizationModel,
+        newDetails: newOrganization
       },
       auth.id!,
       {
@@ -52,7 +52,7 @@ const controller = async (
     apiResponse(res, {
       statusCode: 201,
       message: MESSAGE_DATA_CREATED,
-      data: newBusiness
+      data: newOrganization
     });
   } catch (error) {
     console.error(`${ERROR_ON_CREATE}: `, error);

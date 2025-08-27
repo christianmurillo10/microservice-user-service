@@ -21,8 +21,8 @@ const controller = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body, file, auth, business, userRequestHeader } = req;
-    const condition = { businessId: business?.id || body.businessId || undefined };
+    const { body, file, auth, organization, userRequestHeader } = req;
+    const condition = { organizationId: organization?.id || body.organizationId || undefined };
     const oldUser = await userService.getByUsernameOrEmail({
       username: body.username,
       email: body.email,
