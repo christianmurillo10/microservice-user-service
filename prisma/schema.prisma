@@ -1,6 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native"]
+  output        = "../src/prisma/client"
 }
 
 datasource db {
@@ -8,7 +9,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Business {
+model Organization {
   id                String    @id @default(uuid()) @db.Char(36)
   name              String    @db.VarChar(100)
   apiKey            String    @map("api_key") @db.VarChar(255)
@@ -20,9 +21,9 @@ model Business {
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
 
-  users User[] @relation("UserToBusiness")
+  users User[] @relation("UserToOrganization")
 
-  @@map("businesses")
+  @@map("organizations")
 }
 
 model User {
@@ -33,7 +34,7 @@ model User {
   password     String    @db.VarChar(100)
   accessType   String    @map("access_type") @db.VarChar(100)
   imagePath    String?   @map("image_path") @db.VarChar(255)
-  businessId   String?   @map("business_id")
+  organizationId   String?   @map("organization_id")
   isActive     Boolean   @default(true) @map("is_active")
   isLogged     Boolean   @default(false) @map("is_logged")
   lastLoggedAt DateTime? @map("last_logged_at") @db.DateTime(0)
@@ -41,8 +42,8 @@ model User {
   updatedAt    DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt    DateTime? @map("deleted_at") @db.DateTime(0)
 
-  business Business? @relation("UserToBusiness", fields: [businessId], references: [id], onDelete: Cascade)
+  organization Organization? @relation("UserToOrganization", fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@index([businessId], map: "business_id")
+  @@index([organizationId], map: "organization_id")
   @@map("users")
 }
