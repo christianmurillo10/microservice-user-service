@@ -1,11 +1,8 @@
 export default interface Organization {
-  id?: number;
+  id?: string;
   name: string;
-  apiKey: string;
-  domain?: string | null;
   logoPath?: string | null;
-  preferredTimezone?: string | null;
-  currency?: string | null;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;

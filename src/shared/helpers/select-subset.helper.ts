@@ -1,11 +1,8 @@
 export const organizationSubsets = {
   id: true,
   name: true,
-  apiKey: true,
-  domain: true,
   logoPath: true,
-  preferredTimezone: true,
-  currency: true,
+  isActive: true,
   createdAt: true,
   updatedAt: true,
   deletedAt: true
