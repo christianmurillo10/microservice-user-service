@@ -1,9 +1,10 @@
 import { PrismaClient } from "../../prisma/client";
+import type { Organization as OrganizationRecord } from "../../prisma/client";
 import OrganizationEntity from "../../entities/organization.entity";
 import OrganizationRepository from "../organization.interface";
 import {
   FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
+  FindAllByBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByNameArgs,
   CreateArgs,
@@ -15,6 +16,10 @@ import {
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { organizationSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(organization: OrganizationRecord): OrganizationEntity {
+  return new OrganizationEntity(organization);
+};
 
 export default class PrismaOrganizationRepository implements OrganizationRepository {
   private client;
@@ -49,11 +54,11 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
         undefined
     });
 
-    return res.map(item => new OrganizationEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findAllBetweenCreatedAt = async (
-    args: FindAllBetweenCreatedAtArgs
+    args: FindAllByBetweenCreatedAtArgs
   ): Promise<OrganizationEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo
@@ -70,7 +75,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       }
     });
 
-    return res.map(item => new OrganizationEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -91,7 +96,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
 
     if (!res) return null;
 
-    return new OrganizationEntity(res);
+    return toEntity(res);
   };
 
   findByName = async (
@@ -112,27 +117,29 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
 
     if (!res) return null;
 
-    return new OrganizationEntity(res);
+    return toEntity(res);
   };
 
   create = async (
     args: CreateArgs<OrganizationEntity>
   ): Promise<OrganizationEntity> => {
+    const { users, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...organizationSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
-    return new OrganizationEntity(data);
+    return toEntity(data);
   };
 
   update = async (
     args: UpdateArgs<string, OrganizationEntity>
   ): Promise<OrganizationEntity> => {
+    const { users, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -141,12 +148,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });
 
-    return new OrganizationEntity(data);
+    return toEntity(data);
   };
 
   softDelete = async (
@@ -164,7 +171,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       }
     });
 
-    return new OrganizationEntity(data);
+    return toEntity(data);
   };
 
   softDeleteMany = async (

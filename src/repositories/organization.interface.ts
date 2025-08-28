@@ -3,7 +3,7 @@ import {
   CountArgs,
   CreateArgs,
   FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
+  FindAllByBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByNameArgs,
   SoftDeleteArgs,
@@ -15,7 +15,7 @@ import { GenericObject } from "../shared/types/common.type";
 export default interface OrganizationRepository {
   findAll: (args: FindAllArgs) => Promise<OrganizationEntity[]>;
 
-  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<OrganizationEntity[]>;
+  findAllBetweenCreatedAt: (args: FindAllByBetweenCreatedAtArgs) => Promise<OrganizationEntity[]>;
 
   findById: (args: FindByIdArgs<string>) => Promise<OrganizationEntity | null>;
 

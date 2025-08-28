@@ -1,3 +1,5 @@
+import User from "./user.model";
+
 export default interface Organization {
   id?: string;
   name: string;
@@ -6,4 +8,5 @@ export default interface Organization {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
+  users?: User[];
 };

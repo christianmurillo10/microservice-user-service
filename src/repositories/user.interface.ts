@@ -1,7 +1,7 @@
 import UserEntity from "../entities/user.entity";
 import {
   FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
+  FindAllByBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
   CreateArgs,
@@ -16,7 +16,7 @@ import { GenericObject } from "../shared/types/common.type";
 export default interface UserRepository {
   findAll: (args: FindAllArgs) => Promise<UserEntity[]>;
 
-  findAllBetweenCreatedAt: (args: FindAllBetweenCreatedAtArgs) => Promise<UserEntity[]>;
+  findAllBetweenCreatedAt: (args: FindAllByBetweenCreatedAtArgs) => Promise<UserEntity[]>;
 
   findById: (args: FindByIdArgs<string>) => Promise<UserEntity | null>;
 

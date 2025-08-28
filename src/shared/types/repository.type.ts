@@ -7,7 +7,7 @@ export type FindAllArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindAllBetweenCreatedAtArgs = {
+export type FindAllByBetweenCreatedAtArgs = {
   dateFrom?: string | undefined,
   dateTo?: string | undefined,
   condition?: GenericObject | undefined,

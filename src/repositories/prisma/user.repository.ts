@@ -3,7 +3,7 @@ import UserEntity from "../../entities/user.entity";
 import UserRepository from "../user.interface";
 import {
   FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
+  FindAllByBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
   CreateArgs,
@@ -58,7 +58,7 @@ export default class PrismaUserRepository implements UserRepository {
   };
 
   findAllBetweenCreatedAt = async (
-    args: FindAllBetweenCreatedAtArgs
+    args: FindAllByBetweenCreatedAtArgs
   ): Promise<UserEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo
