@@ -1,40 +1,38 @@
 import { PrismaClient } from "../../prisma/client";
-import UserEntity from "../../entities/user.entity";
-import UserRepository from "../user.interface";
+import OrganizationEntity from "../../entities/organization.entity";
+import OrganizationRepository from "../organization.interface";
 import {
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
-  FindByUsernameOrEmailArgs,
+  FindByNameArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
-  ChangePasswordArgs,
   CountArgs
 } from "../../shared/types/repository.type";
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
-import { userSubsets } from "../../shared/helpers/select-subset.helper";
-import { UserAccessTypeValue } from "../../models/user.model";
+import { organizationSubsets } from "../../shared/helpers/select-subset.helper";
 
-export default class PrismaUserRepository implements UserRepository {
+export default class PrismaOrganizationRepository implements OrganizationRepository {
   private client;
 
-  readonly imagePath = "public/images/user/";
+  readonly logoPath = "public/images/organization/";
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.user;
+    this.client = prisma.organization;
   };
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<UserEntity[]> => {
+  ): Promise<OrganizationEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -51,22 +49,19 @@ export default class PrismaUserRepository implements UserRepository {
         undefined
     });
 
-    return res.map(item => new UserEntity({
-      ...item,
-      accessType: item.accessType as UserAccessTypeValue
-    }));
+    return res.map(item => new OrganizationEntity(item));
   };
 
   findAllBetweenCreatedAt = async (
     args: FindAllBetweenCreatedAtArgs
-  ): Promise<UserEntity[]> => {
+  ): Promise<OrganizationEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo
       ? { createdAt: { gte: new Date(args.dateFrom), lte: new Date(args.dateTo) } }
       : undefined;
     const res = await this.client.findMany({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -75,19 +70,16 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return res.map(item => new UserEntity({
-      ...item,
-      accessType: item.accessType as UserAccessTypeValue
-    }));
+    return res.map(item => new OrganizationEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<UserEntity | null> => {
+  ): Promise<OrganizationEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
@@ -99,34 +91,20 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return new OrganizationEntity(res);
   };
 
-  findByUsernameOrEmail = async (
-    args: FindByUsernameOrEmailArgs
-  ): Promise<UserEntity | null> => {
+  findByName = async (
+    args: FindByNameArgs
+  ): Promise<OrganizationEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: {
-        OR: [
-          {
-            username: {
-              equals: args.username,
-            },
-          },
-          {
-            email: {
-              equals: args.email,
-            },
-          },
-        ],
+        name: args.name,
         deletedAt: null,
         ...args.condition
       }
@@ -134,61 +112,50 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return new OrganizationEntity(res);
   };
 
   create = async (
-    args: CreateArgs<UserEntity>
-  ): Promise<UserEntity> => {
-    const { organization, ...params } = args.params;
+    args: CreateArgs<OrganizationEntity>
+  ): Promise<OrganizationEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
-      data: params
+      data: args.params
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return new OrganizationEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, UserEntity>
-  ): Promise<UserEntity> => {
-    const { organization, ...params } = args.params;
+    args: UpdateArgs<string, OrganizationEntity>
+  ): Promise<OrganizationEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: { id: args.id },
       data: {
-        ...params,
+        ...args.params,
         updatedAt: new Date(),
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return new OrganizationEntity(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<UserEntity> => {
+  ): Promise<OrganizationEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...userSubsets,
+        ...organizationSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -197,10 +164,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return new OrganizationEntity(data);
   };
 
   softDeleteMany = async (
@@ -218,40 +182,6 @@ export default class PrismaUserRepository implements UserRepository {
     });
 
     return data;
-  };
-
-  softDeleteManyByOrganizationIds = async (
-    args: SoftDeleteManyArgs<string>
-  ): Promise<GenericObject> => {
-    const data = await this.client.updateMany({
-      where: {
-        organizationId: {
-          in: args.ids
-        }
-      },
-      data: {
-        deletedAt: new Date(),
-      }
-    });
-
-    return data;
-  };
-
-  changePassword = async (
-    args: ChangePasswordArgs<string>
-  ): Promise<UserEntity> => {
-    const data = await this.client.update({
-      where: { id: args.id },
-      data: {
-        password: args.newPassword,
-        updatedAt: new Date(),
-      }
-    });
-
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
   };
 
   count = async (

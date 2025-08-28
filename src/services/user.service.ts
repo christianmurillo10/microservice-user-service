@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
-import UserModel from "../models/user.model";
+import UserEntity from "../entities/user.entity";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
 import { comparePassword, hashedPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -15,7 +15,7 @@ export default class UserService {
     this.repository = new PrismaUserRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<UserModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<UserEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -26,7 +26,7 @@ export default class UserService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<UserModel[]> => {
+  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<UserEntity[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       // include: ["organization"],
@@ -36,7 +36,7 @@ export default class UserService {
     return record;
   };
 
-  getById = async (args: GetByIdArgs<string>): Promise<UserModel> => {
+  getById = async (args: GetByIdArgs<string>): Promise<UserEntity> => {
     const record = await this.repository.findById({
       id: args.id,
       condition: args?.condition,
@@ -51,7 +51,7 @@ export default class UserService {
     return record;
   };
 
-  getByUsernameOrEmail = async (args: GetByUsernameOrEmailArgs): Promise<UserModel> => {
+  getByUsernameOrEmail = async (args: GetByUsernameOrEmailArgs): Promise<UserEntity> => {
     const record = await this.repository.findByUsernameOrEmail({
       username: args.username,
       email: args.email,
@@ -66,10 +66,10 @@ export default class UserService {
     return record;
   };
 
-  save = async (data: UserModel, file?: Express.Multer.File): Promise<UserModel> => {
+  save = async (data: UserEntity, file?: Express.Multer.File): Promise<UserEntity> => {
     const uploadPath = setUploadPath(file, this.repository.imagePath);
-    let record: UserModel;
-    let newData = new UserModel(data);
+    let record: UserEntity;
+    let newData = new UserEntity(data);
     let option = {
       params: newData,
       // include: ["organization"],
@@ -97,7 +97,7 @@ export default class UserService {
     return record;
   };
 
-  delete = async (id: string): Promise<UserModel> => {
+  delete = async (id: string): Promise<UserEntity> => {
     return await this.repository.softDelete({
       id: id,
       exclude: ["password"]
@@ -108,7 +108,7 @@ export default class UserService {
     await this.repository.softDeleteMany({ ids: ids });
   };
 
-  deleteManyByOrganizationIds = async (ids: number[]): Promise<void> => {
+  deleteManyByOrganizationIds = async (ids: string[]): Promise<void> => {
     await this.repository.softDeleteManyByOrganizationIds({ ids: ids });
   };
 
@@ -117,7 +117,7 @@ export default class UserService {
     hashPassword: string,
     oldPassword: string,
     newPassword: string
-  ): Promise<UserModel> => {
+  ): Promise<UserEntity> => {
     const compareOldPassword = comparePassword(oldPassword, hashPassword);
 
     if (!compareOldPassword) {

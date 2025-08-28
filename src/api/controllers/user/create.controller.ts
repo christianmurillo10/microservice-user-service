@@ -9,7 +9,7 @@ import UserService from "../../../services/user.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
 import UserKafkaProducer from "../../../events/producer/user.producer";
-import UserModel from "../../../models/user.model";
+import UserEntity from "../../../entities/user.entity";
 
 const router = Router();
 const upload = multer();
@@ -21,12 +21,10 @@ const controller = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body, file, auth, organization, userRequestHeader } = req;
-    const condition = { organizationId: organization?.id || body.organizationId || undefined };
+    const { body, file, auth, userRequestHeader } = req;
     const oldUser = await userService.getByUsernameOrEmail({
       username: body.username,
-      email: body.email,
-      condition
+      email: body.email
     })
       .catch(err => {
         if (err instanceof NotFoundException) return null;
@@ -43,7 +41,7 @@ const controller = async (
     const userProducer = new UserKafkaProducer();
     await userProducer.userCreatedEventEmitter(
       {
-        oldDetails: {} as UserModel,
+        oldDetails: {} as UserEntity,
         newDetails: newUser
       },
       auth.id!,

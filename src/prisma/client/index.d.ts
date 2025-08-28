@@ -987,11 +987,8 @@ export namespace Prisma {
   export type OrganizationMinAggregateOutputType = {
     id: string | null
     name: string | null
-    apiKey: string | null
-    domain: string | null
     logoPath: string | null
-    preferredTimezone: string | null
-    currency: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -1000,11 +997,8 @@ export namespace Prisma {
   export type OrganizationMaxAggregateOutputType = {
     id: string | null
     name: string | null
-    apiKey: string | null
-    domain: string | null
     logoPath: string | null
-    preferredTimezone: string | null
-    currency: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -1013,11 +1007,8 @@ export namespace Prisma {
   export type OrganizationCountAggregateOutputType = {
     id: number
     name: number
-    apiKey: number
-    domain: number
     logoPath: number
-    preferredTimezone: number
-    currency: number
+    isActive: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -1028,11 +1019,8 @@ export namespace Prisma {
   export type OrganizationMinAggregateInputType = {
     id?: true
     name?: true
-    apiKey?: true
-    domain?: true
     logoPath?: true
-    preferredTimezone?: true
-    currency?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -1041,11 +1029,8 @@ export namespace Prisma {
   export type OrganizationMaxAggregateInputType = {
     id?: true
     name?: true
-    apiKey?: true
-    domain?: true
     logoPath?: true
-    preferredTimezone?: true
-    currency?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -1054,11 +1039,8 @@ export namespace Prisma {
   export type OrganizationCountAggregateInputType = {
     id?: true
     name?: true
-    apiKey?: true
-    domain?: true
     logoPath?: true
-    preferredTimezone?: true
-    currency?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -1140,11 +1122,8 @@ export namespace Prisma {
   export type OrganizationGroupByOutputType = {
     id: string
     name: string
-    apiKey: string
-    domain: string | null
     logoPath: string | null
-    preferredTimezone: string | null
-    currency: string | null
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -1170,11 +1149,8 @@ export namespace Prisma {
   export type OrganizationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    apiKey?: boolean
-    domain?: boolean
     logoPath?: boolean
-    preferredTimezone?: boolean
-    currency?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -1187,17 +1163,14 @@ export namespace Prisma {
   export type OrganizationSelectScalar = {
     id?: boolean
     name?: boolean
-    apiKey?: boolean
-    domain?: boolean
     logoPath?: boolean
-    preferredTimezone?: boolean
-    currency?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "apiKey" | "domain" | "logoPath" | "preferredTimezone" | "currency" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organization"]>
+  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "logoPath" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organization"]>
   export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Organization$usersArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
@@ -1211,11 +1184,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      apiKey: string
-      domain: string | null
       logoPath: string | null
-      preferredTimezone: string | null
-      currency: string | null
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -1591,11 +1561,8 @@ export namespace Prisma {
   interface OrganizationFieldRefs {
     readonly id: FieldRef<"Organization", 'String'>
     readonly name: FieldRef<"Organization", 'String'>
-    readonly apiKey: FieldRef<"Organization", 'String'>
-    readonly domain: FieldRef<"Organization", 'String'>
     readonly logoPath: FieldRef<"Organization", 'String'>
-    readonly preferredTimezone: FieldRef<"Organization", 'String'>
-    readonly currency: FieldRef<"Organization", 'String'>
+    readonly isActive: FieldRef<"Organization", 'Boolean'>
     readonly createdAt: FieldRef<"Organization", 'DateTime'>
     readonly updatedAt: FieldRef<"Organization", 'DateTime'>
     readonly deletedAt: FieldRef<"Organization", 'DateTime'>
@@ -3048,11 +3015,8 @@ export namespace Prisma {
   export const OrganizationScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    apiKey: 'apiKey',
-    domain: 'domain',
     logoPath: 'logoPath',
-    preferredTimezone: 'preferredTimezone',
-    currency: 'currency',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -3100,11 +3064,7 @@ export namespace Prisma {
   export const OrganizationOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
-    apiKey: 'apiKey',
-    domain: 'domain',
-    logoPath: 'logoPath',
-    preferredTimezone: 'preferredTimezone',
-    currency: 'currency'
+    logoPath: 'logoPath'
   };
 
   export type OrganizationOrderByRelevanceFieldEnum = (typeof OrganizationOrderByRelevanceFieldEnum)[keyof typeof OrganizationOrderByRelevanceFieldEnum]
@@ -3137,16 +3097,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Boolean'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'DateTime'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
@@ -3166,11 +3126,8 @@ export namespace Prisma {
     NOT?: OrganizationWhereInput | OrganizationWhereInput[]
     id?: StringFilter<"Organization"> | string
     name?: StringFilter<"Organization"> | string
-    apiKey?: StringFilter<"Organization"> | string
-    domain?: StringNullableFilter<"Organization"> | string | null
     logoPath?: StringNullableFilter<"Organization"> | string | null
-    preferredTimezone?: StringNullableFilter<"Organization"> | string | null
-    currency?: StringNullableFilter<"Organization"> | string | null
+    isActive?: BoolFilter<"Organization"> | boolean
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Organization"> | Date | string | null
@@ -3180,11 +3137,8 @@ export namespace Prisma {
   export type OrganizationOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    apiKey?: SortOrder
-    domain?: SortOrderInput | SortOrder
     logoPath?: SortOrderInput | SortOrder
-    preferredTimezone?: SortOrderInput | SortOrder
-    currency?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -3198,11 +3152,8 @@ export namespace Prisma {
     OR?: OrganizationWhereInput[]
     NOT?: OrganizationWhereInput | OrganizationWhereInput[]
     name?: StringFilter<"Organization"> | string
-    apiKey?: StringFilter<"Organization"> | string
-    domain?: StringNullableFilter<"Organization"> | string | null
     logoPath?: StringNullableFilter<"Organization"> | string | null
-    preferredTimezone?: StringNullableFilter<"Organization"> | string | null
-    currency?: StringNullableFilter<"Organization"> | string | null
+    isActive?: BoolFilter<"Organization"> | boolean
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Organization"> | Date | string | null
@@ -3212,11 +3163,8 @@ export namespace Prisma {
   export type OrganizationOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    apiKey?: SortOrder
-    domain?: SortOrderInput | SortOrder
     logoPath?: SortOrderInput | SortOrder
-    preferredTimezone?: SortOrderInput | SortOrder
-    currency?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -3231,11 +3179,8 @@ export namespace Prisma {
     NOT?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Organization"> | string
     name?: StringWithAggregatesFilter<"Organization"> | string
-    apiKey?: StringWithAggregatesFilter<"Organization"> | string
-    domain?: StringNullableWithAggregatesFilter<"Organization"> | string | null
     logoPath?: StringNullableWithAggregatesFilter<"Organization"> | string | null
-    preferredTimezone?: StringNullableWithAggregatesFilter<"Organization"> | string | null
-    currency?: StringNullableWithAggregatesFilter<"Organization"> | string | null
+    isActive?: BoolWithAggregatesFilter<"Organization"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Organization"> | Date | string | null
@@ -3345,11 +3290,8 @@ export namespace Prisma {
   export type OrganizationCreateInput = {
     id?: string
     name: string
-    apiKey: string
-    domain?: string | null
     logoPath?: string | null
-    preferredTimezone?: string | null
-    currency?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -3359,11 +3301,8 @@ export namespace Prisma {
   export type OrganizationUncheckedCreateInput = {
     id?: string
     name: string
-    apiKey: string
-    domain?: string | null
     logoPath?: string | null
-    preferredTimezone?: string | null
-    currency?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -3373,11 +3312,8 @@ export namespace Prisma {
   export type OrganizationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3387,11 +3323,8 @@ export namespace Prisma {
   export type OrganizationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3401,11 +3334,8 @@ export namespace Prisma {
   export type OrganizationCreateManyInput = {
     id?: string
     name: string
-    apiKey: string
-    domain?: string | null
     logoPath?: string | null
-    preferredTimezone?: string | null
-    currency?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -3414,11 +3344,8 @@ export namespace Prisma {
   export type OrganizationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3427,11 +3354,8 @@ export namespace Prisma {
   export type OrganizationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3585,6 +3509,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -3631,11 +3560,8 @@ export namespace Prisma {
   export type OrganizationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    apiKey?: SortOrder
-    domain?: SortOrder
     logoPath?: SortOrder
-    preferredTimezone?: SortOrder
-    currency?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -3644,11 +3570,8 @@ export namespace Prisma {
   export type OrganizationMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    apiKey?: SortOrder
-    domain?: SortOrder
     logoPath?: SortOrder
-    preferredTimezone?: SortOrder
-    currency?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -3657,11 +3580,8 @@ export namespace Prisma {
   export type OrganizationMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    apiKey?: SortOrder
-    domain?: SortOrder
     logoPath?: SortOrder
-    preferredTimezone?: SortOrder
-    currency?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -3703,6 +3623,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -3729,11 +3657,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type OrganizationNullableScalarRelationFilter = {
@@ -3798,14 +3721,6 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type UserCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput> | UserCreateWithoutOrganizationInput[] | UserUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationInput | UserCreateOrConnectWithoutOrganizationInput[]
@@ -3826,6 +3741,10 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3870,10 +3789,6 @@ export namespace Prisma {
     connect?: OrganizationWhereUniqueInput
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type OrganizationUpdateOneWithoutUsersNestedInput = {
     create?: XOR<OrganizationCreateWithoutUsersInput, OrganizationUncheckedCreateWithoutUsersInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutUsersInput
@@ -3912,6 +3827,11 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -3994,6 +3914,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -4020,19 +3948,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutOrganizationInput = {
@@ -4116,11 +4031,8 @@ export namespace Prisma {
   export type OrganizationCreateWithoutUsersInput = {
     id?: string
     name: string
-    apiKey: string
-    domain?: string | null
     logoPath?: string | null
-    preferredTimezone?: string | null
-    currency?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -4129,11 +4041,8 @@ export namespace Prisma {
   export type OrganizationUncheckedCreateWithoutUsersInput = {
     id?: string
     name: string
-    apiKey: string
-    domain?: string | null
     logoPath?: string | null
-    preferredTimezone?: string | null
-    currency?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -4158,11 +4067,8 @@ export namespace Prisma {
   export type OrganizationUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4171,11 +4077,8 @@ export namespace Prisma {
   export type OrganizationUncheckedUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    apiKey?: StringFieldUpdateOperationsInput | string
-    domain?: NullableStringFieldUpdateOperationsInput | string | null
     logoPath?: NullableStringFieldUpdateOperationsInput | string | null
-    preferredTimezone?: NullableStringFieldUpdateOperationsInput | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

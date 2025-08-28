@@ -2,7 +2,7 @@ import { IHeaders } from "kafkajs";
 import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
 import { EVENT_BUSINESS, EVENT_BUSINESS_BULK_DELETED, EVENT_BUSINESS_CREATED, EVENT_BUSINESS_DELETED, EVENT_BUSINESS_UPDATED } from "../../shared/constants/events.constant";
-import OrganizationModel from "../../models/organization.model";
+import OrganizationEntity from "../../entities/organization.entity";
 import { EventMessageData } from "../../shared/types/common.type";
 
 export default class OrganizationKafkaProducer {
@@ -15,19 +15,19 @@ export default class OrganizationKafkaProducer {
     });
   };
 
-  organizationCreatedEventEmitter = async (data: EventMessageData<OrganizationModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  organizationCreatedEventEmitter = async (data: EventMessageData<OrganizationEntity>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_CREATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  organizationUpdatedEventEmitter = async (data: EventMessageData<OrganizationModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  organizationUpdatedEventEmitter = async (data: EventMessageData<OrganizationEntity>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_UPDATED, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  organizationDeletedEventEmitter = async (data: EventMessageData<OrganizationModel>, userId: string, headers?: IHeaders): Promise<void> => {
+  organizationDeletedEventEmitter = async (data: EventMessageData<OrganizationEntity>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_BUSINESS, EVENT_BUSINESS_DELETED, data, userId, headers);
     await this.kafkaService.disconnectProducer();

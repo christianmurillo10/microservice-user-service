@@ -10,16 +10,13 @@ datasource db {
 }
 
 model Organization {
-  id                String    @id @default(uuid()) @db.Char(36)
-  name              String    @db.VarChar(100)
-  apiKey            String    @map("api_key") @db.VarChar(255)
-  domain            String?   @db.VarChar(255)
-  logoPath          String?   @map("logo_path") @db.VarChar(255)
-  preferredTimezone String?   @map("preferred_timezone") @db.VarChar(100)
-  currency          String?   @db.VarChar(100)
-  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0)
-  updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
-  deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
+  id        String    @id @default(uuid()) @db.Char(36)
+  name      String    @db.VarChar(100)
+  logoPath  String?   @map("logo_path") @db.VarChar(255)
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
+  deletedAt DateTime? @map("deleted_at") @db.DateTime(0)
 
   users User[] @relation("UserToOrganization")
 

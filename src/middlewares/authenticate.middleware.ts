@@ -10,22 +10,15 @@ const authenticate = async (
 ): Promise<void> => {
   try {
     const { authorization } = req.headers;
-    const apiKey = req.query.apiKey as string;
 
     if (!authorization) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     };
 
     const authenticateService = new AuthenticateService({
-      token: authorization.split(" ")[1],
-      apiKey: apiKey
+      token: authorization.split(" ")[1]
     });
     const authenticateOutput = await authenticateService.execute();
-
-    if (authenticateOutput.organization) {
-      req.organization = authenticateOutput.organization;
-      req.body.organizationId = authenticateOutput.organization.id;
-    }
 
     req.auth = authenticateOutput.user;
     next();

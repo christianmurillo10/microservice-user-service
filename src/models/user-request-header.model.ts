@@ -1,10 +1,6 @@
-import UserRequestHeader from "../entities/user-request-header.entity";
-
-class UserRequestHeaderModel implements UserRequestHeader {
-  userAgent?: string | null = null;
-  host?: string | null = null;
-  ipAddress?: string | null = null;
-  timestamp: Date = new Date();
+export default interface UserRequestHeader {
+  userAgent?: string | null,
+  host?: string | null,
+  ipAddress?: string | null,
+  timestamp: Date
 };
-
-export default UserRequestHeaderModel;

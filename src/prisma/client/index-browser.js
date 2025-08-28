@@ -120,11 +120,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  apiKey: 'apiKey',
-  domain: 'domain',
   logoPath: 'logoPath',
-  preferredTimezone: 'preferredTimezone',
-  currency: 'currency',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -160,11 +157,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.OrganizationOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  apiKey: 'apiKey',
-  domain: 'domain',
-  logoPath: 'logoPath',
-  preferredTimezone: 'preferredTimezone',
-  currency: 'currency'
+  logoPath: 'logoPath'
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {

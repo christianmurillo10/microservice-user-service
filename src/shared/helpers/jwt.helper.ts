@@ -1,8 +1,8 @@
-import JWTModel from "../../models/jwt.model";
+import JWTEntity from "../../entities/jwt.entity";
 
 export const verifyToken = (token: string) => {
   try {
-    return JWTModel.decodeToken(token);
+    return JWTEntity.decodeToken(token);
   } catch (error) {
     return null;
   }

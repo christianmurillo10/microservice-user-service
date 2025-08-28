@@ -16,9 +16,8 @@ const controller = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { query, organization } = req;
-    const condition = organization ? { organizationId: organization.id } : undefined;
-    const user = await userService.getAll({ query, condition });
+    const { query } = req;
+    const user = await userService.getAll({ query });
     const userCount = user.length;
     const allUserCount = await userService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;

@@ -19,15 +19,14 @@ const controller = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { params, body, file, auth, organization, userRequestHeader } = req;
+    const { params, body, file, auth, userRequestHeader } = req;
     const id = params.id;
 
     if (id === ":id") {
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const condition = organization ? { organizationId: organization.id } : undefined;
-    const oldUser = await userService.getById({ id, condition });
+    const oldUser = await userService.getById({ id });
     const newUser = await userService.save({ ...oldUser, ...body }, file);
 
     // Send to Kafka

@@ -53,3 +53,6 @@ public/images
 
 # Dotenv environments variable files
 .env
+
+# Prisma
+src/prisma/client
