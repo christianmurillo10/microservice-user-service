@@ -1,16 +1,13 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { deleteByIds as validator } from "../../../middlewares/validators/user.validator";
 import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import UserService from "../../../services/user.service";
 import UserKafkaProducer from "../../../events/producer/user.producer";
 
-const router = Router();
 const userService = new UserService();
 
-const controller = async (
+const deleteByIdsController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -44,9 +41,4 @@ const controller = async (
   };
 };
 
-export default router.post(
-  "/delete-by-ids",
-  authenticate,
-  validator,
-  controller
-);
+export default deleteByIdsController;

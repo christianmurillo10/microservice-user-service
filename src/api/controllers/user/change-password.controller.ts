@@ -1,16 +1,13 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { changePassword as validator } from "../../../middlewares/validators/user.validator";
 import { MESSAGE_DATA_PASSWORD_CHANGED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CHANGE_PASSWORD } from "../../../shared/constants/error.constant";
 import UserService from "../../../services/user.service";
 import UserKafkaProducer from "../../../events/producer/user.producer";
 
-const router = Router();
 const userService = new UserService();
 
-const controller = async (
+const changePasswordController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -51,9 +48,4 @@ const controller = async (
   };
 };
 
-export default router.put(
-  "/change-password/:id",
-  authenticate,
-  validator,
-  controller
-);
+export default changePasswordController;

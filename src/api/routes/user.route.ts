@@ -1,19 +1,65 @@
 import { Router } from "express";
-import create from "../controllers/user/create.controller";
-import read from "../controllers/user/read.controller";
-import update from "../controllers/user/update.controller";
-import remove from "../controllers/user/delete.controller";
-import list from "../controllers/user/list.controller";
-import deleteByIds from "../controllers/user/delete-by-ids.controller";
-import changePassword from "../controllers/user/change-password.controller";
+import multer from "multer";
+import authenticate from "../../middlewares/authenticate.middleware";
+import {
+  list as listValidation,
+  create as createValidation,
+  update as updateValidation,
+  changePassword as changePasswordValidation,
+  deleteByIds as deleteByIdsValidation
+} from "../../middlewares/validators/user.validator";
+import * as UserController from "../controllers/user";
 
-const router = Router();
-router.use(create);
-router.use(read);
-router.use(update);
-router.use(remove);
-router.use(list);
-router.use(deleteByIds);
-router.use(changePassword);
+const upload = multer();
+const router = Router({ mergeParams: true });
+
+router.get(
+  "/",
+  authenticate,
+  listValidation,
+  UserController.list
+);
+
+router.post(
+  "/",
+  authenticate,
+  upload.single("image"),
+  createValidation,
+  UserController.create
+);
+
+router.get(
+  "/:id",
+  authenticate,
+  UserController.read
+);
+
+router.put(
+  "/:id",
+  authenticate,
+  upload.single("image"),
+  updateValidation,
+  UserController.update
+);
+
+router.put(
+  "/change-password/:id",
+  authenticate,
+  changePasswordValidation,
+  UserController.changePassword
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  UserController.remove
+);
+
+router.post(
+  "/delete-by-ids",
+  authenticate,
+  deleteByIdsValidation,
+  UserController.deleteByIds
+);
 
 export default router;
