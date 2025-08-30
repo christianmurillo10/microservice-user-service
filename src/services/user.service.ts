@@ -2,7 +2,7 @@ import _ from "lodash";
 import { MESSAGE_DATA_INCORRECT_OLD_PASSWORD, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SAME_NEW_PASSWORD_TO_OLD_PASSWORD } from "../shared/constants/message.constant";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
 import UserEntity from "../entities/user.entity";
-import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs, GetByIdArgs, GetByUsernameOrEmailArgs } from "../shared/types/service.type";
+import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { comparePassword, hashedPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -19,7 +19,6 @@ export default class UserService {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
-      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
@@ -29,18 +28,15 @@ export default class UserService {
   getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<UserEntity[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
-      // include: ["organization"],
       exclude: ["deletedAt"]
     });
 
     return record;
   };
 
-  getById = async (args: GetByIdArgs<string>): Promise<UserEntity> => {
+  getById = async (id: string): Promise<UserEntity> => {
     const record = await this.repository.findById({
-      id: args.id,
-      condition: args?.condition,
-      // include: ["organization"],
+      id: id,
       exclude: ["deletedAt"]
     });
 
@@ -51,11 +47,10 @@ export default class UserService {
     return record;
   };
 
-  getByUsernameOrEmail = async (args: GetByUsernameOrEmailArgs): Promise<UserEntity> => {
+  getByUsernameOrEmail = async (username: string, email: string): Promise<UserEntity> => {
     const record = await this.repository.findByUsernameOrEmail({
-      username: args.username,
-      email: args.email,
-      // include: ["organization"],
+      username,
+      email,
       exclude: ["deletedAt"]
     });
 
@@ -68,26 +63,25 @@ export default class UserService {
 
   save = async (data: UserEntity, file?: Express.Multer.File): Promise<UserEntity> => {
     const uploadPath = setUploadPath(file, this.repository.imagePath);
+    const exclude = ["deletedAt"];
     let record: UserEntity;
-    let newData = new UserEntity(data);
-    let option = {
-      params: newData,
-      // include: ["organization"],
-      exclude: ["deletedAt"]
-    };
 
     if (data.id) {
       // Update
-      option.params.imagePath = uploadPath || data.imagePath || ""
+      data.imagePath = uploadPath || data.imagePath || "";
       record = await this.repository.update({
         id: data.id,
-        ...option
+        params: data,
+        exclude
       });
     } else {
       // Create
-      option.params.imagePath = uploadPath;
-      option.params.password = hashedPassword(option.params.password as string);
-      record = await this.repository.create(option);
+      data.imagePath = uploadPath;
+      data.password = hashedPassword(data.password as string);
+      record = await this.repository.create({
+        params: data,
+        exclude
+      });
     }
 
     if (!_.isUndefined(file) && record.imagePath) {

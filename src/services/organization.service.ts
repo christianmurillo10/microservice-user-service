@@ -60,8 +60,8 @@ export default class OrganizationService {
 
   save = async (data: OrganizationEntity, file?: Express.Multer.File): Promise<OrganizationEntity> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
-    let record: OrganizationEntity;
     const exclude = ["deletedAt"];
+    let record: OrganizationEntity;
 
     if (data.id) {
       // Update

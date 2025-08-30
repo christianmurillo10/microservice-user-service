@@ -22,7 +22,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const user = await userService.getById({ id });
+    const user = await userService.getById(id);
 
     apiResponse(res, {
       statusCode: 200,

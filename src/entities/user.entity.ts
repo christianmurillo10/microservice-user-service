@@ -1,40 +1,74 @@
 import { v4 as uuidv4 } from "uuid";
-import User, { UserAccessTypeValue, UserAccessType } from "../models/user.model";
+import User, { UserAccessTypeValue } from "../models/user.model";
 import Organization from "../models/organization.model";
+import { comparePassword } from "../shared/utils/bcrypt";
 
 class UserEntity implements User {
-  id?: string = uuidv4();
-  name: string = "";
-  username: string = "";
-  email: string = "";
-  password: string = "";
-  accessType: UserAccessTypeValue = UserAccessType.Organization;
-  imagePath?: string | null = null;
-  organizationId?: string | null = null;
-  isActive: boolean = true;
-  isLogged: boolean = false;
-  lastLoggedAt?: Date | null = null;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  id?: string;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  accessType: UserAccessTypeValue;
+  imagePath?: string | null;
+  organizationId?: string | null;
+  isActive: boolean;
+  isLogged: boolean;
+  lastLoggedAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
 
   constructor(props: User) {
-    this.id = props.id;
+    this.id = props.id ?? uuidv4();
     this.name = props.name;
     this.username = props.username;
     this.email = props.email;
     this.password = props.password;
     this.accessType = props.accessType;
-    this.imagePath = props.imagePath;
-    this.organizationId = props.organizationId;
-    this.isActive = props.isActive;
-    this.isLogged = props.isLogged;
-    this.lastLoggedAt = props.lastLoggedAt;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
+    this.imagePath = props.imagePath ?? null;
+    this.organizationId = props.organizationId ?? null;
+    this.isActive = props.isActive ?? true;
+    this.isLogged = props.isLogged ?? false;
+    this.lastLoggedAt = props.lastLoggedAt ?? null;
+    this.createdAt = props.createdAt ?? new Date();
+    this.updatedAt = props.updatedAt ?? new Date();
+    this.deletedAt = props.deletedAt ?? null;
     this.organization = props.organization;
+  };
+
+  activate() {
+    this.isActive = true;
+  };
+
+  deactivate() {
+    this.isActive = false;
+  };
+
+  markLoggedIn() {
+    this.isLogged = true;
+    this.lastLoggedAt = new Date();
+  };
+
+  markLoggedOut() {
+    this.isLogged = false;
+  };
+
+  setOrganization(orgId?: string | null) {
+    this.organizationId = orgId ?? null;
+  };
+
+  changePassword(newHash: string) {
+    this.password = newHash;
+  };
+
+  delete() {
+    this.deletedAt = new Date();
+  };
+
+  checkPassword(password: string): boolean {
+    return comparePassword(password, this.password);
   };
 };
 

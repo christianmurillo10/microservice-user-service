@@ -22,10 +22,7 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { body, file, auth, userRequestHeader } = req;
-    const oldUser = await userService.getByUsernameOrEmail({
-      username: body.username,
-      email: body.email
-    })
+    const oldUser = await userService.getByUsernameOrEmail(body.username, body.email)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

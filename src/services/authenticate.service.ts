@@ -23,7 +23,7 @@ export default class AuthenticateService {
   };
 
   private validateUserRecord = async (id: string) => {
-    const userRecord = await this.userService.getById({ id })
+    const userRecord = await this.userService.getById(id)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

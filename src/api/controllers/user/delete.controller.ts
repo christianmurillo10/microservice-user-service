@@ -23,7 +23,7 @@ const controller = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const oldUser = await userService.getById({ id });
+    const oldUser = await userService.getById(id);
     const newUser = await userService.delete(id);
 
     // Send to Kafka

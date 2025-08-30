@@ -19,7 +19,7 @@ export default class UserLoggedOutEventListenerService extends UserEventListener
     };
 
     const userId = this.state.newDetails.id!;
-    const existingUser = await this.userService.getById({ id: userId })
+    const existingUser = await this.userService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);

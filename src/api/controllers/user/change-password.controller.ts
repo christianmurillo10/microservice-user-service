@@ -18,7 +18,7 @@ const controller = async (
   try {
     const { params, body, auth, userRequestHeader } = req;
     const id = params.id;
-    const oldUser = await userService.getById({ id: id });
+    const oldUser = await userService.getById(id);
     const newUser = await userService.changePassword(
       id,
       oldUser.password as string,

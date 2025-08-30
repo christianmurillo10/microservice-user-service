@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
+import type { User as UserRecord } from "../../prisma/client";
 import UserEntity from "../../entities/user.entity";
 import UserRepository from "../user.interface";
 import {
@@ -17,6 +18,13 @@ import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { userSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../models/user.model";
+
+function toEntity(user: UserRecord): UserEntity {
+  return new UserEntity({
+    ...user,
+    accessType: user.accessType as UserAccessTypeValue
+  });
+};
 
 export default class PrismaUserRepository implements UserRepository {
   private client;
@@ -51,10 +59,7 @@ export default class PrismaUserRepository implements UserRepository {
         undefined
     });
 
-    return res.map(item => new UserEntity({
-      ...item,
-      accessType: item.accessType as UserAccessTypeValue
-    }));
+    return res.map(item => toEntity(item));
   };
 
   findAllBetweenCreatedAt = async (
@@ -75,10 +80,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return res.map(item => new UserEntity({
-      ...item,
-      accessType: item.accessType as UserAccessTypeValue
-    }));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -99,10 +101,7 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   findByUsernameOrEmail = async (
@@ -134,10 +133,7 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   create = async (
@@ -153,10 +149,7 @@ export default class PrismaUserRepository implements UserRepository {
       data: params
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   update = async (
@@ -176,10 +169,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   softDelete = async (
@@ -197,10 +187,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   softDeleteMany = async (
@@ -248,10 +235,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   count = async (
