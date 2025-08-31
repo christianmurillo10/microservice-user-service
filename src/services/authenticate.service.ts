@@ -1,12 +1,15 @@
+import { UserAccessType } from "../models/user.model";
 import UserEntity from "../entities/user.entity";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_INVALID_API_KEY } from "../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE, MESSAGE_INVALID_API_KEY } from "../shared/constants/message.constant";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { verifyToken } from "../shared/helpers/jwt.helper";
 import UserService from "./user.service";
+import ForbiddenException from "../shared/exceptions/forbidden.exception";
 
 type Input = {
   token: string,
+  organizationId?: string,
 };
 
 type Output = {
@@ -23,17 +26,16 @@ export default class AuthenticateService {
   };
 
   private validateUserRecord = async (id: string) => {
-    const userRecord = await this.userService.getById(id)
-      .catch(err => {
-        if (err instanceof NotFoundException) return null;
-        throw err;
-      });
-
-    return userRecord;
+    try {
+      return await this.userService.getById(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) return null;
+      throw error
+    }
   };
 
   execute = async (): Promise<Output> => {
-    const { token } = this.input;
+    const { token, organizationId } = this.input;
     const tokenData = verifyToken(token);
 
     if (!tokenData) {
@@ -50,6 +52,14 @@ export default class AuthenticateService {
     if (Boolean(userRecord.isLogged) === false) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     }
+
+    // Validate via organizationId if token client is ORGANIZATION
+    if (
+      tokenData.client === UserAccessType.Organization &&
+      organizationId !== String(tokenData.sub)
+    ) {
+      throw new ForbiddenException([MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE]);
+    };
 
     return {
       user: userRecord

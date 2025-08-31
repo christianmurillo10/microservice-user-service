@@ -24,6 +24,7 @@ export const MESSAGE_DATA_NOT_EXIST = "Data doesn't exist.";
 export const MESSAGE_DATA_NOT_FOUND = "No data found.";
 export const MESSAGE_DATA_NOT_LOGGED = "Please login to continue.";
 export const MESSAGE_DATA_TOKEN_EXPIRED = "Token expired, Please login to continue.";
+export const MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE = "You do not have permission to access this resource.";
 export const MESSAGE_ERROR_SERVER = "Server error.";
 export const MESSAGE_ERROR_BAD_REQUEST = "Bad Request.";
 export const MESSAGE_ERROR_UNAUTHORIZED = "Unauthorized";
