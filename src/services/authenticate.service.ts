@@ -42,6 +42,15 @@ export default class AuthenticateService {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };
 
+    // Validate via organizationId if token client is ORGANIZATION
+    if (
+      tokenData.client === UserAccessType.Organization &&
+      organizationId === ":organizationId" &&
+      organizationId !== String(tokenData.sub)
+    ) {
+      throw new ForbiddenException([MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE]);
+    };
+
     // Validate user logged status
     const userRecord = await this.validateUserRecord(tokenData.id as unknown as string);
 
@@ -52,14 +61,6 @@ export default class AuthenticateService {
     if (Boolean(userRecord.isLogged) === false) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     }
-
-    // Validate via organizationId if token client is ORGANIZATION
-    if (
-      tokenData.client === UserAccessType.Organization &&
-      organizationId !== String(tokenData.sub)
-    ) {
-      throw new ForbiddenException([MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE]);
-    };
 
     return {
       user: userRecord

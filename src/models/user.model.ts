@@ -2,7 +2,7 @@ import Organization from "./organization.model";
 
 export enum UserAccessType {
   Portal = "PORTAL",
-  Organization = "BUSINESS",
+  Organization = "ORGANIZATION",
   AppRecognized = "APP_RECOGNIZED"
 };
 
