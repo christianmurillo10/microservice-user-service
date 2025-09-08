@@ -27,40 +27,46 @@ class UserEntity implements User {
     this.email = props.email;
     this.password = props.password;
     this.accessType = props.accessType;
-    this.imagePath = props.imagePath ?? null;
-    this.organizationId = props.organizationId ?? null;
-    this.isActive = props.isActive ?? true;
-    this.isLogged = props.isLogged ?? false;
-    this.lastLoggedAt = props.lastLoggedAt ?? null;
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
+    this.imagePath = props.imagePath;
+    this.organizationId = props.organizationId;
+    this.isActive = props.isActive;
+    this.isLogged = props.isLogged;
+    this.lastLoggedAt = props.lastLoggedAt;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
+    this.deletedAt = props.deletedAt;
     this.organization = props.organization;
   };
 
   activate() {
     this.isActive = true;
+    this.updatedAt = new Date();
   };
 
   deactivate() {
     this.isActive = false;
+    this.updatedAt = new Date();
   };
 
   markLoggedIn() {
     this.isLogged = true;
     this.lastLoggedAt = new Date();
+    this.updatedAt = new Date();
   };
 
   markLoggedOut() {
     this.isLogged = false;
+    this.updatedAt = new Date();
   };
 
   setOrganization(orgId?: string | null) {
     this.organizationId = orgId ?? null;
+    this.updatedAt = new Date();
   };
 
   changePassword(newHash: string) {
     this.password = newHash;
+    this.updatedAt = new Date();
   };
 
   delete() {

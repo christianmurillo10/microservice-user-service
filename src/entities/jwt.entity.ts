@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken";
 import config from "../config/jwt.config";
 import { JWT } from "../models/jwt.model";
-import { UserAccessTypeValue, UserAccessType } from "../models/user.model";
+import { UserAccessTypeValue } from "../models/user.model";
 
 class JWTEntity implements JWT {
-  id: number = 0;
-  email: string = "";
-  client: UserAccessTypeValue = UserAccessType.Organization;
-  scope: string = "";
-  sub: number = 0;
-  exp: number = 0;
-  iat: number = Date.now();
-  aud: string = "Microservice";
+  id: number;
+  email: string;
+  client: UserAccessTypeValue;
+  scope: string;
+  sub: number;
+  exp: number;
+  iat: number;
+  aud: string;
 
   constructor(props: JWT) {
     this.id = props.id;

@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import Organization from "../models/organization.model";
 import User from "../models/user.model";
 
@@ -13,13 +12,13 @@ class OrganizationEntity implements Organization {
   users?: User[];
 
   constructor(props: Organization) {
-    this.id = props.id ?? uuidv4();
+    this.id = props.id;
     this.name = props.name;
-    this.logoPath = props.logoPath ?? null;
-    this.isActive = props.isActive ?? true;
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
+    this.logoPath = props.logoPath;
+    this.isActive = props.isActive;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
+    this.deletedAt = props.deletedAt;
     this.users = props.users;
   };
 
