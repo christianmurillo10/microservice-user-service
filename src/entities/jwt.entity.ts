@@ -1,7 +1,17 @@
 import jwt from "jsonwebtoken";
 import config from "../config/jwt.config";
-import { JWT } from "../models/jwt.model";
-import { UserAccessTypeValue } from "../models/user.model";
+import { UserAccessTypeValue } from "./user.entity";
+
+export interface JWT {
+  id: number;
+  email: string;
+  client: UserAccessTypeValue;
+  scope: string;
+  sub: number;
+  exp: number;
+  iat: number;
+  aud: string;
+};
 
 class JWTEntity implements JWT {
   id: number;

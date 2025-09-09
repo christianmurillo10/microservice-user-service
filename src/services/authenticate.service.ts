@@ -1,5 +1,4 @@
-import { UserAccessType } from "../models/user.model";
-import UserEntity from "../entities/user.entity";
+import UserEntity, { UserAccessType } from "../entities/user.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE, MESSAGE_INVALID_API_KEY } from "../shared/constants/message.constant";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";

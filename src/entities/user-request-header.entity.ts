@@ -1,4 +1,9 @@
-import UserRequestHeader from "../models/user-request-header.model";
+export interface UserRequestHeader {
+  userAgent?: string | null,
+  host?: string | null,
+  ipAddress?: string | null,
+  timestamp: Date
+};
 
 class UserRequestHeaderEntity implements UserRequestHeader {
   userAgent?: string | null = null;

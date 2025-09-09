@@ -1,5 +1,15 @@
-import Organization from "../models/organization.model";
-import User from "../models/user.model";
+import { User } from "./user.entity";
+
+export interface Organization {
+  id?: string;
+  name: string;
+  logoPath?: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  users?: User[];
+};
 
 class OrganizationEntity implements Organization {
   id?: string;

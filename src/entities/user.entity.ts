@@ -1,7 +1,32 @@
 import { v4 as uuidv4 } from "uuid";
-import User, { UserAccessTypeValue } from "../models/user.model";
-import Organization from "../models/organization.model";
+import { Organization } from "./organization.entity";
 import { comparePassword } from "../shared/utils/bcrypt";
+
+export enum UserAccessType {
+  Portal = "PORTAL",
+  Organization = "ORGANIZATION",
+  AppRecognized = "APP_RECOGNIZED"
+};
+
+export type UserAccessTypeValue = UserAccessType.Portal | UserAccessType.Organization | UserAccessType.AppRecognized;
+
+export interface User {
+  id?: string;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  accessType: UserAccessTypeValue;
+  imagePath?: string | null;
+  organizationId?: string | null;
+  isActive: boolean;
+  isLogged: boolean;
+  lastLoggedAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  organization?: Organization;
+};
 
 class UserEntity implements User {
   id?: string;
