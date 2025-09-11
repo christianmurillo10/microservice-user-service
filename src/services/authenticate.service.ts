@@ -1,5 +1,5 @@
 import UserEntity, { UserAccessType } from "../entities/user.entity";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE, MESSAGE_INVALID_API_KEY } from "../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE } from "../shared/constants/message.constant";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { verifyToken } from "../shared/helpers/jwt.helper";
@@ -54,7 +54,7 @@ export default class AuthenticateService {
     const userRecord = await this.validateUserRecord(tokenData.id as unknown as string);
 
     if (!userRecord) {
-      throw new NotFoundException([MESSAGE_INVALID_API_KEY]);
+      throw new NotFoundException([MESSAGE_DATA_INVALID_TOKEN]);
     }
 
     if (Boolean(userRecord.isLogged) === false) {
