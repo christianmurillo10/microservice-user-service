@@ -1,15 +1,7 @@
 export const ERROR_ON_CREATE = "Error on create";
-export const ERROR_ON_BULK_CREATE = "Error on bulk create";
 export const ERROR_ON_UPDATE = "Error on update";
 export const ERROR_ON_DELETE = "Error on delete";
-export const ERROR_ON_UPDATE_AND_DELETE = "Error on update and delete";
 export const ERROR_ON_LIST = "Error on list";
 export const ERROR_ON_READ = "Error on read";
-export const ERROR_ON_REGISTER = "Error on register";
 export const ERROR_ON_CHANGE_PASSWORD = "Error on change password";
-export const ERROR_ON_INGESTION = "Error on ingestion";
-export const ERROR_ON_LOGIN = "Error on login";
-export const ERROR_ON_LOGOUT = "Error on logout";
-export const ERROR_ON_VERIFY = "Error on verify";
-export const ERROR_ON_REPORT = "Error on report";
 export const ERROR_ON_SERVER = "Something went wrong, please contact administrator.";
