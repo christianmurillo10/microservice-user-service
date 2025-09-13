@@ -12,6 +12,6 @@ router.get("/", (_req: Request, res: Response) => {
   }).end();
 });
 
-router.use("/user", userRoute);
+router.use("/users", userRoute);
 
 export default router;
