@@ -16,7 +16,8 @@ const createController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body, file, auth, userRequestHeader } = req;
+    const { params, body, file, auth, userRequestHeader } = req;
+    const { organizationId } = params;
     const oldUser = await userService.getByUsernameOrEmail(body.username, body.email)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
@@ -27,7 +28,7 @@ const createController = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newUser = await userService.save(body, file);
+    const newUser = await userService.save({ ...body, organizationId }, file);
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();

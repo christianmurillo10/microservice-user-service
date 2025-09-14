@@ -13,10 +13,11 @@ const listController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { query } = req;
-    const user = await userService.getAll({ query });
+    const { params, query } = req;
+    const condition = params.organizationId ? { organizationId: params.organizationId } : undefined;
+    const user = await userService.getAll({ condition, query });
     const userCount = user.length;
-    const allUserCount = await userService.count({ query });
+    const allUserCount = await userService.count({ condition, query });
     let message = MESSAGE_DATA_FIND_ALL;
 
     if (user.length < 1) {

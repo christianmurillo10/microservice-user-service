@@ -12,6 +12,6 @@ router.get("/", (_req: Request, res: Response) => {
   }).end();
 });
 
-router.use("/users", userRoute);
+router.use("/organizations/:organizationId/users", userRoute);
 
 export default router;
