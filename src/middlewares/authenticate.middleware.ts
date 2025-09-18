@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { MESSAGE_DATA_NOT_LOGGED } from "../shared/constants/message.constant";
 import AuthenticateService from "../services/authenticate.service";
+import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 
 const authenticate = async (
   req: Request,
@@ -10,16 +10,13 @@ const authenticate = async (
 ): Promise<void> => {
   try {
     const { authorization } = req.headers;
-    const { organizationId } = req.params;
 
     if (!authorization) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     };
 
-    const authenticateService = new AuthenticateService({
-      token: authorization.split(" ")[1],
-      organizationId: organizationId
-    });
+    const token = authorization.split(" ")[1];
+    const authenticateService = new AuthenticateService(token);
     const authenticateOutput = await authenticateService.execute();
 
     req.auth = authenticateOutput.user;
