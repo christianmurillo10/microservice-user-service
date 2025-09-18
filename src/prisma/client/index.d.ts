@@ -1972,6 +1972,7 @@ export namespace Prisma {
     organizationId: string | null
     isActive: boolean | null
     isLogged: boolean | null
+    isSuperAdmin: boolean | null
     lastLoggedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1989,6 +1990,7 @@ export namespace Prisma {
     organizationId: string | null
     isActive: boolean | null
     isLogged: boolean | null
+    isSuperAdmin: boolean | null
     lastLoggedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2006,6 +2008,7 @@ export namespace Prisma {
     organizationId: number
     isActive: number
     isLogged: number
+    isSuperAdmin: number
     lastLoggedAt: number
     createdAt: number
     updatedAt: number
@@ -2025,6 +2028,7 @@ export namespace Prisma {
     organizationId?: true
     isActive?: true
     isLogged?: true
+    isSuperAdmin?: true
     lastLoggedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2042,6 +2046,7 @@ export namespace Prisma {
     organizationId?: true
     isActive?: true
     isLogged?: true
+    isSuperAdmin?: true
     lastLoggedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2059,6 +2064,7 @@ export namespace Prisma {
     organizationId?: true
     isActive?: true
     isLogged?: true
+    isSuperAdmin?: true
     lastLoggedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2149,6 +2155,7 @@ export namespace Prisma {
     organizationId: string | null
     isActive: boolean
     isLogged: boolean
+    isSuperAdmin: boolean
     lastLoggedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -2183,6 +2190,7 @@ export namespace Prisma {
     organizationId?: boolean
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2203,13 +2211,14 @@ export namespace Prisma {
     organizationId?: boolean
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "email" | "password" | "accessType" | "imagePath" | "organizationId" | "isActive" | "isLogged" | "lastLoggedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "email" | "password" | "accessType" | "imagePath" | "organizationId" | "isActive" | "isLogged" | "isSuperAdmin" | "lastLoggedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | User$organizationArgs<ExtArgs>
   }
@@ -2230,6 +2239,7 @@ export namespace Prisma {
       organizationId: string | null
       isActive: boolean
       isLogged: boolean
+      isSuperAdmin: boolean
       lastLoggedAt: Date | null
       createdAt: Date
       updatedAt: Date
@@ -2614,6 +2624,7 @@ export namespace Prisma {
     readonly organizationId: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly isLogged: FieldRef<"User", 'Boolean'>
+    readonly isSuperAdmin: FieldRef<"User", 'Boolean'>
     readonly lastLoggedAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -3036,6 +3047,7 @@ export namespace Prisma {
     organizationId: 'organizationId',
     isActive: 'isActive',
     isLogged: 'isLogged',
+    isSuperAdmin: 'isSuperAdmin',
     lastLoggedAt: 'lastLoggedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -3200,6 +3212,7 @@ export namespace Prisma {
     organizationId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     isLogged?: BoolFilter<"User"> | boolean
+    isSuperAdmin?: BoolFilter<"User"> | boolean
     lastLoggedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -3218,6 +3231,7 @@ export namespace Prisma {
     organizationId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isLogged?: SortOrder
+    isSuperAdmin?: SortOrder
     lastLoggedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3240,6 +3254,7 @@ export namespace Prisma {
     organizationId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     isLogged?: BoolFilter<"User"> | boolean
+    isSuperAdmin?: BoolFilter<"User"> | boolean
     lastLoggedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -3258,6 +3273,7 @@ export namespace Prisma {
     organizationId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isLogged?: SortOrder
+    isSuperAdmin?: SortOrder
     lastLoggedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3281,6 +3297,7 @@ export namespace Prisma {
     organizationId?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     isLogged?: BoolWithAggregatesFilter<"User"> | boolean
+    isSuperAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     lastLoggedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -3371,6 +3388,7 @@ export namespace Prisma {
     imagePath?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3389,6 +3407,7 @@ export namespace Prisma {
     organizationId?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3405,6 +3424,7 @@ export namespace Prisma {
     imagePath?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3423,6 +3443,7 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3440,6 +3461,7 @@ export namespace Prisma {
     organizationId?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3456,6 +3478,7 @@ export namespace Prisma {
     imagePath?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3473,6 +3496,7 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3681,6 +3705,7 @@ export namespace Prisma {
     organizationId?: SortOrder
     isActive?: SortOrder
     isLogged?: SortOrder
+    isSuperAdmin?: SortOrder
     lastLoggedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3698,6 +3723,7 @@ export namespace Prisma {
     organizationId?: SortOrder
     isActive?: SortOrder
     isLogged?: SortOrder
+    isSuperAdmin?: SortOrder
     lastLoggedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3715,6 +3741,7 @@ export namespace Prisma {
     organizationId?: SortOrder
     isActive?: SortOrder
     isLogged?: SortOrder
+    isSuperAdmin?: SortOrder
     lastLoggedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3960,6 +3987,7 @@ export namespace Prisma {
     imagePath?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3976,6 +4004,7 @@ export namespace Prisma {
     imagePath?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4022,6 +4051,7 @@ export namespace Prisma {
     organizationId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     isLogged?: BoolFilter<"User"> | boolean
+    isSuperAdmin?: BoolFilter<"User"> | boolean
     lastLoggedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -4094,6 +4124,7 @@ export namespace Prisma {
     imagePath?: string | null
     isActive?: boolean
     isLogged?: boolean
+    isSuperAdmin?: boolean
     lastLoggedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4110,6 +4141,7 @@ export namespace Prisma {
     imagePath?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4126,6 +4158,7 @@ export namespace Prisma {
     imagePath?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4142,6 +4175,7 @@ export namespace Prisma {
     imagePath?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isLogged?: BoolFieldUpdateOperationsInput | boolean
+    isSuperAdmin?: BoolFieldUpdateOperationsInput | boolean
     lastLoggedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

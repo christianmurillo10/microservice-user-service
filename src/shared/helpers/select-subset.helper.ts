@@ -19,6 +19,7 @@ export const userSubsets = {
   organizationId: true,
   isActive: true,
   isLogged: true,
+  isSuperAdmin: true,
   lastLoggedAt: true,
   createdAt: true,
   updatedAt: true,

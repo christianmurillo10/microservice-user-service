@@ -10,7 +10,10 @@ const authorize = (action: string, resource: string) =>
     next: NextFunction
   ) => {
     try {
-      const { id, organizationId } = req.auth;
+      const { id, organizationId, isSuperAdmin } = req.auth;
+
+      // Super admin bypass all permission
+      if (isSuperAdmin === true) return next();
 
       // Validate user id and organization id
       if (!id || !organizationId) {

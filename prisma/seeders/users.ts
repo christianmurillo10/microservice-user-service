@@ -18,6 +18,7 @@ const up = async () => {
         email: "superadmin@email.com",
         password: "$2a$12$FzZC/3mX23SoxT5y1QJxz.lWQCu9FEXQ6yBg9iHqptzMF8DfdpGlK",
         accessType: "PORTAL",
+        isSuperAdmin: true,
         imagePath: null,
         organizationId: null,
         createdAt: new Date(),
