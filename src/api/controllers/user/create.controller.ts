@@ -16,8 +16,8 @@ const createController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { params, body, file, auth, userRequestHeader } = req;
-    const { organizationId } = params;
+    const { body, file, auth, userRequestHeader } = req;
+    const organizationId = auth.organizationId!;
     const oldUser = await userService.getByUsernameOrEmail(body.username, body.email)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
