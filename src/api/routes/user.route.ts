@@ -2,13 +2,8 @@ import { Router } from "express";
 import multer from "multer";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
-import {
-  list as listValidation,
-  create as createValidation,
-  update as updateValidation,
-  changePassword as changePasswordValidation,
-  deleteByIds as deleteByIdsValidation
-} from "../../middlewares/validators/user.validator";
+import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
+import { changePasswordSchema, createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/user.schema";
 import * as UserController from "../controllers/user";
 
 const upload = multer();
@@ -18,7 +13,7 @@ router.get(
   "/",
   authenticate,
   authorize("list", "user"),
-  listValidation,
+  validateQuery(listSchema),
   UserController.list
 );
 
@@ -27,7 +22,7 @@ router.post(
   authenticate,
   authorize("create", "user"),
   upload.single("image"),
-  createValidation,
+  validateBody(createSchema),
   UserController.create
 );
 
@@ -43,7 +38,7 @@ router.put(
   authenticate,
   authorize("update", "user"),
   upload.single("image"),
-  updateValidation,
+  validateBody(updateSchema),
   UserController.update
 );
 
@@ -51,7 +46,7 @@ router.put(
   "/change-password/:id",
   authenticate,
   authorize("changePassword", "user"),
-  changePasswordValidation,
+  validateBody(changePasswordSchema),
   UserController.changePassword
 );
 
@@ -65,8 +60,8 @@ router.delete(
 router.post(
   "/delete-by-ids",
   authenticate,
-  deleteByIdsValidation,
   authorize("delete", "user"),
+  validateBody(deleteByIdsSchema),
   UserController.deleteByIds
 );
 
