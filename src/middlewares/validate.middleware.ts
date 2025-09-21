@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import joi, { Schema } from "joi";
+import Joi, { Schema } from "joi";
 import _ from "lodash";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import { MESSAGE_INVALID_BODY } from "../shared/constants/message.constant";
@@ -22,7 +22,7 @@ const validateInput = async <I>(input: I, schema: Schema): Promise<I> => {
   return await schema.validateAsync(input, options);
 };
 
-export const validateBody = (schema: joi.ObjectSchema) => {
+export const validateBody = (schema: Joi.ObjectSchema) => {
   return async (
     req: Request,
     _res: Response,
@@ -41,7 +41,7 @@ export const validateBody = (schema: joi.ObjectSchema) => {
   };
 };
 
-export const validateQuery = (schema: joi.ObjectSchema) => {
+export const validateQuery = (schema: Joi.ObjectSchema) => {
   return async (
     req: Request,
     _res: Response,
