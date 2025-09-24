@@ -1,9 +1,7 @@
+import http from "http";
 import dotenv from "dotenv";
 dotenv.config();
 
-import http from "http";
-
-// Load application
 import serverConfig from "./config/server.config";
 import KafkaServer from "./events";
 import app from "./app";
@@ -31,12 +29,15 @@ const onError = (error: NodeJS.ErrnoException) => {
 
 const onClose = () => {
   KafkaServer.disconnect();
-  console.log("Server closed");
   process.exit(0);
 };
 
 const start = async () => {
   try {
+    // Kafka server
+    await KafkaServer.listen();
+
+    // Express server
     server.listen(serverConfig.port, () => console.log(`Server is running on port \t\t: ${serverConfig.port}`));
     server.on("error", onError);
     server.on("close", onClose);
@@ -45,10 +46,4 @@ const start = async () => {
   };
 };
 
-(async () => {
-  // Kafka server
-  await KafkaServer.listen();
-
-  // Express server
-  start();
-})();
+start();
